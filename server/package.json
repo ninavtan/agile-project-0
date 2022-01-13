@@ -1,0 +1,22 @@
+{
+  "name": "nina-agile-project-refactor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "build": "cd client && npm install && npm run build"
+  },
+  "engines": {
+    "node": "14.17.3",
+    "npm": "6.14.13"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mongoose": "^6.1.6"
+  }
+}
