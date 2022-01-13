@@ -9,6 +9,9 @@ mongoose.connect("mongodb://localhost/agile", {
 
 const app = express();
 
+const PORT = process.env.PORT || 7000;
+
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -39,6 +42,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-app.listen(7000, () => {
-  console.log("Node.js listening on port " + 7000);
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
 });
