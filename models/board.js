@@ -7,9 +7,7 @@ const List = require("../models/list");
 const BoardSchema = new Schema({
     title: String,
     label: String,    
-    list: [{ type: Schema.Types.ObjectId, ref: List }],
-    
-    
+    list: [{ type: Schema.Types.ObjectId, ref: List }],    
 });
 
 module.exports = mongoose.model("Board", BoardSchema);

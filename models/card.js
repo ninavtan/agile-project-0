@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Board = require("../models/board");
+const List = require("../models/list");
 const Comment = require("../models/comment");
-// do we want to link the List the card is in?
-
 
 const CardSchema = new Schema({
     cardTitle: String,
     description: String, 
-    cardlabel: String,   
-    comment: [{ type: Schema.Types.ObjectId, ref: Comment }],    
+    cardlabel: String, 
+    list: { type: Schema.Types.ObjectId, ref: "List" },  
+    comment: [{ type: Schema.Types.ObjectId, ref: "Comment" }],    
 });
 
 module.exports = mongoose.model("Card", CardSchema);
