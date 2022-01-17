@@ -27,18 +27,18 @@ const List = (props) => {
   }
 
   return (
-    <Draggable draggableId={props.column.id} index={props.index}>
+    <Draggable draggableId={props.list.id} index={props.index}>
       {(provided, snapshot) => (
         <Container 
           {...provided.draggableProps} 
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <Title {...provided.dragHandleProps}>{props.column.title}</Title>
+          <Title {...provided.dragHandleProps}>{props.list.title}</Title>
           <Droppable 
-            droppableId={props.column.id}
+            droppableId={props.list.id}
             type="task"
-            key={props.column.id}
+            key={props.list.id}
           >
             {(provided) => (
               <TaskList 

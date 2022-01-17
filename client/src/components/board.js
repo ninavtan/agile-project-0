@@ -1,10 +1,11 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { Row,Col, Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
-import { updateListOrder, moveTaskWithinList, moveTaskBetweenLists } from './actions';
+import { updateListOrder, moveTaskWithinList, moveTaskBetweenLists, addNewList, fetchBoards } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
 
 const Board = () => {
@@ -12,7 +13,7 @@ const Board = () => {
   const listOrder = useSelector(state => state.listOrder);
   const allTasks = useSelector(state => state.tasks);
   const dispatch = useDispatch();
-  
+
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result;
 
@@ -27,7 +28,7 @@ const Board = () => {
       return;
     };
   
-    if (type === 'column') {
+    if (type === 'list') {
       const newListOrder = Array.from(listOrder);
       newListOrder.splice(source.index, 1);
       newListOrder.splice(destination.index, 0, draggableId);
@@ -73,7 +74,7 @@ const Board = () => {
     return;
   }
 
-
+  //New List Input
   const [showAddListInput, setAddListInput] = React.useState(false);
   const addListClickHandler = () => setAddListInput(true);
   const cancelAddList = () => setAddListInput(false);
@@ -82,13 +83,32 @@ const Board = () => {
     
     const ref = React.useRef(null);
     useOnClickOutside(ref, cancelAddList);
+    const [newListName, setNewListName] = useState('');
     
+    const submitNewList = (e) => {
+      e.preventDefault();
+      dispatch(addNewList(newListName));
+      setAddListInput(false);
+    }
+
     return (
       <ListContainer>
-        <Form ref={ref}>
-          <StyledForm type="text"  placeholder="Enter list title..." />
-          <StyledButton variant='primary'>Add List</StyledButton>
-          <CancelButton variant='outline-danger' onClick={cancelAddList}> X </CancelButton>
+        <Form ref={ref} onSubmit={submitNewList}>
+          <Form.Group>
+            <StyledForm 
+              required
+              type="name"
+              placeholder="Enter list title..." 
+              onChange={event => setNewListName(event.target.value)}
+            />
+          </Form.Group>
+          <StyledButton 
+          variant='primary'
+          type='submit'>
+            Add List</StyledButton>
+            
+          <CancelButton variant='outline-danger' onClick={cancelAddList}>
+             X </CancelButton>
         </Form>
       </ListContainer>
     );
@@ -99,7 +119,7 @@ const Board = () => {
       <Droppable 
         droppableId='all-lists' 
         direction="horizontal" 
-        type="column"
+        type="list"
       >
         {provided =>(
         <Container
@@ -112,7 +132,7 @@ const Board = () => {
             const tasks = list.taskIds.map((taskId) => allTasks[taskId]);
             return (
                 <Col >
-                  <List key={list.id} column={list} tasks={tasks} index={index}/>
+                  <List key={list.id} list={list} tasks={tasks} index={index}/>
                 </Col>
             );
           })}
@@ -120,7 +140,7 @@ const Board = () => {
           {provided.placeholder}
           <Col>
             { showAddListInput ? <AddListInput /> : 
-              <AddListButton key='0' index='0' onClick={addListClickHandler}>+ Add another list</AddListButton>}
+              <AddListButton onClick={addListClickHandler}>+ Add another list</AddListButton>}
           </Col>
         </Container>
       )}    
@@ -169,9 +189,7 @@ padding: 8px;
 font-family: sans-serif;
 color: #ebecf0;
 background-color:white;
-&:placeholder-shown {
-  padding-bottom: 12px;
-}
+
 `
 const ListContainer = styled.div`
 

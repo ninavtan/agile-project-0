@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { UPDATE_LIST_ORDER, MOVE_TASK_WITHIN_LIST, MOVE_TASK_BETWEEN_LISTS, FETCH_BOARDS } from './types';
+import _ from "lodash";
+import { UPDATE_LIST_ORDER, MOVE_TASK_WITHIN_LIST, MOVE_TASK_BETWEEN_LISTS, FETCH_BOARDS, ADD_NEW_LIST } from './types';
 const ROOT_URL = 'http://localhost:7000/';
 
 export const updateListOrder = (newListOrder) => {
@@ -33,3 +34,19 @@ export const fetchBoards = () => dispatch => {
       console.log(error);
     });
 };
+
+export const addNewList = (newListName) => {
+  const newListId = _.uniqueId();
+  const newList = {
+    [newListId]: {
+      id: newListId,
+      title: newListName,
+      taskIds: [],
+    }
+  }
+  console.log(newList);
+  return {
+    type: ADD_NEW_LIST,
+    payload: newList
+  }
+}
