@@ -1,12 +1,11 @@
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import { Row,Col } from 'react-bootstrap';
+import { Row,Col, Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-
 import List from './list';
 import { updateListOrder, moveTaskWithinList, moveTaskBetweenLists } from './actions';
-
+import useOnClickOutside from 'use-onclickoutside';
 
 const Board = () => {
   const lists = useSelector(state => state.lists);
@@ -74,6 +73,27 @@ const Board = () => {
     return;
   }
 
+
+  const [showAddListInput, setAddListInput] = React.useState(false);
+  const addListClickHandler = () => setAddListInput(true);
+  const cancelAddList = () => setAddListInput(false);
+
+  const AddListInput = () => {
+    
+    const ref = React.useRef(null);
+    useOnClickOutside(ref, cancelAddList);
+    
+    return (
+      <ListContainer>
+        <Form ref={ref}>
+          <StyledForm type="text"  placeholder="Enter list title..." />
+          <StyledButton variant='primary'>Add List</StyledButton>
+          <CancelButton variant='outline-danger' onClick={cancelAddList}> X </CancelButton>
+        </Form>
+      </ListContainer>
+    );
+  }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable 
@@ -98,6 +118,10 @@ const Board = () => {
           })}
           </Row>
           {provided.placeholder}
+          <Col>
+            { showAddListInput ? <AddListInput /> : 
+              <AddListButton key='0' index='0' onClick={addListClickHandler}>+ Add another list</AddListButton>}
+          </Col>
         </Container>
       )}    
       </Droppable>
@@ -115,18 +139,66 @@ margin: 30px;
 background-color:#95bae7
 `
 
-const Button = styled.div`
-  margin: 0px 10px;
-  border-radius: 5px;
-  padding: 8px;
-  margin-bottom: 8px;
-  font-family: sans-serif;
-  color: #172b4d;
+
+const StyledButton = styled(Button)`
+margin: 8px;
+`
+
+const CancelButton = styled(Button)`
+border: none;
+box-shadow: none;
+color: #172b4d;
+font-weight: 900;
+&:active {
+  background-color:black;
+}
+&:hover {
   background-color:#ebecf0;
+  color: #dc3545
+}
+`
+
+const StyledForm = styled(Form.Control)`
+border: 1px solid lightgrey;
+border-radius: 5px;
+min-height: 40px;
+margin:  10px;
+margin-bottom: 10px;
+width: 282px;
+padding: 8px;
+font-family: sans-serif;
+color: #ebecf0;
+background-color:white;
+&:placeholder-shown {
+  padding-bottom: 12px;
+}
+`
+const ListContainer = styled.div`
+
+  width: 300px;
+  margin: 28px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  background-color: #ebecf0;
+  font-family: sans-serif;
+`;
+
+const AddListButton = styled.div`
+  width: 300px;
+  height: 54px;
+  margin: 28px;
+  padding: 12px;
+  border: 1px solid #4e8edb;
+  border-radius: 5px;
+  background-color: #4e8edb;
+  font-family: sans-serif;
+  
+  color: white;
   &:hover {
-    background-color: lightgray;
+    background-color: #0d6efd;
     cursor:pointer;
   }
+  vertical-align: center;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;

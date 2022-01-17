@@ -1,10 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Form , Button} from 'react-bootstrap';
+import useOnClickOutside from 'use-onclickoutside';
 
 import Task from './task';
 
 const List = (props) => {
+
+  const [showAddCardInput, setAddCardInput] = React.useState(false);
+  const addCardClickHandler = () => setAddCardInput(true);
+  const cancelAddCard = () => setAddCardInput(false);
+
+  const AddCardInput = () => {
+    
+    const ref = React.useRef(null);
+    useOnClickOutside(ref, cancelAddCard);
+    
+    return (
+      <Form ref={ref}>
+        <StyledForm type="text"  placeholder="Enter a title for this card..." />
+        <StyledButton variant='primary'>Add Card</StyledButton>
+        <CancelButton variant='outline-danger' onClick={cancelAddCard}> X </CancelButton>
+      </Form>
+    );
+  }
+
   return (
     <Draggable draggableId={props.column.id} index={props.index}>
       {(provided, snapshot) => (
@@ -31,7 +52,8 @@ const List = (props) => {
               </TaskList>
             )}
           </Droppable>
-          <Button>+ Add a Card</Button>
+          { showAddCardInput ? <AddCardInput autofocus/> : 
+            <AddCardButton onClick={addCardClickHandler}>+ Add a Card</AddCardButton>}
         </Container>
       )}
     </Draggable>
@@ -41,7 +63,43 @@ const List = (props) => {
 export default List;
 
 
-const Button = styled.div`
+const StyledButton = styled(Button)`
+margin: 8px;
+`
+
+const CancelButton = styled(Button)`
+border: none;
+box-shadow: none;
+color: #172b4d;
+font-weight: 900;
+&:active {
+  background-color:black;
+}
+&:hover {
+  background-color:#ebecf0;
+  color: #dc3545
+}
+`
+
+const StyledForm = styled(Form.Control)`
+border: 1px solid lightgrey;
+border-radius: 5px;
+min-height: 80px;
+margin: 8px;
+margin-top: 0px;
+width: 282px;
+padding: 8px;
+padding-bottom: 46px;
+font-family: sans-serif;
+color: #ebecf0;
+background-color:white;
+&:placeholder-shown {
+  padding-bottom: 46px;
+}
+`
+
+
+const AddCardButton = styled.div`
   margin: 0px 10px;
   border-radius: 5px;
   padding: 8px;
