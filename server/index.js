@@ -1,15 +1,20 @@
 const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require('path');
+const keys = require('./config/keys');
 
+// mongoose.connect("mongodb://localhost/agile", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
-mongoose.connect("mongodb://localhost/agile", {
+// MongoDB Atlas Setup
+mongoose.connect(keys.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-const app = express();
 
 const PORT = process.env.PORT || 7000;
 
@@ -29,7 +34,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-
 
 const mainRoutes = require("../routes/main");
 
