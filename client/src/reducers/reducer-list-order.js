@@ -8,11 +8,7 @@ export default function listOrderReducer(state = DEFAULT_STATE, action) {
     case UPDATE_LIST_ORDER:
       return action.payload;
     case ADD_NEW_LIST:
-      return {
-        ...state, 
-        listOrder: [...state.listOrder, action.payload[0].id]
-      }
-
+      return [...state, action.payload.id];
     default:
       return state;
   }

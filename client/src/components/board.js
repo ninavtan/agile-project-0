@@ -130,6 +130,7 @@ const Board = () => {
           {Array.from(listOrder).map((listIds, index) => {
             const list = lists[listIds];
             const tasks = list.taskIds.map((taskId) => allTasks[taskId]);
+            
             return (
                 <Col >
                   <List key={list.id} list={list} tasks={tasks} index={index}/>

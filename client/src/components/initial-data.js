@@ -29,7 +29,7 @@ const initialData = {
     'list-3': {
       id: 'list-3',
       title: 'Done',
-      taskIds: ['task-7'],
+      taskIds: [],
     },
     'list-4': {
       id: 'list-4',
