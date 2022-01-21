@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import { Row,Col, Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
-import { updateListOrder, moveTaskWithinList, moveTaskBetweenLists, addNewList, fetchBoards } from './actions';
+import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoards } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
 
 const Board = () => {
   const lists = useSelector(state => state.lists);
   const listOrder = useSelector(state => state.listOrder);
-  const allTasks = useSelector(state => state.tasks);
+  const allCards = useSelector(state => state.cards);
   const dispatch = useDispatch();
 
   const onDragEnd = result => {
@@ -40,37 +40,37 @@ const Board = () => {
     const startList = lists[source.droppableId];
     const finishList = lists[destination.droppableId];
 
-    //Moving a task within the same list
+    //Moving a card within the same list
     if(startList === finishList){
-      const newTaskIds = Array.from(startList.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
+      const newCardIds = Array.from(startList.cardIds);
+      newCardIds.splice(source.index, 1);
+      newCardIds.splice(destination.index, 0, draggableId);
   
       const newList = {
         ...startList,
-        taskIds: newTaskIds,
+        cardIds: newCardIds,
       }
 
-      dispatch(moveTaskWithinList(newList));
+      dispatch(moveCardWithinList(newList));
       return;
     }
 
-    //Moving a task to a different list
-    const startListTaskIds = Array.from(startList.taskIds);
-    startListTaskIds.splice(source.index, 1);
+    //Moving a card to a different list
+    const startListCardIds = Array.from(startList.cardIds);
+    startListCardIds.splice(source.index, 1);
     const newStartList = {
       ...startList,
-      taskIds:startListTaskIds,
+      cardIds:startListCardIds,
     };
 
-    const finishListTaskIds = Array.from(finishList.taskIds);
-    finishListTaskIds.splice(destination.index, 0, draggableId);
+    const finishListCardIds = Array.from(finishList.cardIds);
+    finishListCardIds.splice(destination.index, 0, draggableId);
     const newFinishList = {
       ...finishList,
-      taskIds: finishListTaskIds,
+      cardIds: finishListCardIds,
     };
 
-    dispatch(moveTaskBetweenLists(newStartList, newFinishList));
+    dispatch(moveCardBetweenLists(newStartList, newFinishList));
     return;
   }
 
@@ -129,11 +129,11 @@ const Board = () => {
           <Row className="flex-row flex-nowrap">
           {Array.from(listOrder).map((listIds, index) => {
             const list = lists[listIds];
-            const tasks = list.taskIds.map((taskId) => allTasks[taskId]);
+            const cards = list.cardIds.map((cardId) => allCards[cardId]);
             
             return (
                 <Col >
-                  <List key={list.id} list={list} tasks={tasks} index={index}/>
+                  <List key={list.id} list={list} cards={cards} index={index}/>
                 </Col>
             );
           })}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import uniqid from 'uniqid';
-import { UPDATE_LIST_ORDER, MOVE_TASK_WITHIN_LIST, MOVE_TASK_BETWEEN_LISTS, FETCH_BOARDS, ADD_NEW_LIST, UPDATE_LIST_TITLE } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARDS, ADD_NEW_LIST, UPDATE_LIST_TITLE } from './types';
 const ROOT_URL = 'http://localhost:7000/';
 
 export const updateListOrder = (newListOrder) => {
@@ -10,16 +10,16 @@ export const updateListOrder = (newListOrder) => {
   }
 };
 
-export const moveTaskWithinList = (newList) => {
+export const moveCardWithinList = (newList) => {
   return { 
-    type: MOVE_TASK_WITHIN_LIST,
+    type: MOVE_CARD_WITHIN_LIST,
     payload: newList
   }
 };
 
-export const moveTaskBetweenLists = (startList, finishList) => {
+export const moveCardBetweenLists = (startList, finishList) => {
   return {
-    type: MOVE_TASK_BETWEEN_LISTS,
+    type: MOVE_CARD_BETWEEN_LISTS,
     payload: [startList, finishList]
   }
 };
@@ -40,7 +40,7 @@ export const addNewList = (newListName) => {
   const newList = {
       id: newListId,
       title: newListName,
-      taskIds: [],
+      cardIds: [],
     }
   return {
     type: ADD_NEW_LIST,

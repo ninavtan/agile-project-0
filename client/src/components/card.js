@@ -2,27 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 
-const Task = (props) => {
+const Card = (props) => {
   return (
-    <Draggable draggableId={props.task.id} index={props.index}>
+    <Draggable draggableId={props.card.id} index={props.index}>
       {(provided, snapshot) => (
-      <Card
+      <CardStyle
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         ref={provided.innerRef}
         isDragging={snapshot.isDragging}
       >
-        {props.task.content}
+        {props.card.content}
 
-      </Card>
+      </CardStyle>
       )}
     </Draggable>
   );
 }
 
-export default Task;
+export default Card;
 
-const Card = styled.div`
+const CardStyle = styled.div`
 margin: auto;
 border: 1px solid lightgrey;
 border-radius: 5px;
