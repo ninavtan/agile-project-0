@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
@@ -13,14 +14,39 @@ const List = (props) => {
   const cancelAddCard = () => setAddCardInput(false);
 
   const AddCardInput = () => {
+
     
     const ref = React.useRef(null);
     useOnClickOutside(ref, cancelAddCard);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [label, setLabel] = useState('');
+
+    /* newCard = {
+      title: title,
+      description: description,
+      label: label
+    } 
+    
+    dispatch(addNewCard(newCard))
+    */
+
+
+    const submitNewCard = (e) => {
+      e.preventDefault();
+      console.log(props.list.id);
+      // dispatch(addNewCard(newCard));
+      // setAddCardInput(false);
+    }
+
     
     return (
-      <Form ref={ref}>
-        <StyledForm type="text"  placeholder="Enter a title for this card..." />
-        <StyledButton variant='primary'>Add Card</StyledButton>
+      <Form ref={ref} onSubmit={submitNewCard} id={props.id}>
+        <StyledForm type="text"  placeholder="Enter a title for this card..." onChange={e => setTitle(e.target.value)}/>
+        <StyledForm type="text"  placeholder="Description" onChange={e => setDescription(e.target.value)} />
+        <StyledForm type="text" placeholder="Label" onChange={e => setDescription(e.target.value)}/>
+        <StyledButton variant='primary' type=
+        "submit">Add Card</StyledButton>
         <CancelButton variant='outline-danger' onClick={cancelAddCard}> X </CancelButton>
       </Form>
     );
