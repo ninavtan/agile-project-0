@@ -1,4 +1,4 @@
-import { MOVE_TASK_WITHIN_LIST, MOVE_TASK_BETWEEN_LISTS, ADD_NEW_LIST} from '../components/actions/types';
+import { MOVE_TASK_WITHIN_LIST, MOVE_TASK_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE} from '../components/actions/types';
 import initialData from '../components/initial-data';
 
 const DEFAULT_STATE = initialData.lists;
@@ -14,6 +14,8 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
     case ADD_NEW_LIST:
       return {...state, [action.payload.id]: action.payload};
       
+    case UPDATE_LIST_TITLE:
+      return {...state, [action.payload.id]: action.payload};
 
     default:
       return state;
