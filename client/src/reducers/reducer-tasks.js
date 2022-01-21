@@ -1,4 +1,5 @@
 import initialData from '../components/initial-data';
+import { ADD_NEW_CARD } from '../components/actions/types';
 
 const DEFAULT_STATE = initialData.tasks;
 

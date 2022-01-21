@@ -49,17 +49,14 @@ export const addNewList = (newListName) => {
 }
 
 export const addNewCard = ({newCard}) => {
-  const newCardId = uniqid('task-');
+  
   const cardToAdd = {
-    id: newCardId,
     title: newCard.title,
-    description: newCard.description,
-    label: newCard.label
   };
 
   return {
     type: ADD_NEW_CARD,
-    payload: newCard
+    payload: cardToAdd
   }
 }
 

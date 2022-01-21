@@ -8,7 +8,7 @@ const Comment = require("../models/comment");
 const CardSchema = new Schema({
     cardTitle: String,
     description: String, 
-    cardlabel: String,   
+    cardLabel: String,   
     comment: [{ type: Schema.Types.ObjectId, ref: Comment }],    
 });
 
