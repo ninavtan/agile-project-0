@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
-
+import { useDispatch } from 'react-redux';
+import { updateListTitle } from './actions';
 import Task from './task';
 
 const List = (props) => {
@@ -26,6 +27,25 @@ const List = (props) => {
     );
   }
 
+  const [showTitleInput, setShowTitleInput] = React.useState(false);
+  const handleClickTitle = () => setShowTitleInput(true);
+  const dispatch = useDispatch();
+
+  const TitleInput = () => {
+
+    const ref = React.useRef();
+    useOnClickOutside(ref, () => setShowTitleInput(false));
+    return(<input ref={ref} defaultValue={props.list.title} onKeyPress={handleListTitleChange}></input>)
+  };
+
+  const handleListTitleChange = (e) => {
+    if (e.key === 'Enter') {
+      setShowTitleInput(false);
+      dispatch(updateListTitle(props.list, e.target.value));
+      return;
+    }
+  };
+
   return (
     <Draggable draggableId={props.list.id} index={props.index}>
       {(provided, snapshot) => (
@@ -34,7 +54,9 @@ const List = (props) => {
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <Title {...provided.dragHandleProps}>{props.list.title}</Title>
+           <Title {...provided.dragHandleProps} onClick={handleClickTitle}>
+            { showTitleInput ? <TitleInput /> : props.list.title }
+           </Title>
           <Droppable 
             droppableId={props.list.id}
             type="task"

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import uniqid from 'uniqid';
-import { UPDATE_LIST_ORDER, MOVE_TASK_WITHIN_LIST, MOVE_TASK_BETWEEN_LISTS, FETCH_BOARDS, ADD_NEW_LIST } from './types';
+import { UPDATE_LIST_ORDER, MOVE_TASK_WITHIN_LIST, MOVE_TASK_BETWEEN_LISTS, FETCH_BOARDS, ADD_NEW_LIST, UPDATE_LIST_TITLE } from './types';
 const ROOT_URL = 'http://localhost:7000/';
 
 export const updateListOrder = (newListOrder) => {
@@ -47,3 +47,11 @@ export const addNewList = (newListName) => {
     payload: newList
   }
 }
+
+export const updateListTitle = (list, newTitle) => {
+  list.title = newTitle;
+  return {
+    type: UPDATE_LIST_TITLE,
+    payload: list
+  }
+};
