@@ -1,8 +1,8 @@
 import initialData from '../components/initial-data';
 
-const DEFAULT_STATE = initialData.tasks;
+const DEFAULT_STATE = initialData.cards;
 
-export default function tasksReducer(state = DEFAULT_STATE, action) {
+export default function cardsReducer(state = DEFAULT_STATE, action) {
   switch(action.type) {
     default:
       return state;

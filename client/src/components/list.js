@@ -5,7 +5,7 @@ import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
 import { useDispatch } from 'react-redux';
 import { updateListTitle } from './actions';
-import Task from './task';
+import Card from './card';
 
 const List = (props) => {
 
@@ -59,19 +59,19 @@ const List = (props) => {
            </Title>
           <Droppable 
             droppableId={props.list.id}
-            type="task"
+            type="card"
             key={props.list.id}
           >
             {(provided) => (
-              <TaskList 
+              <CardList 
                 ref={provided.innerRef} 
                 {...provided.droppableProps}
               >
-                {props.tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} />
+                {props.cards.map((card, index) => (
+                  <Card key={card.id} card={card} index={index} />
                 ))}
                 {provided.placeholder}
-              </TaskList>
+              </CardList>
             )}
           </Droppable>
           { showAddCardInput ? <AddCardInput autofocus/> : 
@@ -164,7 +164,7 @@ const Title = styled.h5`
   -ms-user-select: none;
   user-select: none;
 `;
-const TaskList = styled.div`
+const CardList = styled.div`
   padding: 0px 8px;
   min-height: 20px;
 `;
