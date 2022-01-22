@@ -146,13 +146,13 @@ router.get("/boards/:board/lists", (req, res, next) => {
         });   
 });
 
-// POST add a new list to an existing board (working)
+// POST add a new list using its title only to an existing board (working)
 router.post("/boards/:board/list", (req, res, next) => {
     let listToBeAdded = new List();
     const { board } = req.params;   
 
     listToBeAdded.title = req.body.title;
-    listToBeAdded.color = req.body.color;
+    listToBeAdded.color = ''
     listToBeAdded.card = [];
 
     listToBeAdded.save((err) => {
