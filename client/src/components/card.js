@@ -12,7 +12,7 @@ const Card = (props) => {
         ref={provided.innerRef}
         isDragging={snapshot.isDragging}
       >
-        {props.card.content}
+        {props.card.title}
 
       </CardStyle>
       )}

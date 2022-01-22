@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Row,Col, Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
-import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoards } from './actions';
+import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
 
 const Board = () => {

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
-import { useDispatch } from 'react-redux';
-import { updateListTitle } from './actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateListTitle, addNewCard } from './actions';
 import Card from './card';
 
 const List = (props) => {
@@ -16,36 +16,21 @@ const List = (props) => {
 
   const AddCardInput = () => {
 
-    
     const ref = React.useRef(null);
     useOnClickOutside(ref, cancelAddCard);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [label, setLabel] = useState('');
-
-    /* newCard = {
-      title: title,
-      description: description,
-      label: label
-    } 
-    
-    dispatch(addNewCard(newCard))
-    */
-
+    const [newCardTitle, setNewCardTitle] = useState('');
+    const listForNewCard = props.list;
 
     const submitNewCard = (e) => {
       e.preventDefault();
-      console.log(props.list.id);
-      // dispatch(addNewCard(newCard));
-      // setAddCardInput(false);
+      dispatch(addNewCard(newCardTitle, listForNewCard));
+      setAddCardInput(false);
     }
 
     
     return (
       <Form ref={ref} onSubmit={submitNewCard} id={props.id}>
-        <StyledForm type="text"  placeholder="Enter a title for this card..." onChange={e => setTitle(e.target.value)}/>
-        <StyledForm type="text"  placeholder="Description" onChange={e => setDescription(e.target.value)} />
-        <StyledForm type="text" placeholder="Label" onChange={e => setDescription(e.target.value)}/>
+        <StyledForm type="text"  placeholder="Enter a title for this card..." onChange={e => setNewCardTitle(e.target.value)}/>
         <StyledButton variant='primary' type=
         "submit">Add Card</StyledButton>
         <CancelButton variant='outline-danger' onClick={cancelAddCard}> X </CancelButton>
