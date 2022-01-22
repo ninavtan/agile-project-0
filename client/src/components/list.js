@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
-
-import Task from './task';
+import { useDispatch } from 'react-redux';
+import { updateListTitle } from './actions';
+import Card from './card';
 
 const List = (props) => {
 
@@ -52,6 +53,25 @@ const List = (props) => {
     );
   }
 
+  const [showTitleInput, setShowTitleInput] = React.useState(false);
+  const handleClickTitle = () => setShowTitleInput(true);
+  const dispatch = useDispatch();
+
+  const TitleInput = () => {
+
+    const ref = React.useRef();
+    useOnClickOutside(ref, () => setShowTitleInput(false));
+    return(<input ref={ref} defaultValue={props.list.title} onKeyPress={handleListTitleChange}></input>)
+  };
+
+  const handleListTitleChange = (e) => {
+    if (e.key === 'Enter') {
+      setShowTitleInput(false);
+      dispatch(updateListTitle(props.list, e.target.value));
+      return;
+    }
+  };
+
   return (
     <Draggable draggableId={props.list.id} index={props.index}>
       {(provided, snapshot) => (
@@ -60,22 +80,24 @@ const List = (props) => {
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <Title {...provided.dragHandleProps}>{props.list.title}</Title>
+           <Title {...provided.dragHandleProps} onClick={handleClickTitle}>
+            { showTitleInput ? <TitleInput /> : props.list.title }
+           </Title>
           <Droppable 
             droppableId={props.list.id}
-            type="task"
+            type="card"
             key={props.list.id}
           >
             {(provided) => (
-              <TaskList 
+              <CardList 
                 ref={provided.innerRef} 
                 {...provided.droppableProps}
               >
-                {props.tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} />
+                {props.cards.map((card, index) => (
+                  <Card key={card.id} card={card} index={index} />
                 ))}
                 {provided.placeholder}
-              </TaskList>
+              </CardList>
             )}
           </Droppable>
           { showAddCardInput ? <AddCardInput autofocus/> : 
@@ -168,7 +190,7 @@ const Title = styled.h5`
   -ms-user-select: none;
   user-select: none;
 `;
-const TaskList = styled.div`
+const CardList = styled.div`
   padding: 0px 8px;
   min-height: 20px;
 `;
