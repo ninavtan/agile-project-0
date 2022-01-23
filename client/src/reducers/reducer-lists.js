@@ -18,7 +18,6 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
       return {...state, [action.payload.id]: action.payload};
 
     case ADD_NEW_CARD:
-
       return {...state, [action.payload[1].id]: action.payload[1]};
 
     default:

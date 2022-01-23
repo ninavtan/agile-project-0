@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateListTitle, addNewCard } from './actions';
 import Card from './card';
 
