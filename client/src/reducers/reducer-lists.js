@@ -1,4 +1,4 @@
-import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE} from '../components/actions/types';
+import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD} from '../components/actions/types';
 import initialData from '../components/initial-data';
 
 const DEFAULT_STATE = initialData.lists;
@@ -16,6 +16,9 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
       
     case UPDATE_LIST_TITLE:
       return {...state, [action.payload.id]: action.payload};
+
+    case ADD_NEW_CARD:
+      return {...state, [action.payload[1].id]: action.payload[1]};
 
     default:
       return state;

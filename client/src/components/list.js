@@ -1,10 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
 import { useDispatch } from 'react-redux';
-import { updateListTitle } from './actions';
+import { updateListTitle, addNewCard } from './actions';
 import Card from './card';
 
 const List = (props) => {
@@ -14,14 +15,24 @@ const List = (props) => {
   const cancelAddCard = () => setAddCardInput(false);
 
   const AddCardInput = () => {
-    
+
     const ref = React.useRef(null);
     useOnClickOutside(ref, cancelAddCard);
+    const [newCardTitle, setNewCardTitle] = useState('');
+    const listForNewCard = props.list;
+
+    const submitNewCard = (e) => {
+      e.preventDefault();
+      dispatch(addNewCard(newCardTitle, listForNewCard));
+      setAddCardInput(false);
+    }
+
     
     return (
-      <Form ref={ref}>
-        <StyledForm type="text"  placeholder="Enter a title for this card..." />
-        <StyledButton variant='primary'>Add Card</StyledButton>
+      <Form ref={ref} onSubmit={submitNewCard} id={props.id}>
+        <StyledForm type="text"  placeholder="Enter a title for this card..." onChange={e => setNewCardTitle(e.target.value)}/>
+        <StyledButton variant='primary' type=
+        "submit">Add Card</StyledButton>
         <CancelButton variant='outline-danger' onClick={cancelAddCard}> X </CancelButton>
       </Form>
     );

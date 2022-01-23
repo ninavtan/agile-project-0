@@ -146,13 +146,13 @@ router.get("/boards/:board/lists", (req, res, next) => {
         });   
 });
 
-// POST add a new list to an existing board (working)
+// POST add a new list using its title only to an existing board (working)
 router.post("/boards/:board/list", (req, res, next) => {
     let listToBeAdded = new List();
     const { board } = req.params;   
 
     listToBeAdded.title = req.body.title;
-    listToBeAdded.color = req.body.color;
+    listToBeAdded.color = ''
     listToBeAdded.card = [];
 
     listToBeAdded.save((err) => {
@@ -203,6 +203,32 @@ router.get("/boards/:board/:list/:card", (req, res, next) => {
     });
 });
 
+// POST a new card using its title only
+router.post("/boards/:board/:list/card", (req, res, next) => {
+    let cardToBeAdded = new Card();
+
+    const { list } = req.params;   
+
+    console.log(req.body.cardTitle);
+
+    cardToBeAdded.cardTitle = req.body.cardTitle;
+    cardToBeAdded.description = '';
+    cardToBeAdded.cardLabel = '';
+
+    cardToBeAdded.save((err) => {
+        if(err) console.log('There was an error with saving the card', err);
+    });
+
+    List.findOneAndUpdate(
+        { _id: list },
+        { $push: {card: cardToBeAdded} },
+        
+        (err, updatedList) => {
+            if (err) throw err;
+            else res.send(updatedList);
+        }    
+    )
+});
 
 // PUT(edit) a pre-existing card
 router.put("/boards/:board/:list/:card", (req, res, next) => {

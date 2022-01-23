@@ -319,7 +319,7 @@ router.post("/boards/:board/list", async (req, res, next) => {
       
 
     listToBeAdded.title = req.body.title;
-    listToBeAdded.color = req.body.color;
+    listToBeAdded.color = '';
     listToBeAdded.board = targetBoard._id;
     listToBeAdded.card = [];    
 
@@ -427,8 +427,8 @@ router.post("/boards/:board/:list/card", async (req, res, next) => {
     const targetList = await List.findById(listId).exec();
 
     cardToBeAdded.cardTitle = req.body.title;
-    cardToBeAdded.description = req.body.description;
-    cardToBeAdded.cardLabel = req.body.label;
+    cardToBeAdded.description = '';
+    cardToBeAdded.cardLabel = '';
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
 

@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 
-const mainRoutes = require("../routes/main");
+const mainRoutes = require("./routes/main");
 
 app.use(mainRoutes);
 
