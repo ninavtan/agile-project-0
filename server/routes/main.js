@@ -276,6 +276,8 @@ router.delete("/boards/:board", (req, res, next) => {
         List.deleteMany({board: board}).exec((err, lists) => {
             res.send(`All lists associated with Board ${board} have been deleted.`)
         });
+
+        //NOTE: we will need to delete all cards and comments as well
     });    
 });
 
@@ -367,6 +369,8 @@ Card.deleteMany({list: list}).exec((err, cards) => {
     if (err) throw err;
     res.send(` ${cards} associated with Board ${list} have been deleted.`)
 });
+
+*Also need to delete comments*
 */
 });
 });

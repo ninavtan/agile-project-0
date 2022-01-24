@@ -49,27 +49,27 @@ export const addNewList = (newListTitle) => {
   }
 }
 
-export const addNewCard = (newCardTitle, listForNewCard) => {
+export const addNewCard = (newCardTitle, listForNewCard) => dispatch => {
   
-  //The below is just a placeholder until we hook up the backend
-  const cardToAdd = {
-    cardTitle: newCardTitle,
-    id: uniqid('card-')
-  };
-  //the code below should be able to stay the same after 
-  const newCardIds = [
-    ...listForNewCard.cardIds,
-    cardToAdd.id,
-  ]
-  const newList = {
-    ...listForNewCard,
-    cardIds: newCardIds,
-  }
+  const BOARD_ID = '61ee0ddbf8f753e602f14f6b';
+  const LIST_ID = '61ee0ddbf8f753e602f14f6e';
 
-  return {
-    type: ADD_NEW_CARD,
-    payload: [cardToAdd, newList]
-  }
+  const request = axios.post(`${ROOT_URL}boards/${BOARD_ID}/${LIST_ID}/card`, {title: newCardTitle});
+
+  request.then(function (response) {
+    const cardToAdd = response.data;
+    cardToAdd.id = cardToAdd._id;
+    const newCardIds = [
+      ...listForNewCard.cardIds,
+      cardToAdd._id,
+    ]
+    const newList = {
+      ...listForNewCard,
+      cardIds: newCardIds,
+    }
+
+    dispatch({type: ADD_NEW_CARD,payload: [cardToAdd, newList]});
+  });
 }
 
 export const updateListTitle = (list, newTitle) => {
