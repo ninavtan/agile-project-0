@@ -227,21 +227,34 @@ router.get("/push-fake-data", async (req, res, next) => {
 
 // Board Routes //
 
-// GET all boards for the logged in user 
-router.get("/boards/:user", (req, res, next) => {   
-    const userId = req.params.user;
+/*
+router.get("/login", (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
-    Board.find({ user: userId })
-    .populate("lists")
-    .exec((err, boards) => {
+    User.findOne(
+        {username: }
+    )
+})
+
+*/
+// GET all boards for the logged in user 
+router.get("/:user", (req, res, next) => {   
+    const userId = req.params.user;
+    console.log(req.params.user)
+
+    User.findById( userId )
+    .populate("board")
+    .exec((err, targetUser) => {
         if (err) return next(err);
-        res.send(boards);
+        res.send(targetUser.board);
     });
 });
 
 //GET a specific board based on id 
 router.get("/boards/:board", (req, res, next) => {
-    const { board } = req.params;
+    const board = req.params.board;
+    console.log(board._id)
 
     Board.findById(board)
         .populate("lists")
@@ -465,7 +478,7 @@ router.put("/boards/:board/:list/:card", (req, res, next) => {
     Card.findOneAndUpdate(
         { _id: card },
         { cardTitle: updatedTitle,
-        description: updatedDesc,
+        description: updatedDesc, 
         cardLabel: updatedLabel },
         { new: true},
         (err, updatedCard) => {
