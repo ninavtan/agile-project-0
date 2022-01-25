@@ -1,7 +1,7 @@
 import axios from 'axios';
 import uniqid from 'uniqid';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE } from './types';
-const ROOT_URL = 'http://localhost:7000/';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE } from './types';
+const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => {
   return {
@@ -24,8 +24,20 @@ export const moveCardBetweenLists = (startList, finishList) => {
   }
 };
 
+export const fetchBoard = (boardId) => dispatch => {
+  boardId = '61edc0a6aedb0b9422cf6ddf';  // hardcore first board in boards array for user Jango
+  const url = `${ROOT_URL}/boards/${boardId}`;
+  axios.get(url)
+    .then(function (response) {
+      dispatch( { type: FETCH_BOARD, payload: response.data})
+    })
+    .catch(function (error) {
+      console.log(error)
+    });
+};
+
 export const fetchBoards = () => dispatch => {
-  const url = ROOT_URL + 'boards';
+  const url = `${ROOT_URL}/boards`;
   axios.get(url)
     .then(function (response) {
       dispatch({ type: FETCH_BOARDS, payload: response.data });
