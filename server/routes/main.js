@@ -227,17 +227,22 @@ router.get("/push-fake-data", async (req, res, next) => {
 
 // Board Routes //
 
-/*
-router.get("/login", (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+
+router.post("/login", (req, res, next) => {
+    const usernameToTest = req.body.username;
+    const passwordToTest = req.body.password;
 
     User.findOne(
-        {username: }
-    )
+        {username: usernameToTest,
+        password: passwordToTest})
+        .populate("board")
+        .exec((err, targetUser) => {
+            if (err) throw err;
+            res.send(targetUser);
+        });
 })
 
-*/
+
 // GET all boards for the logged in user 
 router.get("/:user", (req, res, next) => {   
     const userId = req.params.user;
@@ -395,7 +400,14 @@ router.put("/boards/board/:list", async (req, res, next) => {
         const newCardId = req.body.card;
 
         const targetCard = await Card.findById(newCardId).exec();
+        const previousListId = targetCard.list; 
+        const previousList = await List.findById(previousListId).exec();
 
+        previousList.card.pull(targetCard._id);
+        previousList.save();
+
+        
+        
         List.findOneAndUpdate(
             { _id: listId },
             { title: updatedTitle,
@@ -408,12 +420,16 @@ router.put("/boards/board/:list", async (req, res, next) => {
                     { list: listId },
                     { new: true},
                     (err, updatedCardWithListId) => {
-                        if (err) throw err;
-                        res.send(updatedCardWithListId)  //Can change this to the updated list if needed.
+                        if (err) throw err;  
+                        res.send(updatedList)  //Can change this to the updated list if needed.              
                     }
-                );              
-            }  
-        );
+                );           
+                
+        });
+        
+               
+             
+        
     } else { 
         const updatedTitle = req.body.title;
         const updatedColor = req.body.color; 
