@@ -1,26 +1,67 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
 
-const Card = (props) => {
+const CardDetailView  = (props) => {
   return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      // centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          {props.title}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h6>Description</h6>
+        <p>
+        { props.description ? props.description : "Add a more detailed description..." }
+        </p>
+      </Modal.Body>
+
+    </Modal>
+  );
+}
+
+const Card = (props) => {
+  const [detailViewShow, setDetailViewShow] = React.useState(false);
+  
+  return (
+    <>
     <Draggable draggableId={props.card.id} index={props.index}>
       {(provided, snapshot) => (
-      <CardStyle
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        ref={provided.innerRef}
-        isDragging={snapshot.isDragging}
-      >
-        {props.card.cardTitle}
-
-      </CardStyle>
+      <ClickForDetail onClick = {() => setDetailViewShow(true)}>
+        <CardStyle
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
+        >
+          {props.card.cardTitle}
+        </CardStyle>
+      </ClickForDetail>
       )}
     </Draggable>
+    <CardDetailView
+        show={detailViewShow}
+        onHide={() => setDetailViewShow(false)}
+        title={props.card.cardTitle}
+        description={props.card.description}
+        label={props.card.cardLabel}
+        />
+  </>
   );
 }
 
 export default Card;
+
+const ClickForDetail = styled.div`
+
+`
 
 const CardStyle = styled.div`
 margin: auto;
