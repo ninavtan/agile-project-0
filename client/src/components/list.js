@@ -19,11 +19,20 @@ const List = (props) => {
     const ref = React.useRef(null);
     useOnClickOutside(ref, cancelAddCard);
     const [newCardTitle, setNewCardTitle] = useState('');
-    const listForNewCard = props.list;
+    const listForNewCard = props.list._id;
+    // Dummy data to test card creation
+    const newCardDesc = "Test String";  // replace with a useState('')
+    const newCardLabel = "Test Color";  // populate this however is easiest    
 
-    const submitNewCard = (e) => {
+    //Create newCard here and pass to the action
+    const newCard  = { 
+      title: newCardTitle, 
+      description: newCardDesc,
+      label: newCardLabel };
+
+    const submitNewCard = (e) => {      
       e.preventDefault();
-      dispatch(addNewCard(newCardTitle, listForNewCard));
+      dispatch(addNewCard(newCard, listForNewCard));
       setAddCardInput(false);
     }
 

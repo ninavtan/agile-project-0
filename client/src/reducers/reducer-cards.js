@@ -9,6 +9,6 @@ export default function cardsReducer(state = DEFAULT_STATE, action) {
       return {...state, [action.payload[0].id]: action.payload[0]};
     
     default:
-      return state;
+      return state; 
   }
 };

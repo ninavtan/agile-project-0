@@ -25,7 +25,7 @@ export const moveCardBetweenLists = (startList, finishList) => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  boardId = '61f07ffb92e6bb4bf1a7d269';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {
@@ -47,28 +47,32 @@ export const fetchBoards = () => dispatch => {
     });
 };
 
-export const addNewList = (newListTitle) => {
-  //The below is just a placeholder until we hook up the backend
-  const newListId = uniqid('list-');
-  const newList = {
-      id: newListId,
-      title: newListTitle,
-      cardIds: [],
-    }
-  return {
-    type: ADD_NEW_LIST,
-    payload: newList
-  }
-}
-
-export const addNewCard = (newCardTitle, listForNewCard) => {
+// Attempting backend connection //
+// Working for backend.  Not rendering on frontend
+export const addNewList = (boardId, newListTitle) => {
+  const url = "http://localhost:7000/boards/" + boardId + "/list";  
+  const newList = { title: newListTitle }
   
-  //The below is just a placeholder until we hook up the backend
-  const cardToAdd = {
-    cardTitle: newCardTitle,
-    id: uniqid('card-')
-  };
+  axios.post(url, newList)
+    .then(response => response)
+    .catch(error => {
+      console.log("There was an error with the addList action" + error);
+    }); 
+};
+
+// Attempting backend connection //
+//
+export const addNewCard = (newCard, listId) => {
+  const url = "http://localhost:7000/boards/board/" + listId + "/card";   
+
+  axios.post(url, newCard)
+    .then(response => response)
+    .catch(error => {
+      console.log("There was an error with the addCard action" + error);
+  });
+ 
   //the code below should be able to stay the same after 
+  /*
   const newCardIds = [
     ...listForNewCard.cardIds,
     cardToAdd.id,
@@ -82,7 +86,8 @@ export const addNewCard = (newCardTitle, listForNewCard) => {
     type: ADD_NEW_CARD,
     payload: [cardToAdd, newList]
   }
-}
+  */
+};
 
 export const updateListTitle = (list, newTitle) => {
   list.title = newTitle;
