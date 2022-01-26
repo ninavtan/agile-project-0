@@ -9,14 +9,14 @@ import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, 
 import useOnClickOutside from 'use-onclickoutside';
 
 const Board = (props) => {
-  const lists = useSelector(state => state.lists);
-  const listOrder = useSelector(state => state.listOrder);
+  const lists = useSelector(state => state.lists.entries);
+  const listOrder = useSelector(state => state.lists.order);
   const allCards = useSelector(state => state.cards);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchBoard(props.id));
-  }, [dispatch, props.id]);
+    dispatch(fetchBoard(props._id));
+  }, [dispatch, props._id]);
 
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result;
@@ -131,13 +131,13 @@ const Board = (props) => {
           ref={provided.innerRef}
         >
           <Row className="flex-row flex-nowrap">
-          {Array.from(listOrder).map((listIds, index) => {
-            const list = lists[listIds];
-            const cards = list.cardIds.map((cardId) => allCards[cardId]);
+          {Array.from(listOrder).map((listId, index) => {
+            const list = lists[listId];
+            const cards = list.card.map((cardId) => allCards[cardId]);
             
             return (
                 <Col >
-                  <List key={list.id} list={list} cards={cards} index={index}/>
+                  <List key={list._id} list={list} cards={cards} index={index}/>
                 </Col>
             );
           })}

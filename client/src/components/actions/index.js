@@ -25,7 +25,7 @@ export const moveCardBetweenLists = (startList, finishList) => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hardcore first board in boards array for user Jango
+  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {

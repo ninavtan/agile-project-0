@@ -1,24 +1,60 @@
-import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD} from '../components/actions/types';
+import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER} from '../components/actions/types';
+import { normalize, schema } from 'normalizr';
 import initialData from '../components/initial-data';
 
-const DEFAULT_STATE = initialData.lists;
+const DEFAULT_STATE = {
+  // entries: initialData.lists,
+  entries: {},
+  // order: initialData.listOrder
+  order: []
+};
+
+const listsSchema = new schema.Entity('lists', undefined, { idAttribute: '_id' });
 
 export default function listsReducer(state = DEFAULT_STATE, action) {
   switch(action.type) {
     case MOVE_CARD_WITHIN_LIST:
-      return { ...state, [action.payload.id]: action.payload }
+      return {
+        order: state.order,
+        entries: { ...state.entries, [action.payload.id]: action.payload}
+      }
     
     case MOVE_CARD_BETWEEN_LISTS:
-      return {...state, [action.payload[0].id]: action.payload[0], [action.payload[1].id]: action.payload[1]};
+      return {
+        order: state.order,
+        entries: {...state.entries, [action.payload[0].id]: action.payload[0], [action.payload[1].id]: action.payload[1]}
+      }
     
     case ADD_NEW_LIST:
-      return {...state, [action.payload.id]: action.payload};
+      return {
+        order: [...state.order, action.payload.id],
+        entries: {...state.entries, [action.payload.id]: action.payload} 
+      }
       
     case UPDATE_LIST_TITLE:
-      return {...state, [action.payload.id]: action.payload};
+      return {
+        order: state.order,
+        entries: {...state.entries, [action.payload.id]: action.payload}
+      }
 
     case ADD_NEW_CARD:
-      return {...state, [action.payload[1].id]: action.payload[1]};
+      return {
+        order: state.order,
+        entries: {...state.entries, [action.payload[1].id]: action.payload[1]} 
+      }
+    
+    case UPDATE_LIST_ORDER:
+      return {
+        order: action.payload,
+        entries: state.entries
+      }
+    
+    case FETCH_BOARD:
+      const normalizedLists = normalize(action.payload.lists, [listsSchema]);
+      return {
+        order: [ ...normalizedLists.result],
+        entries: { ...normalizedLists.entities.lists }
+      }
 
     default:
       return state;
