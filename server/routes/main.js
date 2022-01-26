@@ -241,7 +241,7 @@ router.get("/login", (req, res, next) => {
 // GET all boards for the logged in user 
 router.get("/:user", (req, res, next) => {   
     const userId = req.params.user;
-    console.log(req.params.user)
+    
 
     User.findById( userId )
     .populate("board")
@@ -254,7 +254,8 @@ router.get("/:user", (req, res, next) => {
 //GET a specific board based on id 
 router.get("/boards/:board", (req, res, next) => {
     const board = req.params.board;
-    console.log(board._id)
+    
+    console.log("The board Id is " + board)
 
     Board.findById(board)
         .populate("lists")
@@ -356,7 +357,7 @@ router.delete("/boards/:board/:list", (req, res, next) => {
         { new: true},
         (err, matchingList) => {
         if (err) {
-            console.log(err);
+            console.log("list delete error");
             res.sendStatus(500);
             return;
         };
@@ -367,7 +368,7 @@ router.delete("/boards/:board/:list", (req, res, next) => {
             { new: true}, 
             (err, result) => {
                 if (err) {
-                    console.log(err);
+                    console.log("List delete error");
                     res.sendStatus(500);
                     return;
                 };
@@ -434,18 +435,18 @@ router.put("/boards/board/:list", async (req, res, next) => {
 // CARD ROUTES //
 
 // POST a new card 
-router.post("/boards/:board/:list/card", async (req, res, next) => {
+router.post("/boards/board/:list/card", async (req, res, next) => {
     const listId = req.params.list;
     const cardToBeAdded = new Card();
     const targetList = await List.findById(listId).exec();
 
     cardToBeAdded.cardTitle = req.body.title;
-    cardToBeAdded.description = '';
-    cardToBeAdded.cardLabel = '';
+    cardToBeAdded.description = req.body.description;
+    cardToBeAdded.cardLabel = req.body.label;
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
 
-    console.log(req.body.title)
+    
 
     cardToBeAdded.save((err) => {
         if(err) throw err;
@@ -499,7 +500,7 @@ router.delete("/boards/board/:list/:card", (req, res, next) => {
             { $pull: { card: card}},
             { new: true},
             (err, updatedList) => {
-                if (err) console.log("There was an error:", err);
+                if (err) console.log("There was a delete-card error:", err);
                 res.send(updatedList);
             });       
     });    
