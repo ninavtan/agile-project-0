@@ -5,19 +5,26 @@ import styled from 'styled-components';
 import { Row,Col, Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
-import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard } from './actions';
+import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard, fetchCards } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
 
 const Board = (props) => {
   const lists = useSelector(state => state.lists.entries);
   const listOrder = useSelector(state => state.lists.order);
   const allCards = useSelector(state => state.cards);
+  const lookHere = useSelector(state => state);
   const dispatch = useDispatch();
 
+ debugger;
 
   useEffect(() => {
     dispatch(fetchBoard(props._id));
   }, [dispatch, props._id]);
+  
+  useEffect(() => {
+    dispatch(fetchCards(props._id));
+  }, [dispatch, props._id]);
+  
 
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result;

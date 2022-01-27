@@ -1,6 +1,5 @@
 import axios from 'axios';
-import uniqid from 'uniqid';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => {
@@ -47,8 +46,18 @@ export const fetchBoards = () => dispatch => {
     });
 };
 
-// Attempting backend connection //
-// Working for backend.  Not rendering on frontend
+export const fetchCards = (boardId) => dispatch => {
+  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  const url = `${ROOT_URL}/boards/${boardId}/cards`;
+  axios.get(url)
+  .then(function (response) {
+    dispatch({ type: FETCH_CARDS, payload: response.data });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+};
+
 export const addNewList = (boardId, newListTitle) => {
   const url = "http://localhost:7000/boards/" + boardId + "/list";  
   const newList = { title: newListTitle }
@@ -69,15 +78,6 @@ export const addNewCard = (newCardTitle, listId) => dispatch => {
     .catch(function (error) {
       console.log("There was an error with the addCard action" + error);
     })
-  // const newList = {
-  //   ...listId,
-  //   cardIds: response,
-  // }
-
-  // return {
-  //   type: ADD_NEW_CARD,
-  //   payload: [cardToAdd, newList]
-  // }
 
 };
 

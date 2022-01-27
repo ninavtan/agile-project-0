@@ -33,12 +33,6 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
         order: state.order,
         entries: {...state.entries, [action.payload.id]: action.payload}
       }
-
-    // case ADD_NEW_CARD:
-    //   return {
-    //     order: state.order,
-    //     entries: {...state.entries, [action.payload[1].id]: action.payload[1]} 
-    //   }
     
     case UPDATE_LIST_ORDER:
       return {
