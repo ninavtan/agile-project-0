@@ -5,13 +5,13 @@ import { USER_LOGIN } from "../components/actions/types";
 //   username: "Jango",
 // };
 
-const DEFAULT_STATE = {};
+const DEFAULT_STATE = {isLoggedIn: false};
 
 export default function userReducer(state = DEFAULT_STATE, action) {
   switch(action.type) {
     case USER_LOGIN:
       console.log(action.payload);
-      return { ...state, ...action.payload }
+      return { ...state, ...action.payload, isLoggedIn:true }
     default:
       return state;
   }

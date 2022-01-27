@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
 import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
+import { useNavigate } from "react-router-dom";
+
 
 const Board = (props) => {
   const lists = useSelector(state => state.lists);
@@ -14,6 +16,8 @@ const Board = (props) => {
   const allCards = useSelector(state => state.cards);
   const currentUser = useSelector(state => state.user);
   const dispatch = useDispatch();
+  let history = useNavigate();
+
 
   useEffect(() => {
     dispatch(fetchBoard(props.id));
@@ -96,6 +100,10 @@ const Board = (props) => {
       setAddListInput(false);
     }
 
+    const redirectToLogin = () => {
+      history('/login');
+    }
+ 
     return (
       <ListContainer>
         <Form ref={ref} onSubmit={submitNewList}>
@@ -116,8 +124,7 @@ const Board = (props) => {
              X </CancelButton>
         </Form>
       </ListContainer>
-    );
-  }
+  )}
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

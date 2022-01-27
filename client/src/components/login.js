@@ -1,21 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Row,Col, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { userLogin } from './actions';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { useNavigate } from "react-router-dom";
+import useAuth from './useAuth'
+
+
 
 const Login = () => {
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
+  // const { login } = useAuth();
 
-  const dispatch = useDispatch();
-  
   const handleLogin = (e) => {
+    // debugger;
     e.preventDefault();
     dispatch(userLogin(e.target.name.value, e.target.password.value ));
+    handleRedirect();
+  };
+
+  const handleRedirect = () => {
+    navigate("/home");
   }
+  
   return (
     <Container>
-      <Form onSubmit={e => handleLogin(e)}>
+      <Form onSubmit={handleLogin}>
 
     <StyledForm 
       required
@@ -35,7 +47,30 @@ const Login = () => {
       type="submit">Log In</SubmitButton>
       </Form>
      </Container>
-  )};
+  
+  )
+
+};
+
+// Old code
+    // Grab redux state
+    // const user = useSelector(state => state.user);
+
+  // If there's a user
+  // const dispatch = useDispatch();
+  // let navigate = useNavigate();
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   dispatch(userLogin(e.target.name.value, e.target.password.value ));
+  //   console.log(user);
+  //   debugger;
+  //   handleRedirect();
+  // };
+
+  // const handleRedirect = () => {
+  //   navigate('/');
+  // }
+
 
 export default Login;
 
