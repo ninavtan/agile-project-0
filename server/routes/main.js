@@ -258,7 +258,12 @@ router.get("/boards/:board", (req, res, next) => {
     console.log("The board Id is " + board)
 
     Board.findById(board)
-        .populate("lists")
+        .populate({
+            path: 'lists',
+            populate:{
+                path: 'card'
+            }
+        })
         .exec((err, searchedBoard) => {
             if (err) throw err;
             res.send(searchedBoard);
@@ -313,17 +318,17 @@ router.put("/boards/:board", (req, res, next) => {
 
 // List Routes //
 
-// GET all lists for the specified board 
-router.get("/boards/:board/lists", (req, res, next) => {
-    const boardId = req.params.board;
+// // GET all lists for the specified board 
+// router.get("/boards/:board/lists", (req, res, next) => {
+//     const boardId = req.params.board;
 
-    Board.findById(boardId)
-        .populate("lists")
-        .exec((err, targetBoard) => {
-            if (err) throw err;
-            res.send(targetBoard.lists);
-        });   
-});
+//     Board.findById(boardId)
+//         .populate("lists")
+//         .exec((err, targetBoard) => {
+//             if (err) throw err;
+//             res.send(targetBoard.lists);
+//         });   
+// });
 
 // POST add a new list to an existing board 
 router.post("/boards/:board/list", async (req, res, next) => {
@@ -434,23 +439,20 @@ router.put("/boards/board/:list", async (req, res, next) => {
 
 // CARD ROUTES //
 
-// POST a new card 
+
+// POST a new card by title only
 router.post("/boards/board/:list/card", async (req, res, next) => {
     const listId = req.params.list;
     const cardToBeAdded = new Card();
     const targetList = await List.findById(listId).exec();
-
-    cardToBeAdded.cardTitle = req.body.title;
-    cardToBeAdded.description = req.body.description;
-    cardToBeAdded.cardLabel = req.body.label;
+    cardToBeAdded.cardTitle = req.body.cardTitle;
+    cardToBeAdded.description = ' ';
+    cardToBeAdded.cardLabel = ' ';
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
+    console.log(cardToBeAdded.cardTitle);
 
-    
-
-    cardToBeAdded.save((err) => {
-        if(err) throw err;
-    });   
+    cardToBeAdded.save();
 
     targetList.card.push(cardToBeAdded);
     targetList.save();

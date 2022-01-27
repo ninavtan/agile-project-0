@@ -25,7 +25,7 @@ export const moveCardBetweenLists = (startList, finishList) => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61f07ffb92e6bb4bf1a7d269';  // hard code ID of first board in boards array for user Jango
+  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {
@@ -50,7 +50,7 @@ export const fetchBoards = () => dispatch => {
 // Attempting backend connection //
 // Working for backend.  Not rendering on frontend
 export const addNewList = (boardId, newListTitle) => {
-  const url = "http://localhost:7000/boards/" + boardId + "/list";  
+  const url = "http://localhost:7000/boards/61ee0ddbf8f753e602f14f6b/list";  
   const newList = { title: newListTitle }
   
   axios.post(url, newList)
@@ -60,33 +60,25 @@ export const addNewList = (boardId, newListTitle) => {
     }); 
 };
 
-// Attempting backend connection //
-//
-export const addNewCard = (newCard, listId) => {
+export const addNewCard = (newCardTitle, listId) => dispatch => {
   const url = "http://localhost:7000/boards/board/" + listId + "/card";   
-
-  axios.post(url, newCard)
-    .then(response => response)
-    .catch(error => {
+  axios.post(url, {cardTitle: newCardTitle})
+    .then(function (response) {
+      dispatch({ type: ADD_NEW_CARD, payload: response.data })
+    })
+    .catch(function (error) {
       console.log("There was an error with the addCard action" + error);
-  });
- 
-  //the code below should be able to stay the same after 
-  /*
-  const newCardIds = [
-    ...listForNewCard.cardIds,
-    cardToAdd.id,
-  ]
-  const newList = {
-    ...listForNewCard,
-    cardIds: newCardIds,
-  }
+    })
+  // const newList = {
+  //   ...listId,
+  //   cardIds: response,
+  // }
 
-  return {
-    type: ADD_NEW_CARD,
-    payload: [cardToAdd, newList]
-  }
-  */
+  // return {
+  //   type: ADD_NEW_CARD,
+  //   payload: [cardToAdd, newList]
+  // }
+
 };
 
 export const updateListTitle = (list, newTitle) => {

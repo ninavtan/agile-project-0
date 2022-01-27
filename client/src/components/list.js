@@ -20,25 +20,17 @@ const List = (props) => {
     useOnClickOutside(ref, cancelAddCard);
     const [newCardTitle, setNewCardTitle] = useState('');
     const listForNewCard = props.list._id;
-    // Dummy data to test card creation
-    const newCardDesc = "Test String";  // replace with a useState('')
-    const newCardLabel = "Test Color";  // populate this however is easiest    
 
-    //Create newCard here and pass to the action
-    const newCard  = { 
-      title: newCardTitle, 
-      description: newCardDesc,
-      label: newCardLabel };
-
+    console.log(listForNewCard);
     const submitNewCard = (e) => {      
       e.preventDefault();
-      dispatch(addNewCard(newCard, listForNewCard));
+      dispatch(addNewCard(newCardTitle, listForNewCard));
       setAddCardInput(false);
     }
 
     
     return (
-      <Form ref={ref} onSubmit={submitNewCard} id={props.id}>
+      <Form ref={ref} onSubmit={submitNewCard} id={props._id}>
         <StyledForm type="text"  placeholder="Enter a title for this card..." onChange={e => setNewCardTitle(e.target.value)}/>
         <StyledButton variant='primary' type=
         "submit">Add Card</StyledButton>

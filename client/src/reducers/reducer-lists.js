@@ -1,11 +1,8 @@
 import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER} from '../components/actions/types';
 import { normalize, schema } from 'normalizr';
-import initialData from '../components/initial-data';
 
 const DEFAULT_STATE = {
-  // entries: initialData.lists,
   entries: {},
-  // order: initialData.listOrder
   order: []
 };
 
@@ -37,11 +34,11 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
         entries: {...state.entries, [action.payload.id]: action.payload}
       }
 
-    case ADD_NEW_CARD:
-      return {
-        order: state.order,
-        entries: {...state.entries, [action.payload[1].id]: action.payload[1]} 
-      }
+    // case ADD_NEW_CARD:
+    //   return {
+    //     order: state.order,
+    //     entries: {...state.entries, [action.payload[1].id]: action.payload[1]} 
+    //   }
     
     case UPDATE_LIST_ORDER:
       return {
