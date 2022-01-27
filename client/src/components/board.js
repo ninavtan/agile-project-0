@@ -15,8 +15,6 @@ const Board = (props) => {
   const lookHere = useSelector(state => state);
   const dispatch = useDispatch();
 
- debugger;
-
   useEffect(() => {
     dispatch(fetchBoard(props._id));
   }, [dispatch, props._id]);
