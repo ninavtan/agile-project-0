@@ -50,7 +50,7 @@ export const fetchBoards = () => dispatch => {
 // Attempting backend connection //
 // Working for backend.  Not rendering on frontend
 export const addNewList = (boardId, newListTitle) => {
-  const url = "http://localhost:7000/boards/61ee0ddbf8f753e602f14f6b/list";  
+  const url = "http://localhost:7000/boards/" + boardId + "/list";  
   const newList = { title: newListTitle }
   
   axios.post(url, newList)
