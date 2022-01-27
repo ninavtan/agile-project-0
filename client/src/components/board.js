@@ -12,6 +12,7 @@ const Board = (props) => {
   const lists = useSelector(state => state.lists);
   const listOrder = useSelector(state => state.listOrder);
   const allCards = useSelector(state => state.cards);
+  const currentUser = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {

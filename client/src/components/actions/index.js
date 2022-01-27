@@ -1,6 +1,6 @@
 import axios from 'axios';
 import uniqid from 'uniqid';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, USER_LOGIN } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => {
@@ -91,3 +91,21 @@ export const updateListTitle = (list, newTitle) => {
     payload: list
   }
 };
+
+export const userLogin = (username, password) => dispatch => {
+  const url = `${ROOT_URL}/login`;
+
+  const data = {
+    username: username,
+    password: password
+  }
+  
+    axios.post(url, data)
+      .then(function (response) {
+        console.log(response.data.board);
+        dispatch({type: USER_LOGIN, payload: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}

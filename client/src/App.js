@@ -4,10 +4,11 @@ import "./App.css";
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from "redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 import Board from './components/board';
+import Login from './components/login';
 
 // Redux Devtools Configuration
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -20,7 +21,11 @@ const App = () => {
   return (
   <Provider store={store}>
       <BrowserRouter>
-        <Board />
+        <Routes>
+          <Route path="/" element={<Board />} />
+          <Route path="/login" element={<Login />} />
+
+        </Routes>
       </BrowserRouter>
   </Provider>
   );

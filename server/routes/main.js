@@ -227,17 +227,26 @@ router.get("/push-fake-data", async (req, res, next) => {
 
 // Board Routes //
 
-/*
-router.get("/login", (req, res, next) => {
+
+router.post("/login", (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    User.findOne(
-        {username: }
-    )
+    User.findOne({ username: username })
+    .exec((err, user) => {
+        if (err) return next(err);
+        // if user is found, check if their password matches the password
+        if (user && user.password == password) {
+            res.send(user);
+        } else if (user && user.password !== password) {
+            res.send('Wrong password.')
+        } else if (!user) {
+            res.send('No user found.')
+        }
+    })
 })
 
-*/
+
 // GET all boards for the logged in user 
 router.get("/:user", (req, res, next) => {   
     const userId = req.params.user;
