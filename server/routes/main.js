@@ -303,11 +303,13 @@ router.put("/boards/:board", (req, res, next) => {
     const currentBoard = req.params.board;
     const updatedTitle = req.body.title;
     const updatedLabel = req.body.label;   
+    const newListOrder = req.body.newListOrder;
 
     Board.findOneAndUpdate(
         { _id: currentBoard },
         { label: updatedLabel,
-          title: updatedTitle},
+          title: updatedTitle,
+          lists: newListOrder},
         { new: true},             
         (err, updatedBoard) => {
             if (err) throw err;
