@@ -439,6 +439,17 @@ router.put("/boards/board/:list", async (req, res, next) => {
 
 // CARD ROUTES //
 
+// GET all cards on a certain board
+router.get("/boards/:board/cards", async (req, res, next) => {
+    const boardId = req.params.board;
+ 
+    const board = await Board.findById(boardId);
+    const listsOnBoard = board.lists;
+    
+    const cardsOnBoard = await Card.find({list: listsOnBoard});
+    res.send(cardsOnBoard);
+    
+});
 
 // POST a new card by title only
 router.post("/boards/board/:list/card", async (req, res, next) => {
@@ -446,8 +457,8 @@ router.post("/boards/board/:list/card", async (req, res, next) => {
     const cardToBeAdded = new Card();
     const targetList = await List.findById(listId).exec();
     cardToBeAdded.cardTitle = req.body.cardTitle;
-    cardToBeAdded.description = ' ';
-    cardToBeAdded.cardLabel = ' ';
+    cardToBeAdded.description = null;
+    cardToBeAdded.cardLabel = null;
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
     console.log(cardToBeAdded.cardTitle);

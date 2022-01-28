@@ -3,7 +3,7 @@ import { normalize, schema } from 'normalizr';
 
 const DEFAULT_STATE = {
   entries: {},
-  order: []
+  order: [],
 };
 
 const listsSchema = new schema.Entity('lists', undefined, { idAttribute: '_id' });
@@ -11,6 +11,7 @@ const listsSchema = new schema.Entity('lists', undefined, { idAttribute: '_id' }
 export default function listsReducer(state = DEFAULT_STATE, action) {
   switch(action.type) {
     case MOVE_CARD_WITHIN_LIST:
+      
       return {
         order: state.order,
         entries: { ...state.entries, [action.payload.id]: action.payload}
@@ -26,6 +27,12 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
       return {
         order: [...state.order, action.payload.id],
         entries: {...state.entries, [action.payload.id]: action.payload} 
+      }
+
+    case ADD_NEW_CARD:
+    return {
+        order: state.order,
+        entries: {...state.entries, [action.payload.list]:{...state.entries[action.payload.list], card: [...state.entries[action.payload.list].card, action.payload]}}
       }
       
     case UPDATE_LIST_TITLE:

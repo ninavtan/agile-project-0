@@ -58,12 +58,14 @@ export const fetchCards = (boardId) => dispatch => {
   });
 };
 
-export const addNewList = (boardId, newListTitle) => {
+export const addNewList = (boardId, newListTitle) => dispatch => {
   const url = "http://localhost:7000/boards/" + boardId + "/list";  
   const newList = { title: newListTitle }
   
   axios.post(url, newList)
-    .then(response => response)
+    .then(function (response) {
+      dispatch({ type: ADD_NEW_LIST, payload: response.data })
+    })
     .catch(error => {
       console.log("There was an error with the addList action" + error);
     }); 
@@ -71,8 +73,10 @@ export const addNewList = (boardId, newListTitle) => {
 
 export const addNewCard = (newCardTitle, listId) => dispatch => {
   const url = "http://localhost:7000/boards/board/" + listId + "/card";   
+  
   axios.post(url, {cardTitle: newCardTitle})
     .then(function (response) {
+      
       dispatch({ type: ADD_NEW_CARD, payload: response.data })
     })
     .catch(function (error) {

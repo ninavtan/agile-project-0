@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { updateListTitle, addNewCard } from './actions';
 import Card from './card';
 
+
 const List = (props) => {
 
   const [showAddCardInput, setAddCardInput] = React.useState(false);

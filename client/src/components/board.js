@@ -13,17 +13,14 @@ const Board = (props) => {
   const listOrder = useSelector(state => state.lists.order);
   const allCards = useSelector(state => state.cards);
   const lookHere = useSelector(state => state);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchBoard(props._id));
-  }, [dispatch, props._id]);
-  
-  useEffect(() => {
     dispatch(fetchCards(props._id));
   }, [dispatch, props._id]);
   
-
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result;
 
@@ -46,19 +43,20 @@ const Board = (props) => {
       dispatch(updateListOrder(newListOrder));
       return;
     };
-
+    console.log(listOrder);
     const startList = lists[source.droppableId];
     const finishList = lists[destination.droppableId];
-
+    
     //Moving a card within the same list
     if(startList === finishList){
-      const newCardIds = Array.from(startList.cardIds);
+      const newCardIds = Array.from(startList.card);
       newCardIds.splice(source.index, 1);
       newCardIds.splice(destination.index, 0, draggableId);
-  
+      console.log(startList);
+      console.log(newCardIds);
       const newList = {
         ...startList,
-        cardIds: newCardIds,
+        card: newCardIds,
       }
 
       dispatch(moveCardWithinList(newList));
