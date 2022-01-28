@@ -15,11 +15,11 @@ const List = (props) => {
   const cancelAddCard = () => setAddCardInput(false);
   const dispatch = useDispatch();
 
-  
+  console.log(props.list.board)
   /*
   useEffect(() => {
     dispatch(fetchLists(props.list.board));
-  }, [dispatch, fetchLists()]);
+  }, [dispatch, fetchLists, props.list.board ]);
   */
 
   const AddCardInput = () => {
