@@ -396,47 +396,52 @@ Card.deleteMany({list: list}).exec((err, cards) => {
 router.put("/boards/board/:list", async (req, res, next) => {
     const listId = req.params.list;
     // No option to update board._id since lists won't change boards    
+    
+    // I'm not sure if we need this logic below, since the logic is happening on the front end -- Steve
 
-    if (req.body.card) {
+    // if (req.body.card) {
         const updatedTitle = req.body.title;
-        const updatedColor = req.body.color;    
-        const newCardId = req.body.card;
+        const updatedColor = req.body.color;
+        const newCards = req.body.cards;
+        console.log(newCards);
+    //     const newCardId = req.body.card;
 
-        const targetCard = await Card.findById(newCardId).exec();
+    //     const targetCard = await Card.findById(newCardId).exec();
 
-        List.findOneAndUpdate(
-            { _id: listId },
-            { title: updatedTitle,
-              color: updatedColor,
-              $push: {card: targetCard._id} },
-            { new: true},
-            (err, updatedList) => {
-                if (err) throw err;
-                Card.findByIdAndUpdate(targetCard._id,
-                    { list: listId },
-                    { new: true},
-                    (err, updatedCardWithListId) => {
-                        if (err) throw err;
-                        res.send(updatedCardWithListId)  //Can change this to the updated list if needed.
-                    }
-                );              
-            }  
-        );
-    } else { 
-        const updatedTitle = req.body.title;
-        const updatedColor = req.body.color; 
+    //     List.findOneAndUpdate(
+    //         { _id: listId },
+    //         { title: updatedTitle,
+    //           color: updatedColor,
+    //           $push: {card: targetCard._id} },
+    //         { new: true},
+    //         (err, updatedList) => {
+    //             if (err) throw err;
+    //             Card.findByIdAndUpdate(targetCard._id,
+    //                 { list: listId },
+    //                 { new: true},
+    //                 (err, updatedCardWithListId) => {
+    //                     if (err) throw err;
+    //                     res.send(updatedCardWithListId)  //Can change this to the updated list if needed.
+    //                 }
+    //             );              
+    //         }  
+    //     );
+    // } else { 
+    //     const updatedTitle = req.body.title;
+    //     const updatedColor = req.body.color; 
 
         List.findOneAndUpdate(
             { _id: listId },
             { title: updatedTitle, 
-              color: updatedColor}, 
+              color: updatedColor,
+              card: newCards}, 
             { new: true},       
             (err, updatedList) => {
                 if (err) throw err;
                 res.send(updatedList);
             }
         );
-    }    
+       
 });
 
 // CARD ROUTES //

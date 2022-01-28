@@ -11,22 +11,24 @@ const listsSchema = new schema.Entity('lists', undefined, { idAttribute: '_id' }
 export default function listsReducer(state = DEFAULT_STATE, action) {
   switch(action.type) {
     case MOVE_CARD_WITHIN_LIST:
-      
       return {
         order: state.order,
-        entries: { ...state.entries, [action.payload.id]: action.payload}
+        entries: { ...state.entries, [state.entries[action.payload._id]._id]: action.payload}
       }
     
     case MOVE_CARD_BETWEEN_LISTS:
       return {
         order: state.order,
-        entries: {...state.entries, [action.payload[0].id]: action.payload[0], [action.payload[1].id]: action.payload[1]}
+        entries: { ...state.entries, 
+          [state.entries[action.payload[0]._id]._id]: action.payload[0],
+          [state.entries[action.payload[1]._id]._id]: action.payload[1]}
       }
     
     case ADD_NEW_LIST:
+      
       return {
-        order: [...state.order, action.payload.id],
-        entries: {...state.entries, [action.payload.id]: action.payload} 
+        order: [...state.order, action.payload._id],
+        entries: {...state.entries, [action.payload._id]: action.payload} 
       }
 
     case ADD_NEW_CARD:

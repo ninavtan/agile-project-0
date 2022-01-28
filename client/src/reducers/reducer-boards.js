@@ -1,4 +1,4 @@
-import { FETCH_BOARD, FETCH_BOARDS} from '../components/actions/types';
+import { FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST} from '../components/actions/types';
 
 const DEFAULT_STATE = {
   currentBoard: {},
@@ -12,6 +12,7 @@ export default function boardsReducer(state = DEFAULT_STATE, action) {
 
     case FETCH_BOARDS:
       return Object.assign({}, state, action.payload);
+
     default:
       return state;
   }

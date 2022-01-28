@@ -47,9 +47,10 @@ const Board = (props) => {
     
     //Moving a card within the same list
     if(startList === finishList){
-      const newCardIds = Array.from(startList.card);
+      const listId = startList._id;
+      const newCardIds = Array.from(lists[listId].card);
       newCardIds.splice(source.index, 1);
-      newCardIds.splice(destination.index, 0, draggableId);
+      newCardIds.splice(destination.index, 0, allCards[draggableId]);
       const newList = {
         ...startList,
         card: newCardIds,
@@ -60,18 +61,18 @@ const Board = (props) => {
     }
 
     //Moving a card to a different list
-    const startListCardIds = Array.from(startList.cardIds);
-    startListCardIds.splice(source.index, 1);
+    const startListCards = Array.from(lists[startList._id].card);
+    startListCards.splice(source.index, 1);
     const newStartList = {
       ...startList,
-      cardIds:startListCardIds,
+      card:startListCards,
     };
 
-    const finishListCardIds = Array.from(finishList.cardIds);
-    finishListCardIds.splice(destination.index, 0, draggableId);
+    const finishListCards = Array.from(lists[finishList._id].card);
+    finishListCards.splice(destination.index, 0, allCards[draggableId]);
     const newFinishList = {
       ...finishList,
-      cardIds: finishListCardIds,
+      card: finishListCards,
     };
 
     dispatch(moveCardBetweenLists(newStartList, newFinishList));

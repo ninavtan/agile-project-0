@@ -18,18 +18,38 @@ export const updateListOrder = (newListOrder) => dispatch =>{
 
 };
 
-export const moveCardWithinList = (newList) => {
-  return { 
-    type: MOVE_CARD_WITHIN_LIST,
-    payload: newList
-  }
+export const moveCardWithinList = (newList) => dispatch => {
+  const listId = newList._id;
+  const url = "http://localhost:7000/boards/board/" + listId;   
+  
+  dispatch({type: MOVE_CARD_WITHIN_LIST, payload: newList});
+
+  // As written, this action successfully sends the new card order to the back end, and successfully shows the correct order in the UI. However, when I send the payload to the reducer, the cards are no longer rendered out... so we can revisit this later if need be.
+
+  axios.put(url, {cards: newList.card})
+  // .then(function (response) {
+    //   dispatch({ type: MOVE_CARD_WITHIN_LIST, payload: response.data })
+    // })
+    .catch(function (error) {
+      console.log("There was an error with the move card within list action" + error);
+    })
 };
 
-export const moveCardBetweenLists = (startList, finishList) => {
-  return {
-    type: MOVE_CARD_BETWEEN_LISTS,
-    payload: [startList, finishList]
-  }
+export const moveCardBetweenLists = (startList, finishList) => dispatch => {
+  const startListUrl = "http://localhost:7000/boards/board/" + startList._id;
+  const finishListUrl = "http://localhost:7000/boards/board/" + finishList._id;
+
+  dispatch({type: MOVE_CARD_BETWEEN_LISTS, payload: [startList, finishList]});
+
+  axios.put(startListUrl, {cards: startList.card})
+  .catch(function (error) {
+      console.log("There was an error with the move card between lists action" + error);
+    });
+
+  axios.put(finishListUrl, {cards: finishList.card})
+  .catch(function (error) {
+      console.log("There was an error with the move card between lists action" + error);
+    });
 };
 
 export const fetchBoard = (boardId) => dispatch => {
@@ -74,6 +94,7 @@ export const addNewList = (boardId, newListTitle) => dispatch => {
   axios.post(url, newList)
     .then(function (response) {
       dispatch({ type: ADD_NEW_LIST, payload: response.data })
+      
     })
     .catch(error => {
       console.log("There was an error with the addList action" + error);
