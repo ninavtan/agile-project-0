@@ -5,19 +5,21 @@ import styled from 'styled-components';
 import { Row,Col, Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
-import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard } from './actions';
+import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard, fetchCards } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
 
 const Board = (props) => {
   const lists = useSelector(state => state.lists.entries);
   const listOrder = useSelector(state => state.lists.order);
   const allCards = useSelector(state => state.cards);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchBoard(props._id));
+    dispatch(fetchCards(props._id));
   }, [dispatch, props._id]);
-
+  
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result;
 
@@ -40,19 +42,18 @@ const Board = (props) => {
       dispatch(updateListOrder(newListOrder));
       return;
     };
-
     const startList = lists[source.droppableId];
     const finishList = lists[destination.droppableId];
-
+    
     //Moving a card within the same list
     if(startList === finishList){
-      const newCardIds = Array.from(startList.cardIds);
+      const listId = startList._id;
+      const newCardIds = Array.from(lists[listId].card);
       newCardIds.splice(source.index, 1);
-      newCardIds.splice(destination.index, 0, draggableId);
-  
+      newCardIds.splice(destination.index, 0, allCards[draggableId]);
       const newList = {
         ...startList,
-        cardIds: newCardIds,
+        card: newCardIds,
       }
 
       dispatch(moveCardWithinList(newList));
@@ -60,18 +61,18 @@ const Board = (props) => {
     }
 
     //Moving a card to a different list
-    const startListCardIds = Array.from(startList.cardIds);
-    startListCardIds.splice(source.index, 1);
+    const startListCards = Array.from(lists[startList._id].card);
+    startListCards.splice(source.index, 1);
     const newStartList = {
       ...startList,
-      cardIds:startListCardIds,
+      card:startListCards,
     };
 
-    const finishListCardIds = Array.from(finishList.cardIds);
-    finishListCardIds.splice(destination.index, 0, draggableId);
+    const finishListCards = Array.from(lists[finishList._id].card);
+    finishListCards.splice(destination.index, 0, allCards[draggableId]);
     const newFinishList = {
       ...finishList,
-      cardIds: finishListCardIds,
+      card: finishListCards,
     };
 
     dispatch(moveCardBetweenLists(newStartList, newFinishList));
@@ -79,6 +80,7 @@ const Board = (props) => {
   }
 
   //New List Input
+  const currentBoardID = "61ee0ddbf8f753e602f14f6b"; // Board Id is hardcoded. Need to update.
   const [showAddListInput, setAddListInput] = React.useState(false);
   const addListClickHandler = () => setAddListInput(true);
   const cancelAddList = () => setAddListInput(false);
@@ -91,7 +93,7 @@ const Board = (props) => {
     
     const submitNewList = (e) => {
       e.preventDefault();
-      dispatch(addNewList(newListName));
+      dispatch(addNewList(currentBoardID, newListName));  //Board Id is hardcoded.  Need to update
       setAddListInput(false);
     }
 
