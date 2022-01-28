@@ -14,7 +14,7 @@ const Board = (props) => {
   const allCards = useSelector(state => state.cards);
   const dispatch = useDispatch();
 
-  console.log(props._id)
+  
 
   useEffect(() => {
     dispatch(fetchBoard(props._id));

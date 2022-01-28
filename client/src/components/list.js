@@ -1,11 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
 import { useDispatch } from 'react-redux';
-import { updateListTitle, addNewCard } from './actions';
+import { updateListTitle, addNewCard, fetchLists } from './actions';
 import Card from './card';
 
 const List = (props) => {
@@ -13,6 +13,14 @@ const List = (props) => {
   const [showAddCardInput, setAddCardInput] = React.useState(false);
   const addCardClickHandler = () => setAddCardInput(true);
   const cancelAddCard = () => setAddCardInput(false);
+  const dispatch = useDispatch();
+
+  
+  /*
+  useEffect(() => {
+    dispatch(fetchLists(props.list.board));
+  }, [dispatch, fetchLists()]);
+  */
 
   const AddCardInput = () => {
 
@@ -49,7 +57,7 @@ const List = (props) => {
 
   const [showTitleInput, setShowTitleInput] = React.useState(false);
   const handleClickTitle = () => setShowTitleInput(true);
-  const dispatch = useDispatch();
+  
 
   const TitleInput = () => {
 

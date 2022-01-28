@@ -1,6 +1,6 @@
 import axios from 'axios';
 import uniqid from 'uniqid';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, FETCH_LISTS, UPDATE_LIST } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => {
@@ -47,6 +47,18 @@ export const fetchBoards = () => dispatch => {
     });
 };
 
+export const fetchLists = (boardId) => dispatch => {
+  const url = "http://localhost:7000/boards/" + boardId + "/lists"; 
+
+  axios.get(boardId)
+    .then(function (response) {
+      dispatch({ type: FETCH_LISTS, payload: response.data });
+    })
+    .catch(function (error) {
+      console.log("There was an error with the Fetch Lists action" + error);
+    });
+};
+
 // Attempting backend connection //
 // Working for backend.  Not rendering on frontend
 export const addNewList = (boardId, newListTitle) => {
@@ -65,28 +77,16 @@ export const addNewList = (boardId, newListTitle) => {
 export const addNewCard = (newCard, listId) => {
   const url = "http://localhost:7000/boards/board/" + listId + "/card";   
 
-  axios.post(url, newCard)
-    .then(response => response)
+  const response = axios.post(url, newCard)
+    .then(res => res)
     .catch(error => {
       console.log("There was an error with the addCard action" + error);
-  });
- 
-  //the code below should be able to stay the same after 
-  /*
-  const newCardIds = [
-    ...listForNewCard.cardIds,
-    cardToAdd.id,
-  ]
-  const newList = {
-    ...listForNewCard,
-    cardIds: newCardIds,
-  }
+  });  
 
   return {
     type: ADD_NEW_CARD,
-    payload: [cardToAdd, newList]
-  }
-  */
+    payload: response
+  };  
 };
 
 export const updateListTitle = (list, newTitle) => {
@@ -96,3 +96,24 @@ export const updateListTitle = (list, newTitle) => {
     payload: list
   }
 };
+
+// Use this action for moving a card between lists.  
+// Include the list it is being moved to in the "updatedList" body
+export const editList = (updatedList, listId) => {
+  const url = "http://localhost:7000/boards/board/" + listId;
+
+  const response = axios.put(url, updatedList)
+    .then(res => res)
+    .catch(error => {
+      console.log("There was an error with the editList action" + error);
+    })
+
+  return {
+    type: UPDATE_LIST,
+    payload: response
+  };  
+}
+
+
+
+
