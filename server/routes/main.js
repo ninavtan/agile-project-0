@@ -509,12 +509,15 @@ router.put("/boards/:board/:list/:card", (req, res, next) => {
 });
 
 //DELETE a pre-existing card 
-router.delete("/boards/board/:list/:card", (req, res, next) => {
+router.delete("/boards/board/list/:card", (req, res, next) => {
     const card = req.params.card;
 
     Card.findByIdAndDelete(card).exec((err, cardToDelete) => {
         if (err) throw err;
         // Updates the list and removes the card to delete.
+        res.send(cardToDelete);
+    });
+    /*
         List.findOneAndUpdate(
             {_id: req.params.list},
             { $pull: { card: card}},
@@ -523,7 +526,7 @@ router.delete("/boards/board/:list/:card", (req, res, next) => {
                 if (err) console.log("There was a delete-card error:", err);
                 res.send(updatedList);
             });       
-    });    
+    });*/    
 });
 
 // Comment Routes //
