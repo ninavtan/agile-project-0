@@ -123,7 +123,7 @@ export const updateListTitle = (list, newTitle) => {
   }
 };
 
-export const deleteCard = (cardId) => {
+export const deleteCard = (cardId) => dispatch => {
   const url = "http://localhost:7000/boards/board/list/" + cardId;   
 
   axios.delete(url)
@@ -135,7 +135,7 @@ export const deleteCard = (cardId) => {
     });  
 };
 
-export const deleteList = (boardId, listId) => {
+export const deleteList = (boardId, listId) => dispatch => {
   const url = "http://localhost:7000/boards/" + boardId + "/" + listId;
 
   axios.delete(url)
@@ -147,7 +147,7 @@ export const deleteList = (boardId, listId) => {
     }); 
 };
 
-export const deleteBoard = (boardId) => {
+export const deleteBoard = (boardId) => dispatch => {
   const url = "http://localhost:7000/boards/" + boardId;
 
   axios.delete(url)
@@ -159,7 +159,7 @@ export const deleteBoard = (boardId) => {
     }); 
 };
 
-export const deleteComment = (cardId, commentId) => {
+export const deleteComment = (cardId, commentId) => dispatch => {
   const url = "http://localhost:7000/boards/board/list/" + cardId + "/" + commentId;
 
   axios.delete(url)

@@ -1,9 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
 
 const CardDetailView  = (props) => {
+  console.log(props)
+  const DeleteCard = () => {
+    console.log(props);
+  };
+  
+  
+  
   return (
     <Modal
       {...props}
@@ -21,6 +28,7 @@ const CardDetailView  = (props) => {
         <p>
         { props.description ? props.description : "Add a more detailed description..." }
         </p>
+        <CancelButton onClick={DeleteCard}>Delete Card</CancelButton>
       </Modal.Body>
 
     </Modal>
@@ -42,6 +50,7 @@ const Card = (props) => {
           isDragging={snapshot.isDragging}
         >
           {props.card.cardTitle}
+          
         </CardStyle>
       </ClickForDetail>
       )}
@@ -61,7 +70,22 @@ export default Card;
 
 const ClickForDetail = styled.div`
 
-`
+`;
+
+const CancelButton = styled(Button)`
+border: none;
+box-shadow: none;
+color: #172b4d;
+font-weight: 900;
+&:active {
+  background-color:black;
+}
+&:hover {
+  background-color:#ebecf0;
+  color: #dc3545
+}
+`;
+
 
 const CardStyle = styled.div`
 margin: auto;
