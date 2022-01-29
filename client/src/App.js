@@ -7,32 +7,39 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 import Board from './components/board';
-import Home from './components/auth/profile';
+import Home from './components/auth/home';
 import Auth from './components/auth/auth';
 
+// Actual Login form
 // import Login from './components/login';
-// import Homepage from './components/homepage';
-// import Dashboard from './components/auth/dashboard';
 
-// Redux Devtools Configuration
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// // import { createStore, applyMiddleware, compose } from "redux";
+// // import thunk from 'redux-thunk';
+// // Redux Devtools Configuration
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thunk)));
+// const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thunk)));
 
   const App = () => {
     const [auth, setAuth] = useState(null);
-  
+
+    // Code is breaking with the line below.
+    const currentUser = useSelector(state => state.user);
+    // if currentUser is true, set auth to true.
+
+    // Gets the 'user' item from localStorage to check if the session is persisting.
     useEffect(() => {
       let user = localStorage.getItem("user");
       user && JSON.parse(user) ? setAuth(true) : setAuth(false);
     }, []);
   
+    // If auth is true, sets a session in localStorage.
     useEffect(() => {
       localStorage.setItem("user", auth);
-    }, [auth]);
+    }, [currentUser, auth]);
   
     return (
-      <Provider store={store}>
+      // <Provider store={store}>
       <Routes>
         {!auth && (
           <Route
@@ -52,7 +59,7 @@ const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thun
         )}
         <Route path="*" element={<Navigate to={auth ? "/home" : "/auth"} />} />
       </Routes>
-      </Provider>
+      // </Provider>
 
     );
   };

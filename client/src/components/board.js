@@ -176,7 +176,6 @@ margin: 30px;
 background-color:#95bae7
 `
 
-
 const StyledButton = styled(Button)`
 margin: 8px;
 `

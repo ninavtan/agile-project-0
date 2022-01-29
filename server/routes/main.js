@@ -236,12 +236,12 @@ router.post("/login", (req, res, next) => {
     .exec((err, user) => {
         if (err) return next(err);
         // if user is found, check if their password matches the password
-        if (user && user.password == password) {
+        if (user.username == username && user.password == password) {
             res.send(user);
-        } else if (user && user.password !== password) {
-            res.send('Wrong password.')
+        } else if (user.username == username && user.password !== password) {
+            res.send(401, 'Wrong password.')
         } else if (!user) {
-            res.send('No user found.')
+            res.send(401, 'No user found.')
         }
     })
 })
