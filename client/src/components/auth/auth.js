@@ -15,19 +15,26 @@ const Auth = ({ authenticate }) => {
   //auth button handler
   const onClick = (e) => {
     // dispatch(userLogin('Jango', 'Fett'));
+    e.preventDefault();
     dispatch(userLogin(e.target.name.value, e.target.password.value ));
+    e.target.name.value = '';
+    e.target.password.value = '';
 
     // This boolean function (defined in app.js) logs in the user even if username and password are not correct.
     // authenticate();
     // navigate("home");
-    checkUser();
+  
   };
 
+  useEffect(() => {
+    checkUser();
+  }, [currentUser.isLoggedIn]);
+
   const checkUser = () => {
-    if (currentUser) {
+    if (currentUser.isLoggedIn) {
       authenticate();
       navigate("home");
-    }
+    } 
   }
 
   // useEffect(() => {

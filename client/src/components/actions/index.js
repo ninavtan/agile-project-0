@@ -109,3 +109,5 @@ export const userLogin = (username, password) => dispatch => {
         console.log(error);
       });
 }
+
+// export const userLogout = 

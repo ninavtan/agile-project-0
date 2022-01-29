@@ -10,6 +10,8 @@ const Home = ( props ) => {
   const currentUser = useSelector(state => state.user);
   console.log(currentUser);
 
+  // dispatch logout action
+
   // map over all boards
   return (
     <HomeContainer>

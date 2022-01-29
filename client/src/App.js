@@ -23,20 +23,26 @@ import Auth from './components/auth/auth';
   const App = () => {
     const [auth, setAuth] = useState(null);
 
-    // Code is breaking with the line below.
     const currentUser = useSelector(state => state.user);
     // if currentUser is true, set auth to true.
 
+    console.log(currentUser.isLoggedIn);
+    useEffect(() => {if (currentUser.isLoggedIn) {
+      setAuth(true);
+    } else {
+      setAuth(false);
+    }}, []);
+
     // Gets the 'user' item from localStorage to check if the session is persisting.
-    useEffect(() => {
-      let user = localStorage.getItem("user");
-      user && JSON.parse(user) ? setAuth(true) : setAuth(false);
-    }, []);
+    // useEffect(() => {
+    //   let user = localStorage.getItem("user");
+    //   user && JSON.parse(user) ? setAuth(true) : setAuth(false);
+    // }, []);
   
     // If auth is true, sets a session in localStorage.
-    useEffect(() => {
-      localStorage.setItem("user", auth);
-    }, [currentUser, auth]);
+    // useEffect(() => {
+    //   localStorage.setItem("user", auth);
+    // }, [currentUser, auth]);
   
     return (
       // <Provider store={store}>
