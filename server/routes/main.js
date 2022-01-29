@@ -515,7 +515,7 @@ router.delete("/boards/board/list/:card", (req, res, next) => {
     Card.findByIdAndDelete(card).exec((err, cardToDelete) => {
         if (err) throw err;
         // Updates the list and removes the card to delete.
-        res.send(cardToDelete);
+        res.status(200).send();
     });
     /*
         List.findOneAndUpdate(

@@ -2,11 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
+import { useDispatch } from 'react-redux';
+import { deleteCard } from './actions';
 
 const CardDetailView  = (props) => {
-  console.log(props)
+  const dispatch = useDispatch();
+
   const DeleteCard = () => {
-    console.log(props);
+    const cardId = props.id;
+    dispatch(deleteCard(cardId));    
   };
   
   
@@ -38,6 +42,7 @@ const CardDetailView  = (props) => {
 const Card = (props) => {
   const [detailViewShow, setDetailViewShow] = React.useState(false);
   
+  
   return (
     <>
     <Draggable draggableId={props.card._id} index={props.index}>
@@ -61,6 +66,7 @@ const Card = (props) => {
         title={props.card.cardTitle}
         description={props.card.description}
         label={props.card.cardLabel}
+        id = {props.card._id}
         />
   </>
   );
