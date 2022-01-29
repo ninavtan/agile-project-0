@@ -8,6 +8,8 @@ import List from './list';
 import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 
 const Board = (props) => {
@@ -128,6 +130,8 @@ const Board = (props) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Link to="/home">Home</Link>
+
       <Droppable 
         droppableId='all-lists' 
         direction="horizontal" 

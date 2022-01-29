@@ -1,30 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Form, Button } from 'react-bootstrap';
 import { userLogin } from './actions';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useNavigate } from "react-router-dom";
-import useAuth from './useAuth'
-
+import { Navigate } from 'react-router-dom';
 
 
 const Login = () => {
-  let navigate = useNavigate();
-  let dispatch = useDispatch();
-  // const { login } = useAuth();
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
-    // debugger;
+  // const dispatch = useDispatch();
+
+const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(userLogin(e.target.name.value, e.target.password.value ));
-    handleRedirect();
+    // dispatch(userLogin(e.target.name.value, e.target.password.value ));
+    alert('click');
+    
   };
-
-  const handleRedirect = () => {
-    navigate("/home");
-  }
-  
   return (
     <Container>
       <Form onSubmit={handleLogin}>

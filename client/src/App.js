@@ -1,63 +1,60 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
-
 import { Provider, useSelector } from 'react-redux';
 import { createStore, applyMiddleware, compose } from "redux";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 import Board from './components/board';
-import Login from './components/login';
-import Homepage from './components/homepage';
-// import useAuth from './components/useAuth.js';
+import Home from './components/auth/profile';
+import Auth from './components/auth/auth';
+
+// import Login from './components/login';
+// import Homepage from './components/homepage';
+// import Dashboard from './components/auth/dashboard';
 
 // Redux Devtools Configuration
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thunk)));
 
-// const App = (props) => {
-const App = () => {
-
-  // console.log(isLoggedIn);
+  const App = () => {
+    const [auth, setAuth] = useState(null);
   
-  function RequireAuth({ children }) {
-    debugger;
-    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-
-    if (isLoggedIn) {
-      return children;
-     } else {
-      return <Navigate to="/login" />
-    };  
-  }
-
-
-  return (
-  <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
+    useEffect(() => {
+      let user = localStorage.getItem("user");
+      user && JSON.parse(user) ? setAuth(true) : setAuth(false);
+    }, []);
+  
+    useEffect(() => {
+      localStorage.setItem("user", auth);
+    }, [auth]);
+  
+    return (
+      <Provider store={store}>
+      <Routes>
+        {!auth && (
           <Route
-            path="/boards"
-            element={
-              <RequireAuth>
-                <Board />
-              </RequireAuth>
-            }
+            path="/auth"
+            element={<Auth authenticate={() => setAuth(true)} />}
           />
-          <Route
-            path="/home"
-            element={
-              <RequireAuth>
-                <Homepage />
-              </RequireAuth>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-  </Provider>
-  );
-}
-export default App;
+        )}
+  
+        {auth && (
+          <>
+            <Route
+              path="/home"
+              element={<Home logout={() => setAuth(false)} />}
+            />
+            <Route path="/boards" element={<Board />} />
+          </>
+        )}
+        <Route path="*" element={<Navigate to={auth ? "/home" : "/auth"} />} />
+      </Routes>
+      </Provider>
+
+    );
+  };
+  
+  export default App;
