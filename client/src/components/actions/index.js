@@ -3,7 +3,7 @@ import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETC
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
-  const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  const boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
 
   dispatch({ type: UPDATE_LIST_ORDER, payload: newListOrder })
@@ -53,7 +53,7 @@ export const moveCardBetweenLists = (startList, finishList) => dispatch => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {
@@ -76,7 +76,7 @@ export const fetchBoards = () => dispatch => {
 };
 
 export const fetchCards = (boardId) => dispatch => {
-  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)
   .then(function (response) {
@@ -115,10 +115,19 @@ export const addNewCard = (newCardTitle, listId) => dispatch => {
 
 };
 
-export const updateListTitle = (list, newTitle) => {
+export const updateListTitle = (list, newTitle) => dispatch => {
+  const url = `${ROOT_URL}/boards/board/${list._id}`;
   list.title = newTitle;
-  return {
-    type: UPDATE_LIST_TITLE,
-    payload: list
-  }
+
+  axios.put(url, {
+    title: list.title,
+    color: list.color,
+    card: list.card
+    })
+    .then(function (response) {
+      dispatch( { type: UPDATE_LIST_TITLE, payload: list })
+    })
+    .catch(function (error) {
+      console.log("There was an error with the updateListTitle action: ", error);
+    })
 };
