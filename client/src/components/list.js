@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { updateListTitle, addNewCard } from './actions';
 import Card from './card';
 
+
 const List = (props) => {
 
   const [showAddCardInput, setAddCardInput] = React.useState(false);
@@ -19,9 +20,10 @@ const List = (props) => {
     const ref = React.useRef(null);
     useOnClickOutside(ref, cancelAddCard);
     const [newCardTitle, setNewCardTitle] = useState('');
-    const listForNewCard = props.list;
+    const listForNewCard = props.list._id;
 
-    const submitNewCard = (e) => {
+    console.log(listForNewCard);
+    const submitNewCard = (e) => {      
       e.preventDefault();
       dispatch(addNewCard(newCardTitle, listForNewCard));
       setAddCardInput(false);
@@ -29,7 +31,7 @@ const List = (props) => {
 
     
     return (
-      <Form ref={ref} onSubmit={submitNewCard} id={props.id}>
+      <Form ref={ref} onSubmit={submitNewCard} id={props._id}>
         <StyledForm type="text"  placeholder="Enter a title for this card..." onChange={e => setNewCardTitle(e.target.value)}/>
         <StyledButton variant='primary' type=
         "submit">Add Card</StyledButton>

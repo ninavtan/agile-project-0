@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
 
 const CardDetailView  = (props) => {
@@ -9,7 +9,7 @@ const CardDetailView  = (props) => {
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      // centered
+      centered
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -32,7 +32,7 @@ const Card = (props) => {
   
   return (
     <>
-    <Draggable draggableId={props.card.id} index={props.index}>
+    <Draggable draggableId={props.card._id} index={props.index}>
       {(provided, snapshot) => (
       <ClickForDetail onClick = {() => setDetailViewShow(true)}>
         <CardStyle

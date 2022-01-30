@@ -227,21 +227,30 @@ router.get("/push-fake-data", async (req, res, next) => {
 
 // Board Routes //
 
-/*
-router.get("/login", (req, res, next) => {
+
+router.post("/login", (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    User.findOne(
-        {username: }
-    )
+    User.findOne({ username: username })
+    .exec((err, user) => {
+        if (err) return next(err);
+        // if user is found, check if their password matches the password
+        if (user && user.password == password) {
+            res.send(user);
+        } else if (user && user.password !== password) {
+            res.send(401, 'Wrong password.')
+        } else if (!user) {
+            res.send(401, 'No user found.')
+        }
+    })
 })
 
-*/
+
 // GET all boards for the logged in user 
 router.get("/:user", (req, res, next) => {   
     const userId = req.params.user;
-    console.log(req.params.user)
+    
 
     User.findById( userId )
     .populate("board")
@@ -254,10 +263,16 @@ router.get("/:user", (req, res, next) => {
 //GET a specific board based on id 
 router.get("/boards/:board", (req, res, next) => {
     const board = req.params.board;
-    console.log(board._id)
+    
+    console.log("The board Id is " + board)
 
     Board.findById(board)
-        .populate("lists")
+        .populate({
+            path: 'lists',
+            populate:{
+                path: 'card'
+            }
+        })
         .exec((err, searchedBoard) => {
             if (err) throw err;
             res.send(searchedBoard);
@@ -297,11 +312,13 @@ router.put("/boards/:board", (req, res, next) => {
     const currentBoard = req.params.board;
     const updatedTitle = req.body.title;
     const updatedLabel = req.body.label;   
+    const newListOrder = req.body.newListOrder;
 
     Board.findOneAndUpdate(
         { _id: currentBoard },
         { label: updatedLabel,
-          title: updatedTitle},
+          title: updatedTitle,
+          lists: newListOrder},
         { new: true},             
         (err, updatedBoard) => {
             if (err) throw err;
@@ -312,17 +329,17 @@ router.put("/boards/:board", (req, res, next) => {
 
 // List Routes //
 
-// GET all lists for the specified board 
-router.get("/boards/:board/lists", (req, res, next) => {
-    const boardId = req.params.board;
+// // GET all lists for the specified board 
+// router.get("/boards/:board/lists", (req, res, next) => {
+//     const boardId = req.params.board;
 
-    Board.findById(boardId)
-        .populate("lists")
-        .exec((err, targetBoard) => {
-            if (err) throw err;
-            res.send(targetBoard.lists);
-        });   
-});
+//     Board.findById(boardId)
+//         .populate("lists")
+//         .exec((err, targetBoard) => {
+//             if (err) throw err;
+//             res.send(targetBoard.lists);
+//         });   
+// });
 
 // POST add a new list to an existing board 
 router.post("/boards/:board/list", async (req, res, next) => {
@@ -356,7 +373,7 @@ router.delete("/boards/:board/:list", (req, res, next) => {
         { new: true},
         (err, matchingList) => {
         if (err) {
-            console.log(err);
+            console.log("list delete error");
             res.sendStatus(500);
             return;
         };
@@ -367,7 +384,7 @@ router.delete("/boards/:board/:list", (req, res, next) => {
             { new: true}, 
             (err, result) => {
                 if (err) {
-                    console.log(err);
+                    console.log("List delete error");
                     res.sendStatus(500);
                     return;
                 };
@@ -388,68 +405,81 @@ Card.deleteMany({list: list}).exec((err, cards) => {
 router.put("/boards/board/:list", async (req, res, next) => {
     const listId = req.params.list;
     // No option to update board._id since lists won't change boards    
+    
+    // I'm not sure if we need this logic below, since the logic is happening on the front end -- Steve
 
-    if (req.body.card) {
+    // if (req.body.card) {
         const updatedTitle = req.body.title;
-        const updatedColor = req.body.color;    
-        const newCardId = req.body.card;
+        const updatedColor = req.body.color;
+        const newCards = req.body.cards;
+        console.log(newCards);
+    //     const newCardId = req.body.card;
 
-        const targetCard = await Card.findById(newCardId).exec();
+    //     const targetCard = await Card.findById(newCardId).exec();
 
-        List.findOneAndUpdate(
-            { _id: listId },
-            { title: updatedTitle,
-              color: updatedColor,
-              $push: {card: targetCard._id} },
-            { new: true},
-            (err, updatedList) => {
-                if (err) throw err;
-                Card.findByIdAndUpdate(targetCard._id,
-                    { list: listId },
-                    { new: true},
-                    (err, updatedCardWithListId) => {
-                        if (err) throw err;
-                        res.send(updatedCardWithListId)  //Can change this to the updated list if needed.
-                    }
-                );              
-            }  
-        );
-    } else { 
-        const updatedTitle = req.body.title;
-        const updatedColor = req.body.color; 
+    //     List.findOneAndUpdate(
+    //         { _id: listId },
+    //         { title: updatedTitle,
+    //           color: updatedColor,
+    //           $push: {card: targetCard._id} },
+    //         { new: true},
+    //         (err, updatedList) => {
+    //             if (err) throw err;
+    //             Card.findByIdAndUpdate(targetCard._id,
+    //                 { list: listId },
+    //                 { new: true},
+    //                 (err, updatedCardWithListId) => {
+    //                     if (err) throw err;
+    //                     res.send(updatedCardWithListId)  //Can change this to the updated list if needed.
+    //                 }
+    //             );              
+    //         }  
+    //     );
+    // } else { 
+    //     const updatedTitle = req.body.title;
+    //     const updatedColor = req.body.color; 
 
         List.findOneAndUpdate(
             { _id: listId },
             { title: updatedTitle, 
-              color: updatedColor}, 
+              color: updatedColor,
+              card: newCards}, 
             { new: true},       
             (err, updatedList) => {
                 if (err) throw err;
                 res.send(updatedList);
             }
         );
-    }    
+       
 });
 
 // CARD ROUTES //
 
-// POST a new card 
-router.post("/boards/:board/:list/card", async (req, res, next) => {
+// GET all cards on a certain board
+router.get("/boards/:board/cards", async (req, res, next) => {
+    const boardId = req.params.board;
+ 
+    const board = await Board.findById(boardId);
+    const listsOnBoard = board.lists;
+    
+    const cardsOnBoard = await Card.find({list: listsOnBoard});
+    res.send(cardsOnBoard);
+    
+});
+
+// POST a new card by title only
+router.post("/boards/board/:list/card", async (req, res, next) => {
     const listId = req.params.list;
     const cardToBeAdded = new Card();
     const targetList = await List.findById(listId).exec();
-
-    cardToBeAdded.cardTitle = req.body.title;
-    cardToBeAdded.description = '';
-    cardToBeAdded.cardLabel = '';
+    cardToBeAdded.cardTitle = req.body.cardTitle;
+    cardToBeAdded.description = null;
+    cardToBeAdded.cardLabel = null;
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
+    console.log(cardToBeAdded.cardTitle);
 
-    console.log(req.body.title)
-
-    cardToBeAdded.save((err) => {
-        if(err) throw err;
-    });   
+    cardToBeAdded.save();
 
     targetList.card.push(cardToBeAdded);
     targetList.save();
@@ -499,7 +529,7 @@ router.delete("/boards/board/:list/:card", (req, res, next) => {
             { $pull: { card: card}},
             { new: true},
             (err, updatedList) => {
-                if (err) console.log("There was an error:", err);
+                if (err) console.log("There was a delete-card error:", err);
                 res.send(updatedList);
             });       
     });    
