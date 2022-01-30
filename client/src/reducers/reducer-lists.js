@@ -56,6 +56,13 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
         entries: { ...normalizedLists.entities.lists }
       }
 
+    // Need a hand here
+    case DELETE_CARD:
+      return {
+        order: state.order,
+        entries: {...state.entries, }  //filter here?
+      }
+
     default:
       return state;
   }
