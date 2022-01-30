@@ -26,7 +26,7 @@ import Auth from './components/auth/auth';
     const currentUser = useSelector(state => state.user);
     // if currentUser is true, set auth to true.
 
-    console.log(currentUser.isLoggedIn);
+    console.log('Is the user logged in?' + currentUser.isLoggedIn);
     useEffect(() => {if (currentUser.isLoggedIn) {
       setAuth(true);
     } else {

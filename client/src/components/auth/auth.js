@@ -13,17 +13,16 @@ const Auth = ({ authenticate }) => {
   
 
   //auth button handler
-  const onClick = (e) => {
+  const onClick = (e, checkUser) => {
     // dispatch(userLogin('Jango', 'Fett'));
     e.preventDefault();
     dispatch(userLogin(e.target.name.value, e.target.password.value ));
     e.target.name.value = '';
     e.target.password.value = '';
-
+    checkUser();
     // This boolean function (defined in app.js) logs in the user even if username and password are not correct.
     // authenticate();
     // navigate("home");
-  
   };
 
   useEffect(() => {
@@ -67,9 +66,7 @@ const Auth = ({ authenticate }) => {
       type="submit">Log In</SubmitButton>
 
       </Form>
-      {/* <StyledButton onClick={onClick}>Authenticate</StyledButton> */}
     </AuthContainer>
-      
   
   );
 };

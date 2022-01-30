@@ -6,52 +6,43 @@ import { Row, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { userLogout } from "../actions";
 
-
+// userLogout functionality is not working atm. When you refresh the page, it will trigger you to log in again.
 
 
 const Home = ({ logout }) => {
   const currentUser = useSelector(state => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-
-  console.log(currentUser);
-
-  const handleLogoutClick = () => {
-    // logout();
-    // navigate("auth");
-    dispatch(userLogout);
-
+ 
+  useEffect(() => {
     checkUser();
-  }
-  // dispatch logout action
-  // useEffect(() => {
-  //   checkUser();
-  // }, [currentUser.isLoggedIn]);
+  }, [currentUser.isLoggedIn]);
 
   const checkUser = () => {
-    if (currentUser.isLoggedIn) {
+    if (!currentUser.isLoggedIn) {
       logout();
       navigate("home");
     } 
   }
 
-  // map over all boards
+  // NICE-TO-DO: Display current user's boards if they have any. Was going to map over the array and print out the board IDs.
   return (
     <HomeContainer>
       <Row>
         <h1>Boards:</h1>
-        {/* {currentUser.board.map(b => {
-          return (
-          <h2>{b}</h2>
-        )}
-        )}; */}
+        {currentUser.board.length == 0 &&
+          <h2>User has no boards to display.</h2>
+        }
+        {currentUser.board.length > 0 &&
+          <h2>User has these boards:</h2>
+        }
+        );
         <Link to="/boards">Main Board</Link>
         
       </Row>
 
       <h1> Hi {currentUser.username}, you are logged in.</h1>
-      <StyledButton onClick={handleLogoutClick}>Logout</StyledButton>
+      {/* <StyledButton onClick={handleLogoutClick}>Logout</StyledButton> */}
     </HomeContainer>
   );
 };

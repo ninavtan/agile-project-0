@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { bindActionCreators } from 'redux';
 import uniqid from 'uniqid';
 import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, USER_LOGIN, USER_LOGOUT } from './types';
 const ROOT_URL = 'http://localhost:7000';
@@ -111,10 +112,8 @@ export const userLogin = (username, password) => dispatch => {
 }
 
 export const userLogout = (user) => {
-  // debugger;
-  user.isLoggedIn = false;
   return {
     type: USER_LOGOUT,
-    payload: user
+    payload: user,
   }
 };
