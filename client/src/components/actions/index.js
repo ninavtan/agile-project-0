@@ -124,15 +124,22 @@ export const updateListTitle = (list, newTitle) => {
 };
 
 export const deleteCard = (cardId) => dispatch => {
-  const url = "http://localhost:7000/boards/board/list/" + cardId;   
+  const url = "http://localhost:7000/boards/board/list/" + cardId;  
+  const request = axios.delete(url); 
 
-  axios.delete(url)
-    .then(function (response) {
-      dispatch({ type: DELETE_CARD, payload: response.data })
-    })
+  request.then(function (response) {     
+    console.log("The delete card response is " + response.data)
+    dispatch({ type: DELETE_CARD, payload: response.data })      
+  });    
+  /*
+  axios.delete(url)    
+    console.log("The delete card response is " + response.data)
+    .then(function (response) {      
+      dispatch({ type: DELETE_CARD, payload: response.data })      
+    })    
     .catch(function (error) {
       console.log("There was an error with the deleteCard action" + error);
-    });  
+    });  */
 };
 
 export const deleteList = (boardId, listId) => dispatch => {

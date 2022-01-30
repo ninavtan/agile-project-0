@@ -255,7 +255,7 @@ router.get("/:user", (req, res, next) => {
 router.get("/boards/:board", (req, res, next) => {
     const board = req.params.board;
     
-    console.log("The board Id is " + board)
+    
 
     Board.findById(board)
         .populate({
@@ -403,7 +403,7 @@ router.put("/boards/board/:list", async (req, res, next) => {
         const updatedTitle = req.body.title;
         const updatedColor = req.body.color;
         const newCards = req.body.cards;
-        console.log(newCards);
+        
     //     const newCardId = req.body.card;
 
     //     const targetCard = await Card.findById(newCardId).exec();
@@ -468,7 +468,7 @@ router.post("/boards/board/:list/card", async (req, res, next) => {
     cardToBeAdded.cardLabel = null;
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
-    console.log(cardToBeAdded.cardTitle);
+    
 
     cardToBeAdded.save();
 
@@ -515,8 +515,8 @@ router.delete("/boards/board/list/:card", (req, res, next) => {
     Card.findByIdAndDelete(card).exec((err, cardToDelete) => {
         if (err) throw err;
         // Updates the list and removes the card to delete.
-        res.status(200).send();
-    });
+        console.log("The card ID being deleted is " + cardToDelete._id)
+        res.send(cardToDelete);
     /*
         List.findOneAndUpdate(
             {_id: req.params.list},
@@ -525,8 +525,8 @@ router.delete("/boards/board/list/:card", (req, res, next) => {
             (err, updatedList) => {
                 if (err) console.log("There was a delete-card error:", err);
                 res.send(updatedList);
-            });       
-    });*/    
+            });  */     
+    });    
 });
 
 // Comment Routes //
@@ -601,7 +601,3 @@ router.delete("/boards/board/list/:card/:comment", (req, res, next) => {
 });
 
 module.exports = router;
-
-
-
-    

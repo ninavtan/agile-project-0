@@ -1,4 +1,4 @@
-import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER} from '../components/actions/types';
+import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER, DELETE_CARD} from '../components/actions/types';
 import { normalize, schema } from 'normalizr';
 
 const DEFAULT_STATE = {
@@ -31,11 +31,11 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
         entries: {...state.entries, [action.payload._id]: action.payload} 
       }
 
-    case ADD_NEW_CARD:
-    return {
-        order: state.order,
-        entries: {...state.entries, [action.payload.list]:{...state.entries[action.payload.list], card: [...state.entries[action.payload.list].card, action.payload]}}
-      }
+    case ADD_NEW_CARD:      
+      return {
+          order: state.order,
+          entries: {...state.entries, [action.payload.list]:{...state.entries[action.payload.list], card: [...state.entries[action.payload.list].card, action.payload]}}
+        }
       
     case UPDATE_LIST_TITLE:
       return {
@@ -55,13 +55,20 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
         order: [ ...normalizedLists.result],
         entries: { ...normalizedLists.entities.lists }
       }
-
-    // Need a hand here
+    
+      
+    // Delete card action.type
     case DELETE_CARD:
-      return {
-        order: state.order,
-        entries: {...state.entries, }  //filter here?
+      console.log("In the action payload card is " + action.payload.list.card)  
+      console.log("state.order = " + state.order)
+      console.log("state.entries = " + state.entries)
+      debugger;
+    return {        
+        order: state.order.filter(cardId => cardId !== action.payload._id),
+        entries: _.filter(state.entries, cardId => cardId !== action.payload._id) 
       }
+      
+    
 
     default:
       return state;

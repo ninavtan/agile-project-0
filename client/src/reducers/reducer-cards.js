@@ -1,4 +1,4 @@
-import { ADD_NEW_CARD, FETCH_CARDS } from '../components/actions/types';
+import { ADD_NEW_CARD, FETCH_CARDS, DELETE_CARD } from '../components/actions/types';
 import { normalize, schema } from 'normalizr';
 
 
@@ -14,7 +14,8 @@ export default function cardsReducer(state = DEFAULT_STATE, action) {
     
     case FETCH_CARDS:
       const normalizedCards = normalize(action.payload, [cardsSchema]);
-      return { ...normalizedCards.entities.cards }
+      return { ...normalizedCards.entities.cards }; 
+      
 
     default:
       return state; 
