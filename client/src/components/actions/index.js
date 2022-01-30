@@ -35,9 +35,14 @@ export const moveCardWithinList = (newList) => dispatch => {
     })
 };
 
-export const moveCardBetweenLists = (startList, finishList) => dispatch => {
+export const moveCardBetweenLists = (startList, finishList, movedCard) => dispatch => {
   const startListUrl = "http://localhost:7000/boards/board/" + startList._id;
   const finishListUrl = "http://localhost:7000/boards/board/" + finishList._id;
+  const boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  const cardActivityUrl = `${ROOT_URL}/boards/${boardId}/${finishList._id}/${movedCard._id}`;
+  console.log(cardActivityUrl);
+  // router.put("/boards/:board/:list/:card", (req, res, next) => {
+
 
   dispatch({type: MOVE_CARD_BETWEEN_LISTS, payload: [startList, finishList]});
 
@@ -50,6 +55,18 @@ export const moveCardBetweenLists = (startList, finishList) => dispatch => {
   .catch(function (error) {
       console.log("There was an error with the move card between lists action" + error);
     });
+
+  movedCard.activity = { change: `Card moved from ${startList.title} to ${finishList.title}`, date: new Date() }
+
+  axios.put(cardActivityUrl, {
+    cardTitle: movedCard.cardTitle,
+    description: movedCard.description,
+    cardLabel: movedCard.cardLabel,
+    activity: movedCard.activity
+  })
+  .catch(function (error) {
+    console.log('There was an error updating the card activity when moving bewteen lists: ', error)
+  })
 };
 
 export const fetchBoard = (boardId) => dispatch => {
