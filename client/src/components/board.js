@@ -7,13 +7,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
 import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard, fetchCards } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+
 
 const Board = (props) => {
   const lists = useSelector(state => state.lists.entries);
   const listOrder = useSelector(state => state.lists.order);
   const allCards = useSelector(state => state.cards);
-
+  
+  const currentUser = useSelector(state => state.user);
   const dispatch = useDispatch();
+  let history = useNavigate();
+
 
   useEffect(() => {
     dispatch(fetchBoard(props._id));
@@ -97,6 +104,10 @@ const Board = (props) => {
       setAddListInput(false);
     }
 
+    const redirectToLogin = () => {
+      history('/login');
+    }
+ 
     return (
       <ListContainer>
         <Form ref={ref} onSubmit={submitNewList}>
@@ -117,11 +128,12 @@ const Board = (props) => {
              X </CancelButton>
         </Form>
       </ListContainer>
-    );
-  }
+  )}
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Link to="/home">Home</Link>
+
       <Droppable 
         droppableId='all-lists' 
         direction="horizontal" 
@@ -165,7 +177,6 @@ justify-content: left;
 margin: 30px;
 background-color:#95bae7
 `
-
 
 const StyledButton = styled(Button)`
 margin: 8px;

@@ -7,3 +7,5 @@ export const FETCH_CARDS = 'fetch_cards';
 export const ADD_NEW_LIST = 'add_new_list';
 export const ADD_NEW_CARD = 'add_new_card';
 export const UPDATE_LIST_TITLE = 'update_list_title';
+export const USER_LOGIN = 'user_login';
+export const USER_LOGOUT = 'user_logout';
