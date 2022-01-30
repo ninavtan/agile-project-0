@@ -1,6 +1,6 @@
 import axios from 'axios';
 import uniqid from 'uniqid';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, USER_LOGIN } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, USER_LOGIN, USER_LOGOUT } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => {
@@ -25,7 +25,7 @@ export const moveCardBetweenLists = (startList, finishList) => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hardcore first board in boards array for user Jango
+  boardId = '61ef03734c98c4fee5c6706b';  // hardcode first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {
@@ -110,4 +110,11 @@ export const userLogin = (username, password) => dispatch => {
       });
 }
 
-// export const userLogout = 
+export const userLogout = (user) => {
+  // debugger;
+  user.isLoggedIn = false;
+  return {
+    type: USER_LOGOUT,
+    payload: user
+  }
+};

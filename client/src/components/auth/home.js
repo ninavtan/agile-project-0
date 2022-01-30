@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from 'styled-components';
 import { Row, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { userLogout } from "../actions";
 
 
 
-const Home = ( props ) => {
+
+const Home = ({ logout }) => {
   const currentUser = useSelector(state => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
   console.log(currentUser);
 
+  const handleLogoutClick = () => {
+    // logout();
+    // navigate("auth");
+    dispatch(userLogout);
+
+    checkUser();
+  }
   // dispatch logout action
+  // useEffect(() => {
+  //   checkUser();
+  // }, [currentUser.isLoggedIn]);
+
+  const checkUser = () => {
+    if (currentUser.isLoggedIn) {
+      logout();
+      navigate("home");
+    } 
+  }
 
   // map over all boards
   return (
@@ -27,7 +51,7 @@ const Home = ( props ) => {
       </Row>
 
       <h1> Hi {currentUser.username}, you are logged in.</h1>
-      <StyledButton onClick={props.logout}>Logout</StyledButton>
+      <StyledButton onClick={handleLogoutClick}>Logout</StyledButton>
     </HomeContainer>
   );
 };
