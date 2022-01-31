@@ -10,16 +10,6 @@ import Board from './components/board';
 import Home from './components/auth/home';
 import Auth from './components/auth/auth';
 
-// Actual Login form
-// import Login from './components/login';
-
-// // import { createStore, applyMiddleware, compose } from "redux";
-// // import thunk from 'redux-thunk';
-// // Redux Devtools Configuration
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thunk)));
-
   const App = () => {
     const [auth, setAuth] = useState(null);
 

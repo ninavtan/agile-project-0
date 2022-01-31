@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, USER_LOGIN, USER_LOGOUT } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, USER_LOGIN, USER_LOGOUT, FETCH_USER_BOARDS } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
@@ -53,7 +53,7 @@ export const moveCardBetweenLists = (startList, finishList) => dispatch => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  boardId = '61ef03734c98c4fee5c6706b';  // hard code ID of first board in boards array for user Jango
 
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
@@ -75,6 +75,18 @@ export const fetchBoards = () => dispatch => {
       console.log(error);
     });
 };
+
+export const fetchUserBoards = (userId) => dispatch => {
+  const url = `${ROOT_URL}/${userId}`;
+  axios.get(url)
+    .then(function (response) {
+      dispatch({ type: FETCH_USER_BOARDS, payload: response.data });
+    })
+    .catch(function (error) {
+      console.log(`There was an error fetching ${userId} boards` + error);
+    });
+
+}
 
 export const fetchCards = (boardId) => dispatch => {
   boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango

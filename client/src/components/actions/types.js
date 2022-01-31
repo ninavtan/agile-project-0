@@ -9,3 +9,4 @@ export const ADD_NEW_CARD = 'add_new_card';
 export const UPDATE_LIST_TITLE = 'update_list_title';
 export const USER_LOGIN = 'user_login';
 export const USER_LOGOUT = 'user_logout';
+export const FETCH_USER_BOARDS = 'fetch_user_boards';
