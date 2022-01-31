@@ -21,8 +21,8 @@ export default function cardsReducer(state = DEFAULT_STATE, action) {
       return Object.assign({}, state, filteredCards);
 
     case MOVE_CARD_BETWEEN_LISTS:
-      console.log(action.payload);
-      return state;
+      const movedCardId = action.payload[2]._id;
+      return {...state, [movedCardId]: action.payload[2]};
 
     default:
       return state; 

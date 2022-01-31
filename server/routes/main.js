@@ -500,7 +500,7 @@ router.get("/boards/:board/:list/:card", (req, res, next) => {
 // PUT(edit) a pre-existing card 
 router.put("/boards/:board/:list/:card", (req, res, next) => {
     const card = req.params.card;
-
+    const updatedList = req.body.list;
     const updatedTitle = req.body.title;
     const updatedDesc = req.body.description;
     const updatedLabel = req.body.label;
@@ -512,6 +512,7 @@ router.put("/boards/:board/:list/:card", (req, res, next) => {
         { cardTitle: updatedTitle,
         description: updatedDesc, 
         cardLabel: updatedLabel,
+        list: updatedList,
         $push: { activity: newActivity } },
         { new: true},
         (err, updatedCard) => {

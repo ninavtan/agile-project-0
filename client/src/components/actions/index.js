@@ -3,7 +3,7 @@ import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETC
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
-  const boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
 
   dispatch({ type: UPDATE_LIST_ORDER, payload: newListOrder })
@@ -38,13 +38,14 @@ export const moveCardWithinList = (newList) => dispatch => {
 export const moveCardBetweenLists = (startList, finishList, movedCard) => dispatch => {
   const startListUrl = "http://localhost:7000/boards/board/" + startList._id;
   const finishListUrl = "http://localhost:7000/boards/board/" + finishList._id;
-  const boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const cardActivityUrl = `${ROOT_URL}/boards/${boardId}/${finishList._id}/${movedCard._id}`;
-  console.log(cardActivityUrl);
+  // console.log(cardActivityUrl);
   // router.put("/boards/:board/:list/:card", (req, res, next) => {
+  
+  movedCard.list = finishList._id;
 
-
-  dispatch({type: MOVE_CARD_BETWEEN_LISTS, payload: [startList, finishList]});
+  dispatch({type: MOVE_CARD_BETWEEN_LISTS, payload: [startList, finishList, movedCard]});
 
   axios.put(startListUrl, {cards: startList.card})
   .catch(function (error) {
@@ -56,9 +57,11 @@ export const moveCardBetweenLists = (startList, finishList, movedCard) => dispat
       console.log("There was an error with the move card between lists action" + error);
     });
 
+
   movedCard.activity = { change: `Card moved from ${startList.title} to ${finishList.title}`, date: new Date() }
 
   axios.put(cardActivityUrl, {
+    list: movedCard.list,
     cardTitle: movedCard.cardTitle,
     description: movedCard.description,
     cardLabel: movedCard.cardLabel,
@@ -71,7 +74,7 @@ export const moveCardBetweenLists = (startList, finishList, movedCard) => dispat
 
 export const fetchBoard = (boardId) => dispatch => {
 
-boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
 
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
@@ -96,7 +99,7 @@ export const fetchBoards = () => dispatch => {
 
 export const fetchCards = (boardId) => dispatch => {
 
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
 
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)

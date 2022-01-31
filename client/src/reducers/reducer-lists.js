@@ -61,7 +61,6 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
     // Delete card action.type
     case DELETE_CARD:
       const listId = action.payload.list;
-      
       const filteredCardIds = state.entries[listId].card.filter(card => card._id !== action.payload._id);
     return {
         order: state.order,
