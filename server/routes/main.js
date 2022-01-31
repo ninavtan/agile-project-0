@@ -516,16 +516,15 @@ router.delete("/boards/board/list/:card", (req, res, next) => {
         if (err) throw err;
         // Updates the list and removes the card to delete.
         console.log("The card ID being deleted is " + cardToDelete._id)
-        res.send(cardToDelete);
-    /*
+    
         List.findOneAndUpdate(
             {_id: req.params.list},
             { $pull: { card: card}},
             { new: true},
             (err, updatedList) => {
                 if (err) console.log("There was a delete-card error:", err);
-                res.send(updatedList);
-            });  */     
+                res.send(cardToDelete);
+            });   
     });    
 });
 

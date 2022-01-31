@@ -3,7 +3,7 @@ import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETC
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
-  const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  const boardId = '61ee0ddbf8f753e602f14f6c';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
 
   dispatch({ type: UPDATE_LIST_ORDER, payload: newListOrder })
@@ -53,7 +53,7 @@ export const moveCardBetweenLists = (startList, finishList) => dispatch => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61f07ffb92e6bb4bf1a7d269';  // hard code ID of first board in boards array for user Jango
+  boardId = '61ee0ddbf8f753e602f14f6c';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {
@@ -76,7 +76,7 @@ export const fetchBoards = () => dispatch => {
 };
 
 export const fetchCards = (boardId) => dispatch => {
-  boardId = '61f07ffb92e6bb4bf1a7d269';  // hard code ID of first board in boards array for user Jango
+  boardId = '61ee0ddbf8f753e602f14f6c';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)
   .then(function (response) {
@@ -127,19 +127,16 @@ export const deleteCard = (cardId) => dispatch => {
   const url = "http://localhost:7000/boards/board/list/" + cardId;  
   const request = axios.delete(url); 
 
-  request.then(function (response) {     
+  request
+  .then(function (response) {     
     console.log("The delete card response is " + response.data)
-    dispatch({ type: DELETE_CARD, payload: response.data })      
-  });    
-  /*
-  axios.delete(url)    
-    console.log("The delete card response is " + response.data)
-    .then(function (response) {      
-      dispatch({ type: DELETE_CARD, payload: response.data })      
-    })    
-    .catch(function (error) {
-      console.log("There was an error with the deleteCard action" + error);
-    });  */
+    dispatch({ type: DELETE_CARD, payload: response.data })
+  })
+  .catch(function (error) {
+    console.log("There was an error with the deleteCard action" + error);
+  });   
+      
+
 };
 
 export const deleteList = (boardId, listId) => dispatch => {
