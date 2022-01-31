@@ -61,7 +61,7 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
       debugger;
       
       return {
-      order: state.order.filter(listRemoved => listRemoved._id !== action.payload._id),
+      order: state.order.filter(listRemoved => listRemoved !== action.payload._id),
       entries: state.entries //Just a place holder until I figure out why .filter isn't working.
     }
     
