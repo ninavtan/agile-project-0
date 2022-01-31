@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT, USER_LOGIN, USER_LOGOUT } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
@@ -70,7 +70,9 @@ export const moveCardBetweenLists = (startList, finishList, movedCard) => dispat
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+
+boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {
@@ -93,7 +95,9 @@ export const fetchBoards = () => dispatch => {
 };
 
 export const fetchCards = (boardId) => dispatch => {
+
   boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)
   .then(function (response) {
@@ -148,3 +152,81 @@ export const updateListTitle = (list, newTitle) => dispatch => {
       console.log("There was an error with the updateListTitle action: ", error);
     })
 };
+
+export const userLogin = (username, password) => dispatch => {
+  const url = `${ROOT_URL}/login`;
+
+  const data = {
+    username: username,
+    password: password
+  }
+  
+    axios.post(url, data)
+      .then(function (response) {
+        console.log(response.data.board);
+        dispatch({type: USER_LOGIN, payload: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
+export const userLogout = (user) => {
+  return {
+    type: USER_LOGOUT,
+    payload: user,
+  }
+};
+
+export const deleteCard = (cardId) => dispatch => {
+  const url = "http://localhost:7000/boards/board/list/" + cardId;  
+  const request = axios.delete(url); 
+
+  request
+  .then(function (response) {     
+    console.log("The delete card response is " + response.data)
+    dispatch({ type: DELETE_CARD, payload: response.data })
+  })
+  .catch(function (error) {
+    console.log("There was an error with the deleteCard action" + error);
+  });   
+      
+
+};
+
+export const deleteList = (boardId, listId) => dispatch => {
+  const url = "http://localhost:7000/boards/" + boardId + "/" + listId;
+
+  axios.delete(url)
+    .then(function (response) {
+      dispatch({ type: DELETE_LIST, payload: response.data })
+    })
+    .catch(function (error) {
+      console.log("There was an error with the deleteList action" + error);
+    }); 
+};
+
+export const deleteBoard = (boardId) => dispatch => {
+  const url = "http://localhost:7000/boards/" + boardId;
+
+  axios.delete(url)
+    .then(function (response) {
+      dispatch({ type: DELETE_BOARD, payload: response.data })
+    })
+    .catch(function (error) {
+      console.log("There was an error with the deleteBoard action" + error);
+    }); 
+};
+
+export const deleteComment = (cardId, commentId) => dispatch => {
+  const url = "http://localhost:7000/boards/board/list/" + cardId + "/" + commentId;
+
+  axios.delete(url)
+    .then(function (response) {
+      dispatch({ type: DELETE_COMMENT, payload: response.data })
+    })
+    .catch(function (error) {
+      console.log("There was an error with the deleteComment action" + error);
+    }); 
+};
+

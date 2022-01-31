@@ -5,7 +5,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Form , Button} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
 import { useDispatch } from 'react-redux';
-import { updateListTitle, addNewCard } from './actions';
+import { updateListTitle, addNewCard, deleteList } from './actions';
 import Card from './card';
 
 
@@ -59,9 +59,16 @@ const List = (props) => {
     }
   };
 
+  // code to dispatch the deleteList action
+  const DeleteList = () => {
+    const listId = props.list._id;
+    const boardId = props.list.board;    
+    dispatch(deleteList(boardId, listId));
+  };
+
   return (
     <Draggable draggableId={props.list._id} index={props.index}>
-      {(provided, snapshot) => (
+      {(provided, snapshot) => (        
         <Container 
           {...provided.draggableProps} 
           ref={provided.innerRef}
@@ -70,6 +77,7 @@ const List = (props) => {
            <Title {...provided.dragHandleProps} onClick={handleClickTitle}>
             { showTitleInput ? <TitleInput /> : props.list.title }
            </Title>
+           
           <Droppable 
             droppableId={props.list._id}
             type="card"
@@ -83,12 +91,13 @@ const List = (props) => {
                 {props.list.card.map((card, index) => (
                   <Card key={card._id} card={card} index={index} />
                 ))}
-                {provided.placeholder}
+                {provided.placeholder}                
               </CardList>
             )}
           </Droppable>
           { showAddCardInput ? <AddCardInput autofocus/> : 
             <AddCardButton onClick={addCardClickHandler}>+ Add a Card</AddCardButton>}
+            <CancelButton onClick={DeleteList}>X</CancelButton>
         </Container>
       )}
     </Draggable>

@@ -32,8 +32,12 @@ app.use((req, res, next) => {
 
 
 const mainRoutes = require("./routes/main");
+var authRouter = require('./routes/auth');
+
 
 app.use(mainRoutes);
+app.use('/', authRouter);
+
 
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));

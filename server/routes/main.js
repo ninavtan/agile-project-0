@@ -227,17 +227,26 @@ router.get("/push-fake-data", async (req, res, next) => {
 
 // Board Routes //
 
-/*
-router.get("/login", (req, res, next) => {
+
+router.post("/login", (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    User.findOne(
-        {username: }
-    )
+    User.findOne({ username: username })
+    .exec((err, user) => {
+        if (err) return next(err);
+        // if user is found, check if their password matches the password
+        if (user && user.password == password) {
+            res.send(user);
+        } else if (user && user.password !== password) {
+            res.send(401, 'Wrong password.')
+        } else if (!user) {
+            res.send(401, 'No user found.')
+        }
+    })
 })
 
-*/
+
 // GET all boards for the logged in user 
 router.get("/:user", (req, res, next) => {   
     const userId = req.params.user;
@@ -255,7 +264,7 @@ router.get("/:user", (req, res, next) => {
 router.get("/boards/:board", (req, res, next) => {
     const board = req.params.board;
     
-    console.log("The board Id is " + board)
+    
 
     Board.findById(board)
         .populate({
@@ -403,7 +412,7 @@ router.put("/boards/board/:list", async (req, res, next) => {
         const updatedTitle = req.body.title;
         const updatedColor = req.body.color;
         const newCards = req.body.cards;
-        console.log(newCards);
+        
     //     const newCardId = req.body.card;
 
     //     const targetCard = await Card.findById(newCardId).exec();
@@ -512,20 +521,22 @@ router.put("/boards/:board/:list/:card", (req, res, next) => {
 });
 
 //DELETE a pre-existing card 
-router.delete("/boards/board/:list/:card", (req, res, next) => {
+router.delete("/boards/board/list/:card", (req, res, next) => {
     const card = req.params.card;
 
     Card.findByIdAndDelete(card).exec((err, cardToDelete) => {
         if (err) throw err;
         // Updates the list and removes the card to delete.
+        console.log("The card ID being deleted is " + cardToDelete._id)
+    
         List.findOneAndUpdate(
             {_id: req.params.list},
             { $pull: { card: card}},
             { new: true},
             (err, updatedList) => {
                 if (err) console.log("There was a delete-card error:", err);
-                res.send(updatedList);
-            });       
+                res.send(cardToDelete);
+            });   
     });    
 });
 
@@ -601,7 +612,3 @@ router.delete("/boards/board/list/:card/:comment", (req, res, next) => {
 });
 
 module.exports = router;
-
-
-
-    
