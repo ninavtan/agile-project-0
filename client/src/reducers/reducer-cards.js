@@ -1,5 +1,6 @@
 import { ADD_NEW_CARD, FETCH_CARDS, DELETE_CARD } from '../components/actions/types';
 import { normalize, schema } from 'normalizr';
+import { _ } from 'lodash';
 
 
 const DEFAULT_STATE = {};
@@ -14,7 +15,11 @@ export default function cardsReducer(state = DEFAULT_STATE, action) {
     
     case FETCH_CARDS:
       const normalizedCards = normalize(action.payload, [cardsSchema]);
-      return { ...normalizedCards.entities.cards }; 
+      return { ...normalizedCards.entities.cards };
+    
+      case DELETE_CARD:
+        debugger;
+        return  _.filter(...state, card => card._id !== action.payload._id)
       
 
     default:

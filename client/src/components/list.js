@@ -22,7 +22,7 @@ const List = (props) => {
     const [newCardTitle, setNewCardTitle] = useState('');
     const listForNewCard = props.list._id;
 
-    console.log(listForNewCard);
+    
     const submitNewCard = (e) => {      
       e.preventDefault();
       dispatch(addNewCard(newCardTitle, listForNewCard));

@@ -58,17 +58,15 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
     
       
     // Delete card action.type
-    case DELETE_CARD:
-      console.log("In the action payload card is " + action.payload.list.card)  
-      console.log("state.order = " + state.order)
-      console.log("state.entries = " + state.entries)
-      debugger;
+    case DELETE_CARD:     
+     //debugger;
     return {        
-        order: state.order.filter(cardId => cardId !== action.payload._id),
-        entries: _.filter(state.entries, cardId => cardId !== action.payload._id) 
+        order: state.order,               
+        //entries: {...state.entries, [action.payload.list]: {card: _.filter(state.entries[action.payload.list.card], cardId => cardId !== action.payload._id)}}
+        entries: {...state.entries, [action.payload.list]: {card: [action.payload.list].card.filter(card => card._id !== action.payload._id)}}
+        
       }
-      
-    
+        
 
     default:
       return state;

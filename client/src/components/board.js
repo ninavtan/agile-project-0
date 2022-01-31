@@ -15,7 +15,7 @@ const Board = (props) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect( () => {
     dispatch(fetchBoard(props._id));
     dispatch(fetchCards(props._id));
   }, [dispatch, props._id]);
@@ -80,7 +80,7 @@ const Board = (props) => {
   }
 
   //New List Input
-  const currentBoardID = "61ee0ddbf8f753e602f14f6b"; // Board Id is hardcoded. Need to update.
+  const currentBoardID = "61f73d73ad74bed14fd5c714"; // Board Id is hardcoded. Need to update.
   const [showAddListInput, setAddListInput] = React.useState(false);
   const addListClickHandler = () => setAddListInput(true);
   const cancelAddList = () => setAddListInput(false);

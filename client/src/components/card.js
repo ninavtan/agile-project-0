@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
@@ -7,10 +7,15 @@ import { deleteCard } from './actions';
 
 const CardDetailView  = (props) => {
   const dispatch = useDispatch();
+  
 
+  
+  
+  
   const DeleteCard = () => {
     const cardId = props.id;
-    dispatch(deleteCard(cardId));    
+    dispatch(deleteCard(cardId));  
+    
   };
   
   
@@ -42,6 +47,7 @@ const CardDetailView  = (props) => {
 const Card = (props) => {
   const [detailViewShow, setDetailViewShow] = React.useState(false);
   
+  //useEffect(() => {}, []);
   
   return (
     <>
