@@ -477,7 +477,8 @@ router.post("/boards/board/:list/card", async (req, res, next) => {
     cardToBeAdded.cardLabel = null;
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
-    
+    cardToBeAdded.activity = [];
+    console.log(cardToBeAdded.cardTitle);
 
     cardToBeAdded.save();
 
@@ -503,13 +504,15 @@ router.put("/boards/:board/:list/:card", (req, res, next) => {
     const updatedTitle = req.body.title;
     const updatedDesc = req.body.description;
     const updatedLabel = req.body.label;
+    const newActivity = req.body.activity;
     // Update to comment value will occur with Comment POST route
 
     Card.findOneAndUpdate(
         { _id: card },
         { cardTitle: updatedTitle,
         description: updatedDesc, 
-        cardLabel: updatedLabel },
+        cardLabel: updatedLabel,
+        $push: { activity: newActivity } },
         { new: true},
         (err, updatedCard) => {
             if (err) throw err;

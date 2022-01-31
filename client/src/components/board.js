@@ -69,6 +69,7 @@ const Board = (props) => {
 
     //Moving a card to a different list
     const startListCards = Array.from(lists[startList._id].card);
+    const movedCard = startListCards[source.index];
     startListCards.splice(source.index, 1);
     const newStartList = {
       ...startList,
@@ -82,7 +83,7 @@ const Board = (props) => {
       card: finishListCards,
     };
 
-    dispatch(moveCardBetweenLists(newStartList, newFinishList));
+    dispatch(moveCardBetweenLists(newStartList, newFinishList, movedCard));
     return;
   }
 
