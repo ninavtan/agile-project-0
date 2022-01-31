@@ -11,3 +11,5 @@ export const DELETE_CARD = 'delete_card';
 export const DELETE_LIST = 'delete_list';
 export const DELETE_COMMENT = 'delete_comment';
 export const DELETE_BOARD = 'delete_board';
+export const USER_LOGIN = 'user_login';
+export const USER_LOGOUT = 'user_logout';

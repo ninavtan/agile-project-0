@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT, USER_LOGIN, USER_LOGOUT } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
-  const boardId = '61ee0ddbf8f753e602f14f6c';  // hard code ID of first board in boards array for user Jango
+  const boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
 
   dispatch({ type: UPDATE_LIST_ORDER, payload: newListOrder })
@@ -53,7 +53,9 @@ export const moveCardBetweenLists = (startList, finishList) => dispatch => {
 };
 
 export const fetchBoard = (boardId) => dispatch => {
-  boardId = '61ee0ddbf8f753e602f14f6c';  // hard code ID of first board in boards array for user Jango
+
+boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
     .then(function (response) {
@@ -76,7 +78,9 @@ export const fetchBoards = () => dispatch => {
 };
 
 export const fetchCards = (boardId) => dispatch => {
-  boardId = '61ee0ddbf8f753e602f14f6c';  // hard code ID of first board in boards array for user Jango
+
+  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)
   .then(function (response) {
@@ -115,11 +119,45 @@ export const addNewCard = (newCardTitle, listId) => dispatch => {
 
 };
 
-export const updateListTitle = (list, newTitle) => {
+export const updateListTitle = (list, newTitle) => dispatch => {
+  const url = `${ROOT_URL}/boards/board/${list._id}`;
   list.title = newTitle;
+
+  axios.put(url, {
+    title: list.title,
+    color: list.color,
+    card: list.card
+    })
+    .then(function (response) {
+      dispatch( { type: UPDATE_LIST_TITLE, payload: list })
+    })
+    .catch(function (error) {
+      console.log("There was an error with the updateListTitle action: ", error);
+    })
+};
+
+export const userLogin = (username, password) => dispatch => {
+  const url = `${ROOT_URL}/login`;
+
+  const data = {
+    username: username,
+    password: password
+  }
+  
+    axios.post(url, data)
+      .then(function (response) {
+        console.log(response.data.board);
+        dispatch({type: USER_LOGIN, payload: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
+export const userLogout = (user) => {
   return {
-    type: UPDATE_LIST_TITLE,
-    payload: list
+    type: USER_LOGOUT,
+    payload: user,
   }
 };
 
@@ -174,5 +212,4 @@ export const deleteComment = (cardId, commentId) => dispatch => {
       console.log("There was an error with the deleteComment action" + error);
     }); 
 };
-
 
