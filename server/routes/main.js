@@ -368,29 +368,33 @@ router.post("/boards/:board/list", async (req, res, next) => {
 router.delete("/boards/:board/:list", (req, res, next) => {    
     const list = req.params.list;
     const board = req.params.board;    
+            
+    Board.findOneAndUpdate(
+        {_id: board},
+        { $pull: { lists: list}}, 
+        { new: true}, 
+        (err, result) => {
+            if (err) {
+                console.log("List delete error");
+                res.sendStatus(500);
+                return;
+            };
+            
+            
+        }
+    );
     
     List.findByIdAndRemove(list, 
         { new: true},
-        (err, matchingList) => {
+        (err, listToDelete) => {
         if (err) {
             console.log("list delete error");
             res.sendStatus(500);
             return;
         };
-        
-        Board.findOneAndUpdate(
-            {_id: board},
-            { $pull: { lists: list}}, 
-            { new: true}, 
-            (err, result) => {
-                if (err) {
-                    console.log("List delete error");
-                    res.sendStatus(500);
-                    return;
-                };
-                return res.send(result);
-            }
-        );
+        console.log(listToDelete)
+        return res.send(listToDelete);
+
 // Find the cards associated with list to delete.
 /*
 Card.deleteMany({list: list}).exec((err, cards) => {

@@ -1,4 +1,4 @@
-import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER, DELETE_CARD} from '../components/actions/types';
+import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER, DELETE_CARD, DELETE_LIST} from '../components/actions/types';
 import { normalize, schema } from 'normalizr';
 import _ from 'lodash';
 
@@ -57,12 +57,21 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
         entries: { ...normalizedLists.entities.lists }
       }
     
+    case DELETE_LIST:      
+      debugger;
+      
+      return {
+      order: state.order.filter(listRemoved => listRemoved._id !== action.payload._id),
+      entries: state.entries //Just a place holder until I figure out why .filter isn't working.
+    }
+    
       
     // Delete card action.type
     case DELETE_CARD:
       const listId = action.payload.list;
       const filteredCardIds = state.entries[listId].card.filter(card => card._id !== action.payload._id);
-    return {
+    
+      return {
         order: state.order,
         entries: {...state.entries, [listId]: {...state.entries[listId], card: filteredCardIds}}
       }
