@@ -5,7 +5,7 @@ import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETC
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
-  const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+   const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
 
   dispatch({ type: UPDATE_LIST_ORDER, payload: newListOrder })
@@ -78,7 +78,7 @@ export const fetchBoard = (boardId) => dispatch => {
 
   // boardId = '61ef03734c98c4fee5c6706b';  // hard code ID of first board in boards array for user Jango
 
-boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+// boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
 
 
   const url = `${ROOT_URL}/boards/${boardId}`;
@@ -116,7 +116,7 @@ export const fetchUserBoards = (userId) => dispatch => {
 
 export const fetchCards = (boardId) => dispatch => {
 
-  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  // boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
 
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)
@@ -129,7 +129,7 @@ export const fetchCards = (boardId) => dispatch => {
 };
 
 export const addNewList = (boardId, newListTitle) => dispatch => {
-  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  // boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = "http://localhost:7000/boards/" + boardId + "/list";  
   const newList = { title: newListTitle }
   

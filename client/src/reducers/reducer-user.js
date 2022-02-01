@@ -11,7 +11,7 @@ const DEFAULT_STATE = {
 export default function userReducer(state = DEFAULT_STATE, action) {
   switch(action.type) {
     case USER_LOGIN:
-      console.log(action.payload);
+      // console.log(action.payload);
       return { ...state, ...action.payload, isLoggedIn: true }
 
 //     case USER_LOGOUT:

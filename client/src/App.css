@@ -47,12 +47,24 @@ body {
   color: white;
 }
 
-#userBoardContainer:nth-child(1) {
+#userBoardContainer:nth-child(2) {
   background-color: green;
   display: inline-block;
 }
 
-#userBoardContainer:nth-child(2) {
+#userBoardContainer:nth-child(3) {
   background-color: blue;
   display: inline-block;
+}
+
+#boardContainer {
+  margin: 1em;
+  width: 100vw;
+  text-align: center;
+}
+
+.boardLinks {
+  text-decoration: none;
+  color: white;
+  font-size: large;
 }

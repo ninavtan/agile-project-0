@@ -7,8 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
 import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard, fetchCards } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
-import { useNavigate } from "react-router-dom";
 import NavBar from './navbar.js';
+import { useNavigate, Outlet } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 
 
@@ -20,12 +21,21 @@ const Board = (props) => {
   const currentUser = useSelector(state => state.user);
   const dispatch = useDispatch();
   let history = useNavigate();
+  let params = useParams();
+  console.log(params.boardId);
 
+// uncomment if this doesn't work
+  // useEffect(() => {
+  //   dispatch(fetchBoard(props._id));
+  //   dispatch(fetchCards(props._id));
+  // }, [dispatch, props._id]);
 
   useEffect(() => {
-    dispatch(fetchBoard(props._id));
-    dispatch(fetchCards(props._id));
-  }, [dispatch, props._id]);
+    // debugger;
+    dispatch(fetchBoard(params.boardId));
+    dispatch(fetchCards(params.boardId));
+  }, [dispatch, params.boardId]);
+
   
   const onDragEnd = result => {
     const { destination, source, draggableId, type } = result;
