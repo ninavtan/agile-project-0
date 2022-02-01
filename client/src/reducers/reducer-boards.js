@@ -16,29 +16,13 @@ export default function boardsReducer(state = DEFAULT_STATE, action) {
 
     case FETCH_USER_BOARDS:
       console.log(action.payload);
-      // debugger;
-      // action.payload.map(board => {
-        // debugger;
-        // return [...state.allBoards, action.payload]
-        // return {...state, allBoards: [...action.payload]}
-        // need to add action.payload to the allBoards array
-        // return Object.assign({}, state, {allBoards: board}
 
         return {
           ...state,
             allBoards: [
               ...action.payload
             ]
-        }
-      // console.log(typeof state);
-      //   // const newState = state.allBoards.slice();
-      //   // newState.push(action.payload);
-      //   // return newState;
-
-      //   return state;
-        
-      // })
-      
+        }      
 
     default:
       return state;

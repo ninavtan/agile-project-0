@@ -15,12 +15,7 @@ import NavBar from './components/navbar';
     // if currentUser is true, set auth to true.
 
     console.log('Is the user logged in?' + currentUser.isLoggedIn);
-    // useEffect(() => {if (currentUser.isLoggedIn) {
-    //   setAuth(true);
-    // } else {
-    //   setAuth(false);
-    // }}, []);
-
+   
     // Gets the 'user' item from localStorage to check if the session is persisting.
     useEffect(() => {
       let user = localStorage.getItem("user");
@@ -47,31 +42,17 @@ import NavBar from './components/navbar';
               path="/boards"
               element={<Home logout={() => setAuth(false)} />}
             >
-            
                <Route path=":boardId" element={<Board />} />
-              
-
             </Route>
-            {/* <Route path="/boards" element={<BoardsHome />} > */}
-             
-            
           </>
         )}
+
         <Route path="*" 
-        //  element={NoMatch()}
-        
-        element=
-        {<Navigate to={auth ? "/boards" : "/auth"}/>}
-        // element={
-        //   <main style={{ padding: "1rem" }}>
-        //     <p>There's nothing here!</p>
-        //   </main>
-        // }
+          element=
+            {<Navigate to={auth ? "/boards" : "/auth"}/>}
          />
        
-
       </Routes>
-  
 
     );
   };

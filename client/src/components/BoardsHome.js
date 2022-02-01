@@ -1,12 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 
 const BoardsHome = () => {
   const boards = useSelector(state => state.boards.allBoards);
-
-  // console.log(boards);
 
   return (
     <div>

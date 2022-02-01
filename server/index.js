@@ -2,9 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require('path');
+const keys = require('./config/keys');
 
 
-mongoose.connect("mongodb://localhost/agile", {
+
+// mongoose.connect("mongodb://localhost/agile", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+
+// DB Setup
+mongoose.connect(keys.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
