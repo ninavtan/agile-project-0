@@ -6,6 +6,9 @@ import { createStore, applyMiddleware, compose } from "redux";
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 import { Provider, useSelector } from 'react-redux';
+import { Container } from 'react-bootstrap';
+import Board from './components/board';
+import NavBar from './components/navbar';
 
 // Redux Devtools Configuration
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,7 +20,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+          <App />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
