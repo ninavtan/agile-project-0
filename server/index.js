@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require('path');
-const keys = require('./config/keys');
+// const keys = require('./config/keys');
 
 // if (process.env.NODE_ENV === "production") {
 //   // Express will serve up production assets
@@ -17,16 +17,16 @@ const keys = require('./config/keys');
 //   });
 // }
 
-// mongoose.connect("mongodb://localhost/agile", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
-// DB Setup
-mongoose.connect(keys.MONGODB_URI, {
+mongoose.connect("mongodb://localhost/agile", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+// DB Setup
+// mongoose.connect(keys.MONGODB_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 const app = express();
 
