@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteCard } from './actions';
 import Comment from './comment';
 
@@ -34,7 +34,6 @@ const CardDetailView  = (props) => {
         { props.description ? props.description : "Add a more detailed description..." }
         </p>
         <h6>Comments</h6>
-        {/* {props.firstComment} */}
         <Comment comments={props.comments}/>
         <Button variant="danger" onClick={DeleteCard} className="float-end">Delete Card</Button>
       </Modal.Body>

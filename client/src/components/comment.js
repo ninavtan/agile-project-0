@@ -5,11 +5,7 @@ const Comment = (props) => {
   return (
     <>
       {props.comments.length > 0 ? <CommentStyle> This card has comments </CommentStyle> : ''}
-
     </>
-        // <CommentStyle>
-        //   {props.comments.length > 0 ? 'This is a comment' : 'No comments for this card yet'}
-        // </CommentStyle>
   );
 }
 
