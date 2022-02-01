@@ -1,19 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
-import { deleteCard } from './actions';
+import { deleteCard, addComment } from './actions';
 import Comment from './comment';
 
 const CardDetailView  = (props) => {
   const dispatch = useDispatch();
+  const [commentText, setCommentText] = useState('');
 
   const DeleteCard = () => {
     const cardId = props.id;
     dispatch(deleteCard(cardId));    
   };
+
+  const AddComment = () => {
+    console.log(props)
+    const cardId = props.id;
+    const username = "PlaceHolder";
+    dispatch(addComment(cardId, username, commentText));
+  };
   
+
   
   
   return (
@@ -35,6 +45,8 @@ const CardDetailView  = (props) => {
         </p>
         <h6>Comments</h6>
         <Comment comments={props.comments}/>
+        <CommentTextInput onChange={e => setCommentText(e.target.value)}className='float_left'></CommentTextInput>
+        <Button onClick={AddComment} className="float_center">Add Comment</Button>
         <Button variant="danger" onClick={DeleteCard} className="float-end">Delete Card</Button>
       </Modal.Body>
 
@@ -122,3 +134,17 @@ background-color: ${props => (props.isDragging ? '#f6f6f6' : 'none')};
 -ms-user-select: none;
 user-select: none;
 `;
+
+const CommentTextInput = styled.input`
+border: 1px solid lightgrey;
+border-radius: 5px;
+padding: 8px;
+font-family: sans-serif;
+color: #172b4d;
+font-weight:800; 
+background-color:white;
+margin-left: -9px;
+margin-top: -12px;
+margin-bottom: -12px;
+margin-right: -18px;
+`

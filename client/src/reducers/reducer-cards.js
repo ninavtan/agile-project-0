@@ -1,4 +1,4 @@
-import { ADD_NEW_CARD, FETCH_CARDS, DELETE_CARD, MOVE_CARD_BETWEEN_LISTS, DELETE_LIST } from '../components/actions/types';
+import { ADD_NEW_CARD, FETCH_CARDS, DELETE_CARD, MOVE_CARD_BETWEEN_LISTS, DELETE_LIST, ADD_COMMENT } from '../components/actions/types';
 import { normalize, schema } from 'normalizr';
 import _ from 'lodash';
 
@@ -28,6 +28,10 @@ export default function cardsReducer(state = DEFAULT_STATE, action) {
     case MOVE_CARD_BETWEEN_LISTS:
       const movedCardId = action.payload[2]._id;
       return {...state, [movedCardId]: action.payload[2]};
+    
+    case ADD_COMMENT:
+      console.log(action.payload)
+      return state;
 
     default:
       return state; 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT, USER_LOGIN, USER_LOGOUT } from './types';
+import { ADD_COMMENT, UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT, USER_LOGIN, USER_LOGOUT } from './types';
 const ROOT_URL = 'http://localhost:7000';
 
 export const updateListOrder = (newListOrder) => dispatch =>{
@@ -74,7 +74,7 @@ export const moveCardBetweenLists = (startList, finishList, movedCard) => dispat
 
 export const fetchBoard = (boardId) => dispatch => {
 
-boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+boardId = '61f07ffb92e6bb4bf1a7d269';  // hard code ID of first board in boards array for user Jango
 
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
@@ -99,7 +99,7 @@ export const fetchBoards = () => dispatch => {
 
 export const fetchCards = (boardId) => dispatch => {
 
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  boardId = '61f07ffb92e6bb4bf1a7d269';  // hard code ID of first board in boards array for user Jango
 
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)
@@ -112,7 +112,7 @@ export const fetchCards = (boardId) => dispatch => {
 };
 
 export const addNewList = (boardId, newListTitle) => dispatch => {
-  boardId = '61edc0a6aedb0b9422cf6ddf';  // hard code ID of first board in boards array for user Jango
+  boardId = '61f07ffb92e6bb4bf1a7d269';  // hard code ID of first board in boards array for user Jango
   const url = "http://localhost:7000/boards/" + boardId + "/list";  
   const newList = { title: newListTitle }
   
@@ -221,6 +221,19 @@ export const deleteBoard = (boardId) => dispatch => {
     .catch(function (error) {
       console.log("There was an error with the deleteBoard action" + error);
     }); 
+};
+
+export const addComment = (cardId, commentUsername, commentText) => dispatch => {
+  const url = "http://localhost:7000/boards/" + cardId + "/comment";
+  const newComment = {username: commentUsername, text: commentText};
+
+  axios.post(url, newComment)
+    .then(function (response) {
+      dispatch({ type: ADD_COMMENT, payload: response.data })
+    })
+    .catch(function (error) {
+      console.log("There was an error with the addComment action" + error);
+    });
 };
 
 export const deleteComment = (cardId, commentId) => dispatch => {

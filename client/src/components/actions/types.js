@@ -9,6 +9,7 @@ export const ADD_NEW_CARD = 'add_new_card';
 export const UPDATE_LIST_TITLE = 'update_list_title';
 export const DELETE_CARD = 'delete_card';
 export const DELETE_LIST = 'delete_list';
+export const ADD_COMMENT = 'add_comment';
 export const DELETE_COMMENT = 'delete_comment';
 export const DELETE_BOARD = 'delete_board';
 export const USER_LOGIN = 'user_login';
