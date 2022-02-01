@@ -17,6 +17,7 @@ const Home = ({ logout }) => {
   const boards = useSelector(state => state.boards.allBoards);
   
   useEffect(() => {
+    checkUser();
     dispatch(fetchUserBoards(currentUser._id));
   }, []);
 
