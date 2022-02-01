@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Comment = (props) => {
   return (
     <>
-      {props.comments.length > 0 ? <CommentStyle> This card has comments </CommentStyle> : ''}
+      <CommentStyle> {props.comment.text} </CommentStyle>
     </>
   );
 }

@@ -30,8 +30,10 @@ export default function cardsReducer(state = DEFAULT_STATE, action) {
       return {...state, [movedCardId]: action.payload[2]};
     
     case ADD_COMMENT:
-      console.log(action.payload)
-      return state;
+      const cardId = action.payload.card._id;
+      const card = state.cardId;
+      card.comment.push(action.payload)
+      return {...state, [cardId]: card};
 
     default:
       return state; 

@@ -552,9 +552,10 @@ router.delete("/boards/board/list/:card", (req, res, next) => {
 router.post("/boards/:card/comment", async (req, res, next) => {
     const cardId = req.params.card;
     const commentToBeAdded = new Comment();
-    const targetCard = await Card.findById(cardId).exec();     
-
-    commentToBeAdded.username = req.body.username;
+    const targetCard = await Card.findById(cardId).exec();  
+    const targetUser = await User.findOne({ username: 'Jango' }).exec();   
+    
+    commentToBeAdded.username = targetUser._id;
     commentToBeAdded.text = req.body.text;
     commentToBeAdded.card = targetCard._id;
     

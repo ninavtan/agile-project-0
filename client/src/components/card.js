@@ -1,25 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteCard, addComment } from './actions';
 import Comment from './comment';
 
 const CardDetailView  = (props) => {
+  const username = useSelector(state => state.user.username);
   const dispatch = useDispatch();
   const [commentText, setCommentText] = useState('');
-
+  
   const DeleteCard = () => {
     const cardId = props.id;
     dispatch(deleteCard(cardId));    
   };
 
-  const AddComment = () => {
-    console.log(props)
-    const cardId = props.id;
-    const username = "PlaceHolder";
+  const AddComment = () => {    
+    const cardId = props.id;    
     dispatch(addComment(cardId, username, commentText));
   };
   
@@ -44,7 +43,13 @@ const CardDetailView  = (props) => {
         { props.description ? props.description : "Add a more detailed description..." }
         </p>
         <h6>Comments</h6>
-        <Comment comments={props.comments}/>
+        <CommentList>        
+        {props.comment ? props.comment.map((comment, index) => (
+        <Comment comment={comment} index={index}/>
+          )) : ''}
+                            
+                  
+        </CommentList>
         <CommentTextInput onChange={e => setCommentText(e.target.value)}className='float_left'></CommentTextInput>
         <Button onClick={AddComment} className="float_center">Add Comment</Button>
         <Button variant="danger" onClick={DeleteCard} className="float-end">Delete Card</Button>
@@ -91,6 +96,11 @@ export default Card;
 
 const ClickForDetail = styled.div`
 
+`;
+
+const CommentList = styled.div`
+  padding: 0px 8px;
+  min-height: 20px;
 `;
 
 const CancelButton = styled(Button)`
