@@ -264,7 +264,7 @@ router.get("/:user", (req, res, next) => {
 router.get("/boards/:board", (req, res, next) => {
     const board = req.params.board;
     
-    console.log("The board Id is " + board)
+    
 
     Board.findById(board)
         .populate({
@@ -368,37 +368,42 @@ router.post("/boards/:board/list", async (req, res, next) => {
 router.delete("/boards/:board/:list", (req, res, next) => {    
     const list = req.params.list;
     const board = req.params.board;    
+    const listToDelete = List.findById(list);
+
+    Board.findOneAndUpdate(
+        {_id: board},
+        { $pull: { lists: list}}, 
+        { new: true}, 
+        (err, result) => {
+            if (err) {
+                console.log("List delete error");
+                res.sendStatus(500);
+                return;
+            };
+        }
+    );
+
+    // Find the cards associated with list to delete.
     
+    Card.deleteMany({list: list}).exec((err, cards) => {
+        if (err) throw err;
+        console.log(`${cards} associated with Board ${list} have been deleted.`);
+    });
+    
+
     List.findByIdAndRemove(list, 
         { new: true},
-        (err, matchingList) => {
+        (err, listToDelete) => {
         if (err) {
             console.log("list delete error");
             res.sendStatus(500);
             return;
         };
-        
-        Board.findOneAndUpdate(
-            {_id: board},
-            { $pull: { lists: list}}, 
-            { new: true}, 
-            (err, result) => {
-                if (err) {
-                    console.log("List delete error");
-                    res.sendStatus(500);
-                    return;
-                };
-                return res.send(result);
-            }
-        );
-// Find the cards associated with list to delete.
-/*
-Card.deleteMany({list: list}).exec((err, cards) => {
-    if (err) throw err;
-    res.send(` ${cards} associated with Board ${list} have been deleted.`)
-});
-*/
-});
+        console.log(listToDelete)
+        return res.send(listToDelete);
+    });
+
+
 });
 
 //Use this route when dragging cards to a new list
@@ -412,7 +417,7 @@ router.put("/boards/board/:list", async (req, res, next) => {
         const updatedTitle = req.body.title;
         const updatedColor = req.body.color;
         const newCards = req.body.cards;
-        console.log(newCards);
+        
     //     const newCardId = req.body.card;
 
     //     const targetCard = await Card.findById(newCardId).exec();
@@ -477,6 +482,7 @@ router.post("/boards/board/:list/card", async (req, res, next) => {
     cardToBeAdded.cardLabel = null;
     cardToBeAdded.list = targetList._id;
     cardToBeAdded.comment = [];
+    cardToBeAdded.activity = [];
     console.log(cardToBeAdded.cardTitle);
 
     cardToBeAdded.save();
@@ -499,17 +505,20 @@ router.get("/boards/:board/:list/:card", (req, res, next) => {
 // PUT(edit) a pre-existing card 
 router.put("/boards/:board/:list/:card", (req, res, next) => {
     const card = req.params.card;
-
+    const updatedList = req.body.list;
     const updatedTitle = req.body.title;
     const updatedDesc = req.body.description;
     const updatedLabel = req.body.label;
+    const newActivity = req.body.activity;
     // Update to comment value will occur with Comment POST route
 
     Card.findOneAndUpdate(
         { _id: card },
         { cardTitle: updatedTitle,
         description: updatedDesc, 
-        cardLabel: updatedLabel },
+        cardLabel: updatedLabel,
+        list: updatedList,
+        $push: { activity: newActivity } },
         { new: true},
         (err, updatedCard) => {
             if (err) throw err;
@@ -518,20 +527,22 @@ router.put("/boards/:board/:list/:card", (req, res, next) => {
 });
 
 //DELETE a pre-existing card 
-router.delete("/boards/board/:list/:card", (req, res, next) => {
+router.delete("/boards/board/list/:card", (req, res, next) => {
     const card = req.params.card;
 
     Card.findByIdAndDelete(card).exec((err, cardToDelete) => {
         if (err) throw err;
         // Updates the list and removes the card to delete.
+        console.log("The card ID being deleted is " + cardToDelete._id)
+    
         List.findOneAndUpdate(
             {_id: req.params.list},
             { $pull: { card: card}},
             { new: true},
             (err, updatedList) => {
                 if (err) console.log("There was a delete-card error:", err);
-                res.send(updatedList);
-            });       
+                res.send(cardToDelete);
+            });   
     });    
 });
 
@@ -607,7 +618,3 @@ router.delete("/boards/board/list/:card/:comment", (req, res, next) => {
 });
 
 module.exports = router;
-
-
-
-    

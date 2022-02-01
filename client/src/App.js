@@ -9,16 +9,7 @@ import rootReducer from './reducers/index';
 import Board from './components/board';
 import Home from './components/auth/home';
 import Auth from './components/auth/auth';
-
-// Actual Login form
-// import Login from './components/login';
-
-// // import { createStore, applyMiddleware, compose } from "redux";
-// // import thunk from 'redux-thunk';
-// // Redux Devtools Configuration
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thunk)));
+import NavBar from './components/navbar';
 
   const App = () => {
     const [auth, setAuth] = useState(null);
@@ -46,6 +37,8 @@ import Auth from './components/auth/auth';
   
     return (
       // <Provider store={store}>
+      <>
+
       <Routes>
         {!auth && (
           <Route
@@ -65,7 +58,7 @@ import Auth from './components/auth/auth';
         )}
         <Route path="*" element={<Navigate to={auth ? "/home" : "/auth"} />} />
       </Routes>
-      // </Provider>
+    </>
 
     );
   };

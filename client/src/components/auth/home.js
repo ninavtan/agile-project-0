@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { Row, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { userLogout } from "../actions";
+import RenderUserBoards from "./RenderUserBoards";
 
 // userLogout functionality is not working atm. When you refresh the page, it will trigger you to log in again.
-
 
 const Home = ({ logout }) => {
   const currentUser = useSelector(state => state.user);
@@ -25,24 +25,16 @@ const Home = ({ logout }) => {
     } 
   }
 
-  // NICE-TO-DO: Display current user's boards if they have any. Was going to map over the array and print out the board IDs.
   return (
     <HomeContainer>
       <Row>
-        <h1>Boards:</h1>
-        {currentUser.board.length == 0 &&
-          <h2>User has no boards to display.</h2>
-        }
-        {currentUser.board.length > 0 &&
-          <h2>User has these boards:</h2>
-        }
-        );
         <Link to="/boards">Main Board</Link>
-        
       </Row>
 
       <h1> Hi {currentUser.username}, you are logged in.</h1>
       {/* <StyledButton onClick={handleLogoutClick}>Logout</StyledButton> */}
+      <RenderUserBoards currentUser={currentUser} />
+
     </HomeContainer>
   );
 };

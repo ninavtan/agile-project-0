@@ -2,13 +2,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import { Row,Col, Form, Button } from 'react-bootstrap';
+import { Row,Col, Form, Button, CloseButton } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import List from './list';
 import { updateListOrder, moveCardWithinList, moveCardBetweenLists, addNewList, fetchBoard, fetchCards } from './actions';
 import useOnClickOutside from 'use-onclickoutside';
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import NavBar from './navbar.js';
 
 
 
@@ -69,6 +69,7 @@ const Board = (props) => {
 
     //Moving a card to a different list
     const startListCards = Array.from(lists[startList._id].card);
+    const movedCard = startListCards[source.index];
     startListCards.splice(source.index, 1);
     const newStartList = {
       ...startList,
@@ -82,12 +83,14 @@ const Board = (props) => {
       card: finishListCards,
     };
 
-    dispatch(moveCardBetweenLists(newStartList, newFinishList));
+    dispatch(moveCardBetweenLists(newStartList, newFinishList, movedCard));
     return;
   }
 
   //New List Input
-  const currentBoardID = "61edc0a6aedb0b9422cf6ddf"; // Board Id is hardcoded. Need to update.
+
+  const currentBoardID = "61f07ffb92e6bb4bf1a7d269"; // Board Id is hardcoded. Need to update.
+
   const [showAddListInput, setAddListInput] = React.useState(false);
   const addListClickHandler = () => setAddListInput(true);
   const cancelAddList = () => setAddListInput(false);
@@ -124,48 +127,46 @@ const Board = (props) => {
           type='submit'>
             Add List</StyledButton>
             
-          <CancelButton variant='outline-danger' onClick={cancelAddList}>
-             X </CancelButton>
+          <CloseButton onClick={cancelAddList} />
         </Form>
       </ListContainer>
   )}
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Link to="/home">Home</Link>
-
-      <Droppable 
-        droppableId='all-lists' 
-        direction="horizontal" 
-        type="list"
-      >
-        {provided =>(
-        <Container
-          {...provided.droppableProps}
-          ref={provided.innerRef}
+    <>
+      <DragDropContext onDragEnd={onDragEnd} >
+        <Droppable 
+          droppableId='all-lists' 
+          direction="horizontal" 
+          type="list"
         >
-          <Row className="flex-row flex-nowrap">
-          {Array.from(listOrder).map((listId, index) => {
-            const list = lists[listId];
-            const cards = list.card.map((cardId) => allCards[cardId]);
-            
-            return (
-                <Col >
-                  <List key={list._id} list={list} cards={cards} index={index}/>
-                </Col>
-            );
-          })}
-          </Row>
-          {provided.placeholder}
-          <Col>
-            { showAddListInput ? <AddListInput /> : 
-              <AddListButton onClick={addListClickHandler}>+ Add another list</AddListButton>}
-          </Col>
-        </Container>
-      )}    
-      </Droppable>
-    </DragDropContext>
-  )
+          {provided =>(
+          <Container
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            <Row className="flex-row flex-nowrap" >
+            {Array.from(listOrder).map((listId, index) => {
+              const list = lists[listId];
+              const cards = list.card.map((cardId) => allCards[cardId]);
+              
+              return (
+                  <Col >
+                    <List key={list._id} list={list} cards={cards} index={index}/>
+                  </Col>
+              );
+            })}
+            </Row>
+            {provided.placeholder}
+            <Col>
+              { showAddListInput ? <AddListInput /> : 
+                <AddListButton onClick={addListClickHandler}>+ Add another list</AddListButton>}
+            </Col>
+          </Container>
+        )}    
+        </Droppable>
+      </DragDropContext>
+  </>)
 };
 
 export default Board;
