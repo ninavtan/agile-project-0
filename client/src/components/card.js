@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteCard } from './actions';
+import Comment from './comment';
 
 const CardDetailView  = (props) => {
   const dispatch = useDispatch();
@@ -33,8 +34,8 @@ const CardDetailView  = (props) => {
         { props.description ? props.description : "Add a more detailed description..." }
         </p>
         <h6>Comments</h6>
-        {props.comments}
-        
+        {/* {props.firstComment} */}
+        <Comment comments={props.comments}/>
         <Button variant="danger" onClick={DeleteCard} className="float-end">Delete Card</Button>
       </Modal.Body>
 
@@ -44,8 +45,6 @@ const CardDetailView  = (props) => {
 
 const Card = (props) => {
   const [detailViewShow, setDetailViewShow] = React.useState(false);
-  
-  
   return (
     <>
     <Draggable draggableId={props.card._id} index={props.index}>
@@ -70,6 +69,8 @@ const Card = (props) => {
         description={props.card.description}
         label={props.card.cardLabel}
         id = {props.card._id}
+        firstComment={props.card.comment[0]}
+        comments={props.card.comment}
         />
   </>
   );
