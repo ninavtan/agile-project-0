@@ -22,13 +22,8 @@ const Board = (props) => {
   const dispatch = useDispatch();
   let history = useNavigate();
   let params = useParams();
-  console.log(params.boardId);
 
-// uncomment if this doesn't work
-  // useEffect(() => {
-  //   dispatch(fetchBoard(props._id));
-  //   dispatch(fetchCards(props._id));
-  // }, [dispatch, props._id]);
+  let currentBoardID = params.boardId;
 
   useEffect(() => {
     // debugger;
@@ -99,7 +94,7 @@ const Board = (props) => {
 
   //New List Input
 
-  const currentBoardID = "61f07ffb92e6bb4bf1a7d269"; // Board Id is hardcoded. Need to update.
+  // const currentBoardID = "61f07ffb92e6bb4bf1a7d269"; // Board Id is hardcoded. Need to update.
 
   const [showAddListInput, setAddListInput] = React.useState(false);
   const addListClickHandler = () => setAddListInput(true);

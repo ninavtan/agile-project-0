@@ -344,6 +344,7 @@ router.put("/boards/:board", (req, res, next) => {
 // POST add a new list to an existing board 
 router.post("/boards/:board/list", async (req, res, next) => {
     const boardId = req.params.board; 
+    debugger;
     const listToBeAdded = new List(); 
     const targetBoard = await Board.findById(boardId).exec();
       
