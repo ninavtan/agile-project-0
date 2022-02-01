@@ -13,3 +13,4 @@ export const DELETE_COMMENT = 'delete_comment';
 export const DELETE_BOARD = 'delete_board';
 export const USER_LOGIN = 'user_login';
 export const USER_LOGOUT = 'user_logout';
+export const FETCH_USER_BOARDS = 'fetch_user_boards';

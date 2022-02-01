@@ -40,3 +40,19 @@
 body {
   background-color: #95bae7;
 }
+
+#userBoardContainer {
+  margin: 1em;
+  border-radius: 3px;
+  color: white;
+}
+
+#userBoardContainer:nth-child(1) {
+  background-color: green;
+  display: inline-block;
+}
+
+#userBoardContainer:nth-child(2) {
+  background-color: blue;
+  display: inline-block;
+}
