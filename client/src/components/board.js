@@ -89,7 +89,7 @@ const Board = (props) => {
 
   //New List Input
 
-  const currentBoardID = "61ee0ddbf8f753e602f14f6c"; // Board Id is hardcoded. Need to update.
+  const currentBoardID = "61f07ffb92e6bb4bf1a7d269"; // Board Id is hardcoded. Need to update.
 
   const [showAddListInput, setAddListInput] = React.useState(false);
   const addListClickHandler = () => setAddListInput(true);

@@ -368,37 +368,42 @@ router.post("/boards/:board/list", async (req, res, next) => {
 router.delete("/boards/:board/:list", (req, res, next) => {    
     const list = req.params.list;
     const board = req.params.board;    
+    const listToDelete = List.findById(list);
+
+    Board.findOneAndUpdate(
+        {_id: board},
+        { $pull: { lists: list}}, 
+        { new: true}, 
+        (err, result) => {
+            if (err) {
+                console.log("List delete error");
+                res.sendStatus(500);
+                return;
+            };
+        }
+    );
+
+    // Find the cards associated with list to delete.
     
+    Card.deleteMany({list: list}).exec((err, cards) => {
+        if (err) throw err;
+        console.log(`${cards} associated with Board ${list} have been deleted.`);
+    });
+    
+
     List.findByIdAndRemove(list, 
         { new: true},
-        (err, matchingList) => {
+        (err, listToDelete) => {
         if (err) {
             console.log("list delete error");
             res.sendStatus(500);
             return;
         };
-        
-        Board.findOneAndUpdate(
-            {_id: board},
-            { $pull: { lists: list}}, 
-            { new: true}, 
-            (err, result) => {
-                if (err) {
-                    console.log("List delete error");
-                    res.sendStatus(500);
-                    return;
-                };
-                return res.send(result);
-            }
-        );
-// Find the cards associated with list to delete.
-/*
-Card.deleteMany({list: list}).exec((err, cards) => {
-    if (err) throw err;
-    res.send(` ${cards} associated with Board ${list} have been deleted.`)
-});
-*/
-});
+        console.log(listToDelete)
+        return res.send(listToDelete);
+    });
+
+
 });
 
 //Use this route when dragging cards to a new list

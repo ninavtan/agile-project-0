@@ -112,6 +112,7 @@ export const fetchCards = (boardId) => dispatch => {
 };
 
 export const addNewList = (boardId, newListTitle) => dispatch => {
+  boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = "http://localhost:7000/boards/" + boardId + "/list";  
   const newList = { title: newListTitle }
   
@@ -198,14 +199,15 @@ export const deleteCard = (cardId) => dispatch => {
 };
 
 export const deleteList = (boardId, listId) => dispatch => {
-  const url = "http://localhost:7000/boards/" + boardId + "/" + listId;
+   const url = "http://localhost:7000/boards/" + boardId + "/" + listId;
 
   axios.delete(url)
     .then(function (response) {
+      console.log(response.data)
       dispatch({ type: DELETE_LIST, payload: response.data })
     })
     .catch(function (error) {
-      console.log("There was an error with the deleteList action" + error);
+      console.log("There was an error with the deleteList action " + error);
     }); 
 };
 
