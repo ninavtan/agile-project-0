@@ -1,5 +1,6 @@
-import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER} from '../components/actions/types';
+import { MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, ADD_NEW_LIST, UPDATE_LIST_TITLE, ADD_NEW_CARD, FETCH_BOARD, UPDATE_LIST_ORDER, DELETE_CARD, DELETE_LIST} from '../components/actions/types';
 import { normalize, schema } from 'normalizr';
+import _ from 'lodash';
 
 const DEFAULT_STATE = {
   entries: {},
@@ -31,11 +32,11 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
         entries: {...state.entries, [action.payload._id]: action.payload} 
       }
 
-    case ADD_NEW_CARD:
-    return {
-        order: state.order,
-        entries: {...state.entries, [action.payload.list]:{...state.entries[action.payload.list], card: [...state.entries[action.payload.list].card, action.payload]}}
-      }
+    case ADD_NEW_CARD:      
+      return {
+          order: state.order,
+          entries: {...state.entries, [action.payload.list]:{...state.entries[action.payload.list], card: [...state.entries[action.payload.list].card, action.payload]}}
+        }
       
     case UPDATE_LIST_TITLE:
       return {
@@ -54,6 +55,28 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
       return {
         order: [ ...normalizedLists.result],
         entries: { ...normalizedLists.entities.lists }
+      }
+    
+    case DELETE_LIST:      
+      const listRemovedId = action.payload._id;
+      const filteredListOrder = state.order.filter(list => list !== listRemovedId)
+      const filteredListEntries = _.filter(state.entries, list => list._id !== listRemovedId)
+      const normalizedFilteredLists = normalize(filteredListEntries, [listsSchema]);
+
+      return {
+      order: filteredListOrder,
+      entries: { ...normalizedFilteredLists.entities.lists }
+      }
+    
+      
+    // Delete card action.type
+    case DELETE_CARD:
+      const listId = action.payload.list;
+      const filteredCardIds = state.entries[listId].card.filter(card => card._id !== action.payload._id);
+    
+      return {
+        order: state.order,
+        entries: {...state.entries, [listId]: {...state.entries[listId], card: filteredCardIds}}
       }
 
     default:

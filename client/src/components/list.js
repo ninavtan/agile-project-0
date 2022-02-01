@@ -2,10 +2,10 @@ import React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { Form , Button} from 'react-bootstrap';
+import { Form , Button, CloseButton, Toast, Row, Col} from 'react-bootstrap';
 import useOnClickOutside from 'use-onclickoutside';
 import { useDispatch } from 'react-redux';
-import { updateListTitle, addNewCard } from './actions';
+import { updateListTitle, addNewCard, deleteList } from './actions';
 import Card from './card';
 
 
@@ -22,7 +22,6 @@ const List = (props) => {
     const [newCardTitle, setNewCardTitle] = useState('');
     const listForNewCard = props.list._id;
 
-    console.log(listForNewCard);
     const submitNewCard = (e) => {      
       e.preventDefault();
       dispatch(addNewCard(newCardTitle, listForNewCard));
@@ -33,9 +32,8 @@ const List = (props) => {
     return (
       <Form ref={ref} onSubmit={submitNewCard} id={props._id}>
         <StyledForm type="text"  placeholder="Enter a title for this card..." onChange={e => setNewCardTitle(e.target.value)}/>
-        <StyledButton variant='primary' type=
-        "submit">Add Card</StyledButton>
-        <CancelButton variant='outline-danger' onClick={cancelAddCard}> X </CancelButton>
+        <StyledButton variant='primary' type="submit" >Add Card</StyledButton>
+        <Close onClick={cancelAddCard} className="float-end" />
       </Form>
     );
   }
@@ -48,7 +46,7 @@ const List = (props) => {
 
     const ref = React.useRef();
     useOnClickOutside(ref, () => setShowTitleInput(false));
-    return(<input ref={ref} defaultValue={props.list.title} onKeyPress={handleListTitleChange}></input>)
+    return(<TitleInputStyle ref={ref} defaultValue={props.list.title} onKeyPress={handleListTitleChange}></TitleInputStyle>)
   };
 
   const handleListTitleChange = (e) => {
@@ -59,17 +57,58 @@ const List = (props) => {
     }
   };
 
+  const [showDeleteList, setShowDeleteList] = useState(false);
+  const toggleShowDeleteList = () => setShowDeleteList(!showDeleteList);
+
+  const DeleteListConfirmation = () =>{
+    return (
+      <ToastContainer>
+        <Toast show={showDeleteList} onClose={toggleShowDeleteList}>
+        <Toast.Header>
+              <small className="me-auto">Delete This List and All Associated Cards?</small>
+        </Toast.Header>
+            <div className="d-grid gap-2">
+              <Button variant="danger" onClick={DeleteList}>Delete List</Button>
+            </div>
+        </Toast>
+      </ToastContainer>
+
+    )
+  }
+
+  // code to dispatch the deleteList action
+  const DeleteList = () => {
+    const listId = props.list._id;
+    const boardId = props.list.board;   
+    // console.log(listId)
+    // console.log(boardId) 
+    dispatch(deleteList(boardId, listId));
+  };
+
+  
+
   return (
     <Draggable draggableId={props.list._id} index={props.index}>
-      {(provided, snapshot) => (
+      {(provided, snapshot) => (        
         <Container 
           {...provided.draggableProps} 
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-           <Title {...provided.dragHandleProps} onClick={handleClickTitle}>
-            { showTitleInput ? <TitleInput /> : props.list.title }
-           </Title>
+          <Row>
+          <Col xs={9}>
+          <Title {...provided.dragHandleProps} onClick={handleClickTitle}>
+            { showTitleInput ? <TitleInput /> : props.list.title } </Title>
+          </Col>
+          <Col xs={3}>
+          <Close onClick={toggleShowDeleteList}  className='float-end, threedots' />
+          </Col>
+          </Row>
+          <Row>
+            {toggleShowDeleteList ? <DeleteListConfirmation /> : ''} 
+          </Row>
+
+
           <Droppable 
             droppableId={props.list._id}
             type="card"
@@ -83,7 +122,7 @@ const List = (props) => {
                 {props.list.card.map((card, index) => (
                   <Card key={card._id} card={card} index={index} />
                 ))}
-                {provided.placeholder}
+                {provided.placeholder}                
               </CardList>
             )}
           </Droppable>
@@ -97,6 +136,13 @@ const List = (props) => {
 
 export default List;
 
+const Close = styled(CloseButton)`
+padding: 20px;
+&:focus {
+  box-shadow: none;
+  outline-offset: none;
+}
+`
 
 const StyledButton = styled(Button)`
 margin: 8px;
@@ -166,9 +212,13 @@ const Container = styled.div`
   transition: filter 0.2s ease;
   filter: ${props => (props.isDragging ? 'drop-shadow(0px 0px 10px #172b4d90)' : 'none')};
 `;
+
 const Title = styled.h5`
+  &:hover {
+    cursor:pointer;
+  }
   font-weight:800;  
-  padding: 12px;
+  padding: 16px;
   color: #172b4d;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -177,7 +227,28 @@ const Title = styled.h5`
   -ms-user-select: none;
   user-select: none;
 `;
+
+const TitleInputStyle = styled.input`
+border: 1px solid lightgrey;
+border-radius: 5px;
+padding: 8px;
+font-family: sans-serif;
+color: #172b4d;
+font-weight:800; 
+background-color:white;
+margin-left: -9px;
+margin-top: -12px;
+margin-bottom: -12px;
+margin-right: -18px;
+`
 const CardList = styled.div`
   padding: 0px 8px;
   min-height: 20px;
 `;
+
+const ToastContainer = styled.div`
+padding:0px 20px 10px 20px;
+margin-bottom: -10px;
+
+
+`

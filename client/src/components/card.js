@@ -1,9 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { Draggable } from 'react-beautiful-dnd';
+import { useDispatch } from 'react-redux';
+import { deleteCard } from './actions';
 
 const CardDetailView  = (props) => {
+  const dispatch = useDispatch();
+
+  const DeleteCard = () => {
+    const cardId = props.id;
+    dispatch(deleteCard(cardId));    
+  };
+  
+  
+  
   return (
     <Modal
       {...props}
@@ -21,6 +32,10 @@ const CardDetailView  = (props) => {
         <p>
         { props.description ? props.description : "Add a more detailed description..." }
         </p>
+        <h6>Comments</h6>
+        {props.comments}
+        
+        <Button variant="danger" onClick={DeleteCard} className="float-end">Delete Card</Button>
       </Modal.Body>
 
     </Modal>
@@ -29,6 +44,7 @@ const CardDetailView  = (props) => {
 
 const Card = (props) => {
   const [detailViewShow, setDetailViewShow] = React.useState(false);
+  
   
   return (
     <>
@@ -42,6 +58,7 @@ const Card = (props) => {
           isDragging={snapshot.isDragging}
         >
           {props.card.cardTitle}
+          
         </CardStyle>
       </ClickForDetail>
       )}
@@ -52,6 +69,7 @@ const Card = (props) => {
         title={props.card.cardTitle}
         description={props.card.description}
         label={props.card.cardLabel}
+        id = {props.card._id}
         />
   </>
   );
@@ -61,7 +79,22 @@ export default Card;
 
 const ClickForDetail = styled.div`
 
-`
+`;
+
+const CancelButton = styled(Button)`
+border: none;
+box-shadow: none;
+color: #172b4d;
+font-weight: 900;
+&:active {
+  background-color:black;
+}
+&:hover {
+  background-color:#ebecf0;
+  color: #dc3545
+}
+`;
+
 
 const CardStyle = styled.div`
 margin: auto;

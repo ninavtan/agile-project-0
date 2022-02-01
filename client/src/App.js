@@ -9,6 +9,7 @@ import rootReducer from './reducers/index';
 import Board from './components/board';
 import Home from './components/auth/home';
 import Auth from './components/auth/auth';
+import NavBar from './components/navbar';
 
   const App = () => {
     const [auth, setAuth] = useState(null);
@@ -36,6 +37,8 @@ import Auth from './components/auth/auth';
   
     return (
       // <Provider store={store}>
+      <>
+
       <Routes>
         {!auth && (
           <Route
@@ -55,7 +58,7 @@ import Auth from './components/auth/auth';
         )}
         <Route path="*" element={<Navigate to={auth ? "/home" : "/auth"} />} />
       </Routes>
-      // </Provider>
+    </>
 
     );
   };
