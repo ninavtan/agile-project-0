@@ -368,7 +368,8 @@ router.post("/boards/:board/list", async (req, res, next) => {
 router.delete("/boards/:board/:list", (req, res, next) => {    
     const list = req.params.list;
     const board = req.params.board;    
-            
+    const listToDelete = List.findById(list);
+
     Board.findOneAndUpdate(
         {_id: board},
         { $pull: { lists: list}}, 
@@ -379,11 +380,17 @@ router.delete("/boards/:board/:list", (req, res, next) => {
                 res.sendStatus(500);
                 return;
             };
-            
-            
         }
     );
+
+    // Find the cards associated with list to delete.
     
+    Card.deleteMany({list: list}).exec((err, cards) => {
+        if (err) throw err;
+        console.log(`${cards} associated with Board ${list} have been deleted.`);
+    });
+    
+
     List.findByIdAndRemove(list, 
         { new: true},
         (err, listToDelete) => {
@@ -394,15 +401,9 @@ router.delete("/boards/:board/:list", (req, res, next) => {
         };
         console.log(listToDelete)
         return res.send(listToDelete);
+    });
 
-// Find the cards associated with list to delete.
-/*
-Card.deleteMany({list: list}).exec((err, cards) => {
-    if (err) throw err;
-    res.send(` ${cards} associated with Board ${list} have been deleted.`)
-});
-*/
-});
+
 });
 
 //Use this route when dragging cards to a new list

@@ -22,7 +22,6 @@ const List = (props) => {
     const [newCardTitle, setNewCardTitle] = useState('');
     const listForNewCard = props.list._id;
 
-    console.log(listForNewCard);
     const submitNewCard = (e) => {      
       e.preventDefault();
       dispatch(addNewCard(newCardTitle, listForNewCard));
@@ -63,8 +62,8 @@ const List = (props) => {
   const DeleteList = () => {
     const listId = props.list._id;
     const boardId = props.list.board;   
-    console.log(listId)
-    console.log(boardId) 
+    // console.log(listId)
+    // console.log(boardId) 
     dispatch(deleteList(boardId, listId));
   };
 

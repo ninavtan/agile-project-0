@@ -58,12 +58,15 @@ export default function listsReducer(state = DEFAULT_STATE, action) {
       }
     
     case DELETE_LIST:      
-      debugger;
-      
+      const listRemovedId = action.payload._id;
+      const filteredListOrder = state.order.filter(list => list !== listRemovedId)
+      const filteredListEntries = _.filter(state.entries, list => list._id !== listRemovedId)
+      const normalizedFilteredLists = normalize(filteredListEntries, [listsSchema]);
+
       return {
-      order: state.order.filter(listRemoved => listRemoved !== action.payload._id),
-      entries: state.entries //Just a place holder until I figure out why .filter isn't working.
-    }
+      order: filteredListOrder,
+      entries: { ...normalizedFilteredLists.entities.lists }
+      }
     
       
     // Delete card action.type
