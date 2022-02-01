@@ -385,7 +385,6 @@ router.delete("/boards/:board/:list", (req, res, next) => {
     );
 
     // Find the cards associated with list to delete.
-    
     Card.deleteMany({list: list}).exec((err, cards) => {
         if (err) throw err;
         console.log(`${cards} associated with Board ${list} have been deleted.`);

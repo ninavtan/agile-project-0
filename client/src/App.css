@@ -48,12 +48,12 @@ body {
 }
 
 #userBoardContainer:nth-child(2) {
-  background-color: green;
+  background-color: #70b500;
   display: inline-block;
 }
 
 #userBoardContainer:nth-child(3) {
-  background-color: blue;
+  background-color: #0079bf;
   display: inline-block;
 }
 

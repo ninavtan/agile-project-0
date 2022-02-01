@@ -17,23 +17,27 @@ const Home = ({ logout }) => {
   const boards = useSelector(state => state.boards.allBoards);
   
   useEffect(() => {
-    checkUser();
-    // This grabs all the user's boards after they log in.
     dispatch(fetchUserBoards(currentUser._id));
-  }, [currentUser.isLoggedIn]);
+  }, []);
 
   const checkUser = () => {
     if (!currentUser.isLoggedIn) {
       logout();
-      navigate("home");
+      navigate("/auth");
     }
+  }
+
+  const handleLogoutClick = () => {
+    dispatch(userLogout(currentUser._id));
+    logout();
+
   }
 
   return (
     <div>
+      <StyledButton onClick={handleLogoutClick}>Logout</StyledButton>
       <div id="boardContainer">
         <h1> Hi {currentUser.username}, you are logged in.</h1>
-        {/* <StyledButton onClick={handleLogoutClick}>Logout</StyledButton> */}
         
         {boards.map(board => (
           <div id="userBoardContainer">
@@ -63,5 +67,11 @@ display: inline-block;
 border-radius: 3px;
 padding: 1em;
 `;
+
+const StyledButton = styled(Button)`
+background-color: #c4c9cc;
+border: none;
+color: black;
+`
 
 

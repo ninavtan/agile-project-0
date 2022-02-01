@@ -7,9 +7,14 @@ import Board from './components/board';
 import Home from './components/auth/home';
 import Auth from './components/auth/auth';
 import NavBar from './components/navbar';
+import { userLogout } from "./components/actions/index.js";
+import { useDispatch } from 'react-redux';
+
+
 
   const App = () => {
     const [auth, setAuth] = useState(null);
+    const dispatch = useDispatch();
 
     const currentUser = useSelector(state => state.user);
     // if currentUser is true, set auth to true.
@@ -20,6 +25,7 @@ import NavBar from './components/navbar';
     useEffect(() => {
       let user = localStorage.getItem("user");
       user && JSON.parse(user) ? setAuth(true) : setAuth(false);
+      
     }, []);
   
     // If auth is true, sets a session in localStorage.
@@ -27,6 +33,10 @@ import NavBar from './components/navbar';
       localStorage.setItem("user", auth);
     }, [currentUser, auth]);
   
+    useEffect(() => {
+      dispatch(userLogout);
+    }, [auth])
+
     return (
       <Routes>
         {!auth && (

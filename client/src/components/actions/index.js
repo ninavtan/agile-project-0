@@ -192,11 +192,8 @@ export const userLogin = (username, password) => dispatch => {
       });
 }
 
-export const userLogout = (user) => {
-  return {
-    type: USER_LOGOUT,
-    payload: user,
-  }
+export const userLogout = (user) => dispatch => {
+  dispatch( {type: USER_LOGOUT, payload: user})
 };
 
 export const deleteCard = (cardId) => dispatch => {
