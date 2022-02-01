@@ -32,7 +32,10 @@ const CardDetailView  = (props) => {
         <p>
         { props.description ? props.description : "Add a more detailed description..." }
         </p>
-        <CancelButton onClick={DeleteCard}>Delete Card</CancelButton>
+        <h6>Comments</h6>
+        {props.comments}
+        
+        <Button variant="danger" onClick={DeleteCard} className="float-end">Delete Card</Button>
       </Modal.Body>
 
     </Modal>
