@@ -5,10 +5,8 @@ import styled from 'styled-components';
 import { Row, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { userLogout, fetchUserBoards } from "../actions";
-import RenderUserBoards from "./RenderUserBoards";
 import "../../App.css";
 
-// userLogout functionality is not working atm. When you refresh the page, it will trigger you to log in again.
 
 const Home = ({ logout }) => {
   const navigate = useNavigate();
@@ -17,10 +15,6 @@ const Home = ({ logout }) => {
   const currentUser = useSelector(state => state.user);
 
   const boards = useSelector(state => state.boards.allBoards);
-
-  // console.log(boards);
-  let arrayifiedBoards = Object.entries(boards);
-  console.log(arrayifiedBoards);
   
   useEffect(() => {
     checkUser();
@@ -36,41 +30,38 @@ const Home = ({ logout }) => {
   }
 
   return (
-    <div id="boardContainer">
-      <h1> Hi {currentUser.username}, you are logged in.</h1>
-      {/* <StyledButton onClick={handleLogoutClick}>Logout</StyledButton> */}
-
+    <div>
+      <div id="boardContainer">
+        <h1> Hi {currentUser.username}, you are logged in.</h1>
+        {/* <StyledButton onClick={handleLogoutClick}>Logout</StyledButton> */}
         
-      {boards.map(board => (
-        <div id="userBoardContainer">
-          <Link
-            class="boardLinks"
-            style={{ margin: "1rem" }}  
-            to={`/boards/${board._id}`}>
-
-            <BoardSquare>
-              {board.title}
-            </BoardSquare>
-          </Link>
-        </div>
-      ))}
-    
+        {boards.map(board => (
+          <div id="userBoardContainer">
+            <Link
+              class="boardLinks"
+              style={{ margin: "1rem" }}  
+              to={`/boards/${board._id}`}>
+              <BoardSquare>
+                {board.title}
+              </BoardSquare>
+            </Link>
+          </div>
+        ))}
+      </div>
     <Outlet/>
     </div>
-    
   );
 };
 
 export default Home;
 
 const BoardSquare = styled.div`
- width: 200px;
- height: 100px;
- margin: 1em;
- display: inline-block;
+width: 200px;
+height: 100px;
+margin: 1em;
+display: inline-block;
 border-radius: 3px;
 padding: 1em;
-
 `;
 
 
