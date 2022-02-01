@@ -51,7 +51,7 @@ const Board = (props) => {
       newListOrder.splice(source.index, 1);
       newListOrder.splice(destination.index, 0, draggableId);
 
-      dispatch(updateListOrder(newListOrder));
+      dispatch(updateListOrder(currentBoardID, newListOrder));
       return;
     };
     const startList = lists[source.droppableId];
@@ -88,13 +88,11 @@ const Board = (props) => {
       card: finishListCards,
     };
 
-    dispatch(moveCardBetweenLists(newStartList, newFinishList, movedCard));
+    dispatch(moveCardBetweenLists(currentBoardID, newStartList, newFinishList, movedCard));
     return;
   }
 
   //New List Input
-
-  // const currentBoardID = "61f07ffb92e6bb4bf1a7d269"; // Board Id is hardcoded. Need to update.
 
   const [showAddListInput, setAddListInput] = React.useState(false);
   const addListClickHandler = () => setAddListInput(true);
@@ -108,7 +106,8 @@ const Board = (props) => {
     
     const submitNewList = (e) => {
       e.preventDefault();
-      dispatch(addNewList(currentBoardID, newListName));  //Board Id is hardcoded.  Need to update
+      dispatch(addNewList(currentBoardID, newListName));
+      // Formerly hard coded board ID.
       setAddListInput(false);
     }
 

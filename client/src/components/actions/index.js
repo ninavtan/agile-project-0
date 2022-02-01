@@ -4,8 +4,8 @@ import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETC
 
 const ROOT_URL = 'http://localhost:7000';
 
-export const updateListOrder = (newListOrder) => dispatch =>{
-   const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+export const updateListOrder = (boardId, newListOrder) => dispatch =>{
+   // const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
 
   dispatch({ type: UPDATE_LIST_ORDER, payload: newListOrder })
@@ -37,10 +37,10 @@ export const moveCardWithinList = (newList) => dispatch => {
     })
 };
 
-export const moveCardBetweenLists = (startList, finishList, movedCard) => dispatch => {
+export const moveCardBetweenLists = (boardId, startList, finishList, movedCard) => dispatch => {
   const startListUrl = "http://localhost:7000/boards/board/" + startList._id;
   const finishListUrl = "http://localhost:7000/boards/board/" + finishList._id;
-  const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+  // const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const cardActivityUrl = `${ROOT_URL}/boards/${boardId}/${finishList._id}/${movedCard._id}`;
   // console.log(cardActivityUrl);
   // router.put("/boards/:board/:list/:card", (req, res, next) => {
