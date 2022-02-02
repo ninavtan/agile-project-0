@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { userLogin } from "../actions";
+import "../../App.css";
+
 
 const Auth = ({ authenticate }) => {
   const navigate = useNavigate();
@@ -14,7 +16,6 @@ const Auth = ({ authenticate }) => {
 
   //auth button handler
   const onClick = (e, checkUser) => {
-    // dispatch(userLogin('Jango', 'Fett'));
     e.preventDefault();
     dispatch(userLogin(e.target.name.value, e.target.password.value ));
     e.target.name.value = '';
@@ -36,12 +37,6 @@ const Auth = ({ authenticate }) => {
     }
   }
 
-  // useEffect(() => {
-  //  if (currentUser) {
-  //    authenticate();
-  //    navigate("home");
-  //  };
-  // }, [currentUser]);
 
   return (
     <AuthContainer>
@@ -74,8 +69,9 @@ const Auth = ({ authenticate }) => {
 export default Auth;
 
 const AuthContainer = styled.div`
-  
-  width: 100%;
+  margin: 3em auto;
+  padding: 2em;
+  width: 100vw;
   display: block;
   border: 1px solid lightgrey;
   border-radius: 5px;
@@ -92,8 +88,9 @@ const StyledForm = styled(Form.Control)`
 border: 1px solid lightgrey;
 border-radius: 5px;
 min-height: 40px;
-margin:  10px;
-margin-bottom: 10px;
+// margin:  10px;
+// margin-bottom: 10px;
+margin: 1em auto;
 width: 282px;
 padding: 8px;
 font-family: sans-serif;
