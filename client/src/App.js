@@ -10,8 +10,6 @@ import NavBar from './components/navbar';
 import { userLogout } from "./components/actions/index.js";
 import { useDispatch } from 'react-redux';
 
-
-
   const App = () => {
     const [auth, setAuth] = useState(null);
     const dispatch = useDispatch();
@@ -19,7 +17,7 @@ import { useDispatch } from 'react-redux';
     const currentUser = useSelector(state => state.user);
     // if currentUser is true, set auth to true.
 
-    console.log('Is the user logged in?' + currentUser.isLoggedIn);
+    console.log('Is the user logged in? ' + currentUser.isLoggedIn);
    
     // Gets the 'user' item from localStorage to check if the session is persisting.
     useEffect(() => {
