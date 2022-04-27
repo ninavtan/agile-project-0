@@ -5,16 +5,12 @@ import { BrowserRouter } from "react-router-dom";
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
-import { Provider, useSelector } from 'react-redux';
-import { Container } from 'react-bootstrap';
-import Board from './components/board';
-import NavBar from './components/navbar';
+import { Provider } from 'react-redux';
 
 // Redux Devtools Configuration
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thunk)));
-
 
 ReactDOM.render(
   <React.StrictMode>

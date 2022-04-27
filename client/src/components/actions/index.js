@@ -2,8 +2,7 @@ import axios from 'axios';
 
 import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT, USER_LOGIN, USER_LOGOUT, FETCH_USER_BOARDS } from './types';
 
-// const ROOT_URL = 'http://localhost:7000';
-const ROOT_URL = 'https://agile-mello.herokuapp.com';
+const ROOT_URL = process.env.REACT_APP_API_ENDPOINT;
 
 export const updateListOrder = (boardId, newListOrder) => dispatch =>{
    // const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
@@ -23,7 +22,7 @@ export const updateListOrder = (boardId, newListOrder) => dispatch =>{
 
 export const moveCardWithinList = (newList) => dispatch => {
   const listId = newList._id;
-  const url = "http://localhost:7000/boards/board/" + listId;   
+  const url = `${ROOT_URL}/boards/board/${listId}`
   
   dispatch({type: MOVE_CARD_WITHIN_LIST, payload: newList});
 
@@ -39,12 +38,11 @@ export const moveCardWithinList = (newList) => dispatch => {
 };
 
 export const moveCardBetweenLists = (boardId, startList, finishList, movedCard) => dispatch => {
-  const startListUrl = "http://localhost:7000/boards/board/" + startList._id;
-  const finishListUrl = "http://localhost:7000/boards/board/" + finishList._id;
+
+  const startListUrl = `${ROOT_URL}/boards/board/${startList._id}`
+  const finishListUrl = `${ROOT_URL}/boards/board/${finishList._id}`;
   // const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const cardActivityUrl = `${ROOT_URL}/boards/${boardId}/${finishList._id}/${movedCard._id}`;
-  // console.log(cardActivityUrl);
-  // router.put("/boards/:board/:list/:card", (req, res, next) => {
   
   movedCard.list = finishList._id;
 
@@ -131,7 +129,7 @@ export const fetchCards = (boardId) => dispatch => {
 
 export const addNewList = (boardId, newListTitle) => dispatch => {
   // boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
-  const url = "http://localhost:7000/boards/" + boardId + "/list";  
+  const url = `${ROOT_URL}/boards/${boardId}/list`;
   const newList = { title: newListTitle }
   
   axios.post(url, newList)
@@ -145,7 +143,7 @@ export const addNewList = (boardId, newListTitle) => dispatch => {
 };
 
 export const addNewCard = (newCardTitle, listId) => dispatch => {
-  const url = "http://localhost:7000/boards/board/" + listId + "/card";   
+  const url = `${ROOT_URL}/boards/board/${listId}/card`;   
   
   axios.post(url, {cardTitle: newCardTitle})
     .then(function (response) {
@@ -198,7 +196,7 @@ export const userLogout = (user) => dispatch => {
 };
 
 export const deleteCard = (cardId) => dispatch => {
-  const url = "http://localhost:7000/boards/board/list/" + cardId;  
+  const url = `${ROOT_URL}/boards/board/list/${cardId}`;  
   const request = axios.delete(url); 
 
   request
@@ -214,7 +212,7 @@ export const deleteCard = (cardId) => dispatch => {
 };
 
 export const deleteList = (boardId, listId) => dispatch => {
-   const url = "http://localhost:7000/boards/" + boardId + "/" + listId;
+   const url = `${ROOT_URL}${boardId}/${listId}`;
 
   axios.delete(url)
     .then(function (response) {
@@ -227,7 +225,7 @@ export const deleteList = (boardId, listId) => dispatch => {
 };
 
 export const deleteBoard = (boardId) => dispatch => {
-  const url = "http://localhost:7000/boards/" + boardId;
+  const url = `${ROOT_URL}/${boardId}`;
 
   axios.delete(url)
     .then(function (response) {
@@ -239,7 +237,7 @@ export const deleteBoard = (boardId) => dispatch => {
 };
 
 export const deleteComment = (cardId, commentId) => dispatch => {
-  const url = "http://localhost:7000/boards/board/list/" + cardId + "/" + commentId;
+  const url = `${ROOT_URL}/${cardId}/${commentId}`;
 
   axios.delete(url)
     .then(function (response) {
@@ -249,4 +247,3 @@ export const deleteComment = (cardId, commentId) => dispatch => {
       console.log("There was an error with the deleteComment action" + error);
     }); 
 };
-
