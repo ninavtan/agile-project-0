@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "begin": "npm run build && node server/index.js",
     "start": "node server/index.js",
-    "build": "cd client && npm install && npm run build",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "start:original": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server/index.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm install && npm run build"
   },
   "engines": {
     "node": "14.17.3",

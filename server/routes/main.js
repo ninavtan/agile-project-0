@@ -264,8 +264,6 @@ router.get("/:user", (req, res, next) => {
 router.get("/boards/:board", (req, res, next) => {
     const board = req.params.board;
     
-    
-
     Board.findById(board)
         .populate({
             path: 'lists',
