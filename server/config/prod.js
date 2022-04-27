@@ -1,4 +1,6 @@
+const string = 'mongodb+srv://mern:mongodb@cluster0.zdddu.mongodb.net/agile?retryWrites=true&w=majority';
+
 module.exports = {
-  MONGODB_URI: process.env.MONGODB_URI,
-  TOKEN_SECRET: process.env.TOKEN_SECRET,
+  MONGODB_URI: string,
+  TOKEN_SECRET: 'helloworld'
 };

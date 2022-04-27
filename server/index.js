@@ -19,6 +19,9 @@ if (process.env.NODE_ENV === "production") {
 mongoose.connect(keys.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+}, function(err, result) {
+  if (err) console.log(err)
+  console.log(keys.MONGODB_URI)
 });
 
 const PORT = process.env.PORT || 7000;
