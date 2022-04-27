@@ -39,7 +39,7 @@
     "start:prod": "env-cmd -f .env.production react-scripts start",
     "build:prod": "env-cmd -f .env.production npm run-script build"
   },
-  "proxy": "http://localhost:7000",
+  "proxy": "http://127.0.0.1:7000/",
   "eslintConfig": {
     "extends": [
       "react-app",
