@@ -1,3 +1,7 @@
+* {
+  font-family: "Radio Canada", sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -47,12 +51,12 @@ body {
   color: white;
 }
 
-#userBoardContainer:nth-child(2) {
+#userBoardContainer:nth-child(odd) {
   background-color: #70b500;
   display: inline-block;
 }
 
-#userBoardContainer:nth-child(3) {
+#userBoardContainer:nth-child(even) {
   background-color: #0079bf;
   display: inline-block;
 }
