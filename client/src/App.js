@@ -61,7 +61,7 @@ import { useDispatch } from 'react-redux';
         <Route path="/about"
           element={<About />}/>
 
-        <Route path="/" element={<HomePage />}/>
+        <Route path="/home" element={<HomePage />}/>
 
        
       </Routes>
