@@ -5,7 +5,7 @@ const NavBar = (props) => {
 return (<>
   <Navbar bg="light" expand="lg">
     <Container>
-      <Navbar.Brand href="/home">mello</Navbar.Brand>
+      <Navbar.Brand href="/boards">mello</Navbar.Brand>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">

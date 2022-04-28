@@ -38,7 +38,7 @@ const Auth = ({ authenticate }) => {
     const checkUser = () => {
       if (currentUser.isLoggedIn) {
         authenticate();
-        navigate("/home");
+        navigate("/boards");
       }
     }
     checkUser();
