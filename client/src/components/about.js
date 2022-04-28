@@ -17,6 +17,5 @@ export const About = () => {
 
 const AboutDiv = styled.div`
   width: 100%;
-  margin: 1em auto;
   text-align: center;
 `

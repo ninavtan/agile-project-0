@@ -5,7 +5,6 @@ import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETC
 const ROOT_URL = process.env.REACT_APP_API_ENDPOINT;
 
 export const updateListOrder = (boardId, newListOrder) => dispatch =>{
-   // const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}`;
 
   dispatch({ type: UPDATE_LIST_ORDER, payload: newListOrder })
@@ -20,6 +19,7 @@ export const updateListOrder = (boardId, newListOrder) => dispatch =>{
 
 };
 
+
 export const moveCardWithinList = (newList) => dispatch => {
   const listId = newList._id;
   const url = `${ROOT_URL}/boards/board/${listId}`
@@ -31,6 +31,7 @@ export const moveCardWithinList = (newList) => dispatch => {
       console.log("There was an error with the move card within list action" + error);
     })
 };
+
 
 export const moveCardBetweenLists = (boardId, startList, finishList, movedCard) => dispatch => {
 
@@ -69,12 +70,8 @@ export const moveCardBetweenLists = (boardId, startList, finishList, movedCard) 
   })
 };
 
+
 export const fetchBoard = (boardId) => dispatch => {
-
-  // boardId = '61ef03734c98c4fee5c6706b';  // hard code ID of first board in boards array for user Jango
-
-// boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
-
 
   const url = `${ROOT_URL}/boards/${boardId}`;
   axios.get(url)
@@ -85,6 +82,7 @@ export const fetchBoard = (boardId) => dispatch => {
       console.log(error)
     });
 };
+
 
 export const fetchBoards = () => dispatch => {
   const url = `${ROOT_URL}/boards`;
@@ -97,6 +95,7 @@ export const fetchBoards = () => dispatch => {
     });
 };
 
+
 export const fetchUserBoards = (userId) => dispatch => {
   const url = `${ROOT_URL}/${userId}`;
   axios.get(url)
@@ -106,12 +105,10 @@ export const fetchUserBoards = (userId) => dispatch => {
     .catch(function (error) {
       console.log(`There was an error fetching ${userId} boards` + error);
     });
-
 }
 
-export const fetchCards = (boardId) => dispatch => {
 
-  // boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+export const fetchCards = (boardId) => dispatch => {
 
   const url = `${ROOT_URL}/boards/${boardId}/cards`;
   axios.get(url)
@@ -123,8 +120,8 @@ export const fetchCards = (boardId) => dispatch => {
   });
 };
 
+
 export const addNewList = (boardId, newListTitle) => dispatch => {
-  // boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
   const url = `${ROOT_URL}/boards/${boardId}/list`;
   const newList = { title: newListTitle }
   
@@ -137,6 +134,7 @@ export const addNewList = (boardId, newListTitle) => dispatch => {
       console.log("There was an error with the addList action" + error);
     }); 
 };
+
 
 export const addNewCard = (newCardTitle, listId) => dispatch => {
   const url = `${ROOT_URL}/boards/board/${listId}/card`;   
@@ -151,6 +149,7 @@ export const addNewCard = (newCardTitle, listId) => dispatch => {
     })
 
 };
+
 
 export const updateListTitle = (list, newTitle) => dispatch => {
   const url = `${ROOT_URL}/boards/board/${list._id}`;
@@ -168,6 +167,7 @@ export const updateListTitle = (list, newTitle) => dispatch => {
       console.log("There was an error with the updateListTitle action: ", error);
     })
 };
+
 
 export const userLogin = (username, password) => dispatch => {
   const url = `${ROOT_URL}/login`;
@@ -187,9 +187,11 @@ export const userLogin = (username, password) => dispatch => {
       });
 }
 
+
 export const userLogout = (user) => dispatch => {
   dispatch( {type: USER_LOGOUT, payload: user})
 };
+
 
 export const deleteCard = (cardId) => dispatch => {
   const url = `${ROOT_URL}/boards/board/list/${cardId}`;  
