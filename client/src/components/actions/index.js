@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT, USER_LOGIN, USER_LOGOUT, FETCH_USER_BOARDS } from './types';
+import { UPDATE_LIST_ORDER, MOVE_CARD_WITHIN_LIST, MOVE_CARD_BETWEEN_LISTS, FETCH_BOARD, FETCH_BOARDS, FETCH_CARDS, ADD_NEW_LIST, ADD_NEW_CARD, UPDATE_LIST_TITLE, DELETE_CARD, DELETE_LIST, DELETE_BOARD, DELETE_COMMENT, USER_LOGIN, USER_LOGOUT, GUEST_USER_LOGIN, FETCH_USER_BOARDS } from './types';
 
 const ROOT_URL = process.env.REACT_APP_API_ENDPOINT;
 
@@ -26,12 +26,7 @@ export const moveCardWithinList = (newList) => dispatch => {
   
   dispatch({type: MOVE_CARD_WITHIN_LIST, payload: newList});
 
-  // As written, this action successfully sends the new card order to the back end, and successfully shows the correct order in the UI. However, when I send the payload to the reducer, the cards are no longer rendered out... so we can revisit this later if need be.
-
   axios.put(url, {cards: newList.card})
-  // .then(function (response) {
-    //   dispatch({ type: MOVE_CARD_WITHIN_LIST, payload: response.data })
-    // })
     .catch(function (error) {
       console.log("There was an error with the move card within list action" + error);
     })
@@ -40,8 +35,9 @@ export const moveCardWithinList = (newList) => dispatch => {
 export const moveCardBetweenLists = (boardId, startList, finishList, movedCard) => dispatch => {
 
   const startListUrl = `${ROOT_URL}/boards/board/${startList._id}`
+  
   const finishListUrl = `${ROOT_URL}/boards/board/${finishList._id}`;
-  // const boardId = '61ee0ddbf8f753e602f14f6b';  // hard code ID of first board in boards array for user Jango
+
   const cardActivityUrl = `${ROOT_URL}/boards/${boardId}/${finishList._id}/${movedCard._id}`;
   
   movedCard.list = finishList._id;
@@ -247,3 +243,22 @@ export const deleteComment = (cardId, commentId) => dispatch => {
       console.log("There was an error with the deleteComment action" + error);
     }); 
 };
+
+export const guestUserLogin = () => dispatch => {
+  console.log('guest user login')
+  const url = `${ROOT_URL}/login`;
+
+  const data = {
+    username: 'Jango',
+    password: 'Fett'
+  }
+  
+    axios.post(url, data)
+      .then(function (response) {
+        console.log(response.data.board);
+        dispatch({type: USER_LOGIN, payload: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
