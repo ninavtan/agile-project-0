@@ -14,14 +14,8 @@ mongoose.connect(keys.MONGODB_URI, {
   console.log(keys.MONGODB_URI)
 });
 
-if (process.env.NODE_ENV === "production") {
+const PORT = process.env.PORT || 7000;
 
-  app.use(express.static("client/build"));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
 
 app.use(cors({
   origin: '*'
@@ -48,7 +42,14 @@ const mainRoutes = require("./routes/main");
 
 app.use(mainRoutes);
 
-const PORT = process.env.PORT || 7000;
+if (process.env.NODE_ENV === "production") {
+
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
