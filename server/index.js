@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 
 const mainRoutes = require("./routes/main");
 
-app.use(mainRoutes);
+app.use('/', mainRoutes);
 
 if (process.env.NODE_ENV === "production") {
 
