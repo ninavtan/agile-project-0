@@ -5,6 +5,7 @@ const path = require('path');
 const keys = require('./config/keys');
 const app = express();
 const cors = require("cors");
+var router = express.Router();
 
 mongoose.connect(keys.MONGODB_URI, {
   useNewUrlParser: true,
@@ -14,8 +15,9 @@ mongoose.connect(keys.MONGODB_URI, {
   console.log(keys.MONGODB_URI)
 });
 
-const PORT = process.env.PORT || 7000;
+app.use(router);
 
+const PORT = process.env.PORT || 7000;
 
 app.use(cors({
   origin: '*'
