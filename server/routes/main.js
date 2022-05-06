@@ -6,6 +6,7 @@ const Comment = require("../models/comment");
 const List = require("../models/list");
 const User = require("../models/user");
 const Org = require("../models/org");
+const user = require("../models/user");
 
 
 router.get("/generate-fake-data", (req, res, next) => {       
@@ -249,15 +250,26 @@ router.post("/login", (req, res, next) => {
 
 // GET all boards for the logged in user 
 router.get("/:user", (req, res, next) => {   
-    const userId = req.params.user;
-    
 
-    User.findById( userId )
-    .populate("board")
-    .exec((err, targetUser) => {
-        if (err) return next(err);
-        res.send(targetUser.board);
-    });
+    let p = new Promise((resolve, reject) => {
+        let userId = req.params.user;
+        if (userId) {
+            resolve(userId)
+        } else {
+            reject('User is not logged in or not available.')
+        }
+    })
+
+    p.then((userId) => {
+        User.findById( userId )
+            .populate('board')
+            .exec((err, targetUser) => {
+                if (err) return next(err);
+                res.send(targetUser.board);
+            })
+    }).catch((message) => {
+        res.send(message);
+    })
 });
 
 //GET a specific board based on id 
@@ -323,21 +335,6 @@ router.put("/boards/:board", (req, res, next) => {
             else res.send(updatedBoard);        
         });   
 });
-
-
-// List Routes //
-
-// // GET all lists for the specified board 
-// router.get("/boards/:board/lists", (req, res, next) => {
-//     const boardId = req.params.board;
-
-//     Board.findById(boardId)
-//         .populate("lists")
-//         .exec((err, targetBoard) => {
-//             if (err) throw err;
-//             res.send(targetBoard.lists);
-//         });   
-// });
 
 // POST add a new list to an existing board 
 router.post("/boards/:board/list", async (req, res, next) => {
@@ -407,52 +404,22 @@ router.delete("/boards/:board/:list", (req, res, next) => {
 //Use this route when dragging cards to a new list
 router.put("/boards/board/:list", async (req, res, next) => {
     const listId = req.params.list;
-    // No option to update board._id since lists won't change boards    
-    
-    // I'm not sure if we need this logic below, since the logic is happening on the front end -- Steve
-
-    // if (req.body.card) {
-        const updatedTitle = req.body.title;
-        const updatedColor = req.body.color;
-        const newCards = req.body.cards;
+    const updatedTitle = req.body.title;
+    const updatedColor = req.body.color;
+    const newCards = req.body.cards;
         
-    //     const newCardId = req.body.card;
 
-    //     const targetCard = await Card.findById(newCardId).exec();
-
-    //     List.findOneAndUpdate(
-    //         { _id: listId },
-    //         { title: updatedTitle,
-    //           color: updatedColor,
-    //           $push: {card: targetCard._id} },
-    //         { new: true},
-    //         (err, updatedList) => {
-    //             if (err) throw err;
-    //             Card.findByIdAndUpdate(targetCard._id,
-    //                 { list: listId },
-    //                 { new: true},
-    //                 (err, updatedCardWithListId) => {
-    //                     if (err) throw err;
-    //                     res.send(updatedCardWithListId)  //Can change this to the updated list if needed.
-    //                 }
-    //             );              
-    //         }  
-    //     );
-    // } else { 
-    //     const updatedTitle = req.body.title;
-    //     const updatedColor = req.body.color; 
-
-        List.findOneAndUpdate(
-            { _id: listId },
-            { title: updatedTitle, 
-              color: updatedColor,
-              card: newCards}, 
-            { new: true},       
-            (err, updatedList) => {
-                if (err) throw err;
-                res.send(updatedList);
-            }
-        );
+    List.findOneAndUpdate(
+        { _id: listId },
+        { title: updatedTitle, 
+            color: updatedColor,
+            card: newCards}, 
+        { new: true},       
+        (err, updatedList) => {
+            if (err) throw err;
+            res.send(updatedList);
+        }
+    );
        
 });
 

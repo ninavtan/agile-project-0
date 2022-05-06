@@ -10,7 +10,6 @@ import Auth from './components/auth/auth';
 import { About } from './components/about';
 import { userLogout } from "./components/actions/index.js";
 import { useDispatch } from 'react-redux';
-import NavBar from './components/navbar';
 
   const App = () => {
     const [auth, setAuth] = useState(null);
@@ -60,7 +59,7 @@ import NavBar from './components/navbar';
             {<Navigate to={auth ? "/boards" : "/auth"}/>}
          />
     
-        <Route path="/about"
+        <Route exact path="/about"
           element={<About />}/>
 
         <Route path="/home" element={<HomePage />}/>
