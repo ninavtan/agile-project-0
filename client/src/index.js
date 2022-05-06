@@ -14,11 +14,10 @@ const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(thun
 
 ReactDOM.render(
   <React.StrictMode>
-            <NavBar/>  
-
     <Provider store={store}>
       <BrowserRouter>
-          <App/>
+        <NavBar/>
+        <App/>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

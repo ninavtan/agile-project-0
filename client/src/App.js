@@ -10,6 +10,7 @@ import Auth from './components/auth/auth';
 import { About } from './components/about';
 import { userLogout } from "./components/actions/index.js";
 import { useDispatch } from 'react-redux';
+import NavBar from './components/navbar';
 
   const App = () => {
     const [auth, setAuth] = useState(null);
@@ -34,6 +35,7 @@ import { useDispatch } from 'react-redux';
     }, [auth])
 
     return (
+      
       <Routes>
         {!auth && (
           <Route
@@ -62,8 +64,6 @@ import { useDispatch } from 'react-redux';
           element={<About />}/>
 
         <Route path="/home" element={<HomePage />}/>
-
-       
       </Routes>
 
     );

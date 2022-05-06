@@ -31,7 +31,6 @@ const Home = ({ logout }) => {
   const handleLogoutClick = () => {
     dispatch(userLogout(currentUser._id));
     logout();
-
   }
 
   return (
@@ -40,8 +39,8 @@ const Home = ({ logout }) => {
       <div id="boardContainer">
         <h1> Hi {currentUser.username}, you are logged in.</h1>
         
-        {boards.map(board => (
-          <div id="userBoardContainer">
+          {boards.map(board => (
+            <div id="userBoardContainer">
             <Link
               class="boardLinks"
               style={{ margin: "1rem" }}  
@@ -50,7 +49,8 @@ const Home = ({ logout }) => {
                 {board.title}
               </BoardSquare>
             </Link>
-          </div>
+            </div>
+
         ))}
       </div>
     <Outlet/>
@@ -61,13 +61,15 @@ const Home = ({ logout }) => {
 export default Home;
 
 const BoardSquare = styled.div`
-width: 200px;
+max-width: 250px;
 height: 100px;
 margin: 1em;
 display: inline-block;
 border-radius: 3px;
 padding: 1em;
 `;
+
+
 
 const StyledButton = styled(Button)`
 background-color: #c4c9cc;
